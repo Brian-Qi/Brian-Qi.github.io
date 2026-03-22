@@ -3,7 +3,7 @@
 > 一个充满彩蛋与成就的个人网站，集成了留言墙、每日运势、隐藏成就等互动功能。
 
 ## ✨ 在线预览
-[https://brian-qi.github.io](https://brian-qi.github.io)
+[https://briandolph.xyz](https:////briandolph.xyz)
 
 ## 🛠️ 技术栈
 - **前端框架**：Vue 3
