@@ -13,36 +13,38 @@
 - **样式方案**：SCSS + 自定义 CSS
 
 ## 📁 项目结构
+```
 briandolph_test/
 ├── public/
-│ ├── brian_logo.ico
-│ └── index.html
+│   ├── brian_logo.ico
+│   └── index.html
 ├── src/
-│ ├── components/
-│ │ ├── ComingSoon.vue
-│ │ ├── WhoIAm.vue
-│ │ ├── AchievementsStats.vue
-│ │ ├── DailyFortune.vue
-│ │ ├── SecretQuiz.vue
-│ │ ├── SecretRoom.vue
-│ │ ├── Guestbook.vue
-│ │ ├── Achievement_01.vue
-│ │ ├── Achievement_02.vue
-│ │ ├── Achievement_03.vue
-│ │ ├── Achievement_04.vue
-│ │ ├── Achievement_05.vue
-│ │ ├── Achievement_06.vue
-│ │ └── HiddenAchievement_01.vue
-│ ├── utils/
-│ │ └── supabase.js
-│ ├── router/
-│ │ └── index.js
-│ ├── App.vue
-│ └── main.js
+│   ├── components/
+│   │   ├── ComingSoon.vue
+│   │   ├── WhoIAm.vue
+│   │   ├── AchievementsStats.vue
+│   │   ├── DailyFortune.vue
+│   │   ├── SecretQuiz.vue
+│   │   ├── SecretRoom.vue
+│   │   ├── Guestbook.vue
+│   │   ├── Achievement_01.vue
+│   │   ├── Achievement_02.vue
+│   │   ├── Achievement_03.vue
+│   │   ├── Achievement_04.vue
+│   │   ├── Achievement_05.vue
+│   │   ├── Achievement_06.vue
+│   │   └── HiddenAchievement_01.vue
+│   ├── utils/
+│   │   └── supabase.js
+│   ├── router/
+│   │   └── index.js
+│   ├── App.vue
+│   └── main.js
 ├── .gitignore
 ├── package.json
 ├── vue.config.js
 └── README.md
+```
 
 ## 🎮 功能列表
 
