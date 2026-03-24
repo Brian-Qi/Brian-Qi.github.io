@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>重定向中...</title>
+    <style>
+      body {
+        background: #0a0c0f;
+        color: #e1e7ef;
+        font-family: 'Inter', system-ui, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        text-align: center;
+      }
+      .loader {
+        width: 48px;
+        height: 48px;
+        border: 3px solid #31465c;
+        border-top-color: #42b983;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class="loader"></div>
+      <p>正在把你送到正确的页面...</p>
+    </div>
+    
+    <script>
+      // 保存当前路径（包括查询参数和hash）
+      sessionStorage.setItem('redirect', location.pathname + location.search + location.hash)
+      // 重定向到首页
+      location.replace('/')
+    </script>
+  </body>
+</html>

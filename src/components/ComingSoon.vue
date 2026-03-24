@@ -1,51 +1,58 @@
 <template>
   <div class="coming-soon">
+    
+    <div v-if="showDialog" class="custom-dialog" @click.self="showDialog = false">
+      <div class="dialog-content">
+        <div class="dialog-message">{{ dialogMessage }}</div>
+        <button class="dialog-button" @click="showDialog = false">知道啦</button>
+      </div>
+    </div>
+
     <div class="container">
-      <!-- 主信息：私人网站 + 名字 -->
+      
       <div class="main-message">
         <h1>
-          <span class="name-highlight">Briandolph Qi</span> 的私人网站
+          <router-link to="/who_i_am" class="name-link">
+            <span class="name-highlight">Briandolph Qi</span>
+          </router-link>
+          的私人网站
         </h1>
         <div class="status-tag">
           ⏳ 目前仍在开发中 · 悄然生长
         </div>
       </div>
 
-      <!-- 趣味文字区域 -->
       <div class="fun-section">
         <div class="whimsy-text">
           <span>⚠️</span> 这里没有 404 <span>🚧</span>
         </div>
-        <p class="face">ciallo～(∠・ω< )⌒☆</p>
+        <p class="face" @click="goToAchievements">ciallo～(∠・ω< )⌒☆</p>
         <p class="fun-line">
           正在用<span class="glow-dot"></span><span class="glow-dot"></span><span class="glow-dot"></span>和<span class="coffee-badge">☕</span>搭建宇宙
         </p>
-        <div class="construction-quote">
-          <span>🧙‍♂️</span> 施工精灵说：“再写{{tmp_line}}行代码就能跑起来...大概”
+        <div class="construction-quote" @click="checkAchievement">
+          <span>🧙‍♂️</span> 施工精灵说：“再写{{ tmp_line }}行代码就能跑起来...大概”
         </div>
       </div>
 
-      <!-- 进度条 -->
       <div class="progress-area">
         <div class="progress-bar-bg">
           <div class="progress-fill" :style="{ width: progress + '%' }"></div>
         </div>
         <div class="eta-message">
           <span><i>📦</i> 页面装修进度 {{ progress }}%</span>
-          <span><i>⏱️</i> 还差 ??? 个深夜</span>
+          <span><i>⏱️</i> 还差好多好多个深夜</span>
         </div>
       </div>
 
-      <!-- 施工状态标签 -->
       <div class="construction-zone">
         <div><span class="emoji-big">🛸</span> 正在调试虫洞</div>
         <div><span class="emoji-big">🤖</span> 与AI斗嘴中</div>
-        <div><span class="emoji-big">🧪</span> 锟斤拷烫烫</div>
+        <div><span class="emoji-big">🧪</span> 锟斤拷烫烫烫</div>
       </div>
 
-      <!-- 小彩蛋 -->
       <div class="easter-egg">
-        <code> ~/briandolph.xyz $ </code> 没有找到index.html？别慌，也许它在 <span class="mono">✨平行宇宙✨</span> 里
+        没有找到index.html？别慌，也许它在 <span class="mono">✨平行宇宙✨</span> 里
         <div class="version-tag">vue static · dark mode · 开发秘境 · v0.0.1-alpha.0</div>
       </div>
     </div>
@@ -54,23 +61,53 @@
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
 export default {
   name: 'ComingSoon',
   setup() {
+    const router = useRouter()
+    const showDialog = ref(false)
+    const dialogMessage = ref('')
     const randomProgress = Math.floor(Math.random() * 41) + 30
     const progress = ref(randomProgress)
-    const randomtmpline=Math.floor(Math.random() * 80) + 20
-    const tmp_line=ref(randomtmpline)
+    const randomtmpline = Math.floor(Math.random() * 80) + 20
+    const tmp_line = ref(randomtmpline)
+    
+    const checkAchievement = () => {
+      if (tmp_line.value < 40 && progress.value < 40) {
+        router.push('/achieve_slacking')
+      } else {
+        const messages = [
+          `🧙‍♂️\n怎么了怎么了 ⊙ω⊙`,
+          `🧙‍♂️\n才没有在摸鱼呢 (￣ω￣;)`,
+          `🧙‍♂️\n那个...再写点代码吧...\n(⁄ ⁄•⁄ω⁄•⁄ ⁄)`,
+          `🧙‍♂️\n施工中，勿扰！ (・_・)`,
+          `🧙‍♂️\n被发现了...其实还差一点 (◡‿◡✿)`
+        ]
+        dialogMessage.value = messages[Math.floor(Math.random() * messages.length)]
+        showDialog.value = true
+      }
+    }
+    
+    const goToAchievements = () => {
+      router.push('/achievements')
+    }
+    
     return {
       tmp_line,
-      progress
+      progress,
+      showDialog,
+      dialogMessage,
+      checkAchievement,
+      goToAchievements
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-/* 暗色调基础样式 */
+
 .coming-soon {
   min-height: 100vh;
   display: flex;
@@ -85,7 +122,6 @@ export default {
   padding: 1rem;
 }
 
-/* 主卡片 */
 .container {
   max-width: 720px;
   width: 100%;
@@ -106,6 +142,110 @@ export default {
   }
 }
 
+/* ========== 移动端适配（统一合并版） ========== */
+
+/* 平板/大手机 (600px 及以下) */
+@media screen and (max-width: 600px) {
+  .container {
+    padding: 2rem 1.5rem;
+    border-radius: 32px;
+    margin: 1rem auto;
+  }
+
+  .main-message h1 {
+    font-size: 2rem;
+    line-height: 1.3;
+  }
+
+  .status-tag {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.8rem;
+  }
+
+  .fun-section {
+    padding: 1.5rem 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .whimsy-text {
+    font-size: 1.1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .face {
+    font-size: 1.4rem;
+  }
+
+  .fun-line {
+    font-size: 1rem;
+  }
+
+  .construction-quote {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .construction-zone {
+    gap: 0.8rem;
+  }
+
+  .construction-zone div {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .emoji-big {
+    font-size: 1.1rem;
+  }
+
+  .eta-message {
+    font-size: 0.8rem;
+  }
+
+  .easter-egg {
+    font-size: 0.7rem;
+    margin-top: 1.5rem;
+  }
+
+  .easter-egg code {
+    font-size: 0.65rem;
+  }
+
+  .progress-area {
+    margin: 1.5rem 0 0.8rem;
+  }
+}
+
+/* 超小手机 (375px 及以下) */
+@media screen and (max-width: 375px) {
+  .container {
+    padding: 1.5rem 1rem;
+  }
+
+  .main-message h1 {
+    font-size: 1.6rem;
+  }
+
+  .construction-zone {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .construction-zone div {
+    width: fit-content;
+  }
+
+  .fun-section {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .whimsy-text {
+    font-size: 1rem;
+  }
+}
+
 /* 主标题区域 */
 .main-message {
   margin-bottom: 2.5rem;
@@ -121,9 +261,20 @@ export default {
     margin-bottom: 0.5rem;
     line-height: 1.2;
 
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       font-size: 2rem;
     }
+  }
+}
+
+.name-link {
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 8px rgba(157, 139, 255, 0.6));
   }
 }
 
@@ -152,7 +303,6 @@ export default {
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* 趣味区域 */
 .fun-section {
   background: rgba(8, 12, 17, 0.6);
   border-radius: 32px;
@@ -185,7 +335,14 @@ export default {
 .face {
   font-size: 1.7rem;
   margin: 0.2rem 0 0.2rem;
-  color: #eaeef7;
+  color: #18dddd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.face:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
 .fun-line {
@@ -212,9 +369,16 @@ export default {
   border: 1px dashed #435973;
   color: #b7cfed;
   font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* 进度条 */
+.construction-quote:hover {
+  transform: scale(1.02);
+  border-color: #ffd700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
 .progress-area {
   margin: 2rem 0 1rem;
 }
@@ -228,33 +392,14 @@ export default {
   border: 1px solid #2c3a48;
 }
 
-// .progress-fill {
-//   height: 100%;
-//   background: linear-gradient(90deg, #6d8cff, #b08cff, #ff9b8c);
-//   background-size: 200% 100%;
-//   border-radius: 20px;
-//   animation: shimmer 3s infinite linear, glowPulse 2s infinite alternate;
-//   transition: width 0.5s ease;
-// }
-
-// @keyframes shimmer {
-//   0% { background-position: 0% 0; }
-//   100% { background-position: 200% 0; }
-// }
-
-// @keyframes glowPulse {
-//   0% { box-shadow: 0 0 5px #6d8cff; }
-//   100% { box-shadow: 0 0 18px #b08cff; }
-// }
-
 .progress-fill {
   height: 100%;
   background: linear-gradient(
     90deg,
-    rgba(74, 110, 255, 0.9),   /* 半透明极光蓝 */
-    rgba(46, 204, 113, 0.9),   /* 半透明极光绿 */
-    rgba(138, 109, 233, 0.9),  /* 半透明极光紫 */
-    rgba(74, 110, 255, 0.9)    /* 回到极光蓝 */
+    rgba(74, 110, 255, 0.9),
+    rgba(46, 204, 113, 0.9),
+    rgba(138, 109, 233, 0.9),
+    rgba(74, 110, 255, 0.9)
   );
   background-size: 300% 100%;
   border-radius: 20px;
@@ -267,6 +412,7 @@ export default {
   0% { background-position: 0% 0; }
   100% { background-position: 300% 0; }
 }
+
 .eta-message {
   display: flex;
   justify-content: space-between;
@@ -283,7 +429,6 @@ export default {
   }
 }
 
-/* 施工状态标签 */
 .construction-zone {
   display: flex;
   align-items: center;
@@ -310,7 +455,6 @@ export default {
   filter: drop-shadow(0 0 4px #5075a8);
 }
 
-/* 小彩蛋 */
 .easter-egg {
   margin-top: 2.5rem;
   opacity: 0.55;
@@ -345,7 +489,6 @@ export default {
   color: #3c536b;
 }
 
-/* 闪烁小圆点 */
 .glow-dot {
   width: 6px;
   height: 6px;
@@ -362,17 +505,76 @@ export default {
   }
 }
 
-/* 响应式 */
-@media (max-width: 500px) {
-  .container {
-    padding: 2rem 1.5rem;
-    border-radius: 32px;
+.custom-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.dialog-content {
+  background: linear-gradient(145deg, #1f2a36, #0f1a22);
+  border: 2px solid #ffd700;
+  border-radius: 40px;
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
+  animation: dialogPop 0.4s ease;
+}
+
+@keyframes dialogPop {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.dialog-message {
+  font-size: 2rem;
+  color: #ffd700;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  white-space: pre-line;
+  font-weight: bold;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.dialog-button {
+  background: #42b983;
+  color: #0a0c0f;
+  border: none;
+  border-radius: 60px;
+  padding: 1rem 3rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(66, 185, 131, 0.3);
+}
+
+.dialog-button:hover {
+  transform: scale(1.1);
+  background: #5dca9c;
+  box-shadow: 0 0 30px rgba(66, 185, 131, 0.6);
+}
+
+@media (max-width: 600px) {
+  .dialog-content {
+    padding: 2rem;
   }
-  
-  .whimsy-text {
+  .dialog-message {
+    font-size: 1.6rem;
+  }
+  .dialog-button {
+    padding: 0.8rem 2rem;
     font-size: 1.1rem;
-    flex-direction: column;
-    gap: 0.5rem;
   }
 }
 </style>
