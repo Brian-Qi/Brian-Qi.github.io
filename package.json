@@ -8,6 +8,7 @@
     "deploy": "gh-pages -d dist",
     "predeploy": "npm run build",
     "redeploy": "rd /s /q dist && npm run build && npm run deploy",
+    "republish": "npm run build && gh-pages -d dist -r https://github.com/Brian-Qi/Brian-Qi.github.io.git",
     "readme": "git add README.md && git commit -m \"update README\" && git push"
   },
   "dependencies": {
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "@vue/compiler-sfc": "^3.2.13",
     "gh-pages": "^6.3.0",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0"

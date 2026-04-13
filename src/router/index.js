@@ -1,20 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ComingSoon from '../components/ComingSoon.vue'
-import WhoIAm from '../components/WhoIAm.vue'
-import Achievement01 from '../components/Achievement_01.vue'
-import Achievement02 from '../components/Achievement_02.vue'
-import Achievement03 from '../components/Achievement_03.vue'
-import Achievement04 from '../components/Achievement_04.vue'
-import Achievement05 from '../components/Achievement_05.vue'
-import Achievement06 from '../components/Achievement_06.vue'
-import AchievementsStats from '../components/AchievementsStats.vue'
-import HiddenAchievement01 from '../components/HiddenAchievement_01.vue'
-import SecretRoom from '../components/SecretRoom.vue'
-import SecretQuiz from '../components/SecretQuiz.vue'
-import Guestbook from '../components/Guestbook.vue'
-import DailyFortune from '../components/DailyFortune.vue'
-import RunGameSelector from '../components/RunGameSelector.vue'
-import TheLostRealm from '../components/RunGame_TheLostRealm.vue'
+
+// 路由懒加载 - 提升首屏性能
+const ComingSoon = () => import('../components/ComingSoon.vue')
+const WhoIAm = () => import('../components/WhoIAm.vue')
+const Achievement01 = () => import('../components/Achievement_01.vue')
+const Achievement02 = () => import('../components/Achievement_02.vue')
+const Achievement03 = () => import('../components/Achievement_03.vue')
+const Achievement04 = () => import('../components/Achievement_04.vue')
+const Achievement05 = () => import('../components/Achievement_05.vue')
+const Achievement06 = () => import('../components/Achievement_06.vue')
+const AchievementsStats = () => import('../components/AchievementsStats.vue')
+const HiddenAchievement01 = () => import('../components/HiddenAchievement_01.vue')
+const SecretRoom = () => import('../components/SecretRoom.vue')
+const SecretQuiz = () => import('../components/SecretQuiz.vue')
+const Guestbook = () => import('../components/Guestbook.vue')
+const DailyFortune = () => import('../components/DailyFortune.vue')
+const RunGameSelector = () => import('../components/RunGameSelector.vue')
+const TheLostRealm = () => import('../components/RunGame_TheLostRealm.vue')
+const AchievementUnlock = () => import('../components/Achievement_07.vue')
 
 const routes = [
   {
@@ -97,6 +100,11 @@ const routes = [
     name: 'TheLostRealm',
     component: TheLostRealm
   },
+  {
+    path: '/who_i_am/achievement_curious',
+    name: 'Achievement07',
+    component: AchievementUnlock
+  },
 ]
 
 const router = createRouter({
@@ -107,12 +115,6 @@ const router = createRouter({
 
 
 // 检查是否有重定向路径
-const redirectPath = sessionStorage.getItem('redirect')
-if (redirectPath) {
-  // 清除存储的路径
-  sessionStorage.removeItem('redirect')
-  // 跳转到保存的路径
-  router.replace(redirectPath)
-}
+
 
 export default router

@@ -15,10 +15,18 @@ export default {
 </script>
 
 <style>
+/* 导入移动端优化样式 */
+@import './styles/mobile-optimization.css';
+@import './styles/mobile-utils.css';
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
+  /* 全局文本换行保护 */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 body {
@@ -71,76 +79,87 @@ body {
 }
 
 /* ========== 全局响应式适配 ========== */
-@media (max-width: 768px) {
-  body {
-    font-size: 14px;
-  }
-  
-  h1 {
-    font-size: 2rem !important;
-  }
-  
-  h2 {
-    font-size: 1.5rem !important;
-  }
-  
-  /* 通用容器内边距 */
-  .container, .quiz-container, .achievement-card, .fortune-card,
-  .bio-card, .project-card, .skills-card, .easter-eggs {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-  }
-  
-  /* 卡片内边距 */
-  .achievement-card, .fortune-card, .quiz-container,
-  .bio-card, .project-card, .skills-card, .easter-eggs {
-    padding: 1.5rem !important;
-  }
+
+/* 使用流体字体系统 */
+body {
+  font-size: clamp(14px, 2.5vw, 16px);
+}
+
+h1 {
+  font-size: clamp(1.4rem, 5vw, 3rem) !important;
+  line-height: 1.3 !important;
+}
+
+h2 {
+  font-size: clamp(1.1rem, 4vw, 2.5rem) !important;
+  line-height: 1.35 !important;
+}
+
+/* 通用容器响应式内边距 */
+.container, .quiz-container, .achievement-card, .fortune-card,
+.bio-card, .project-card, .skills-card, .easter-eggs {
+  padding-left: clamp(0.5rem, 3vw, 2rem) !important;
+  padding-right: clamp(0.5rem, 3vw, 2rem) !important;
+  padding-top: clamp(1rem, 4vw, 2rem) !important;
+  padding-bottom: clamp(1rem, 4vw, 2rem) !important;
+}
+
+/* 卡片响应式圆角 */
+.achievement-card, .fortune-card, .quiz-container,
+.bio-card, .project-card, .skills-card, .easter-eggs {
+  border-radius: clamp(8px, 2vw, 16px) !important;
 }
 
 @media (max-width: 600px) {
+  /* 超小屏幕优化 */
+  body {
+    font-size: 13px;
+  }
+  
   /* 成就图鉴专用 */
   .stats-achievement-card {
     flex-direction: column !important;
     align-items: center !important;
     text-align: center !important;
-    gap: 0.8rem !important;
-    padding: 1rem !important;
+    gap: 0.75rem !important;
+    padding: 0.75rem !important;
   }
   
   .card-icon {
-    font-size: 2.5rem !important;
+    font-size: 2rem !important;
     min-width: auto !important;
   }
   
   .card-info h3 {
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
   }
   
   .achievement-code, .achievement-desc {
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
   }
   
   .unlocked-badge, .locked-badge {
-    font-size: 0.8rem !important;
-    padding: 0.2rem 0.8rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.2rem 0.6rem !important;
   }
   
   /* 运势页面 */
   .fortune-header h1 {
-    font-size: 1.5rem !important;
+    font-size: 1.3rem !important;
   }
   
   .fortune-level {
-    font-size: 2rem !important;
+    font-size: 1.5rem !important;
   }
   
   .fortune-text {
-    font-size: 1.1rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
   }
   
   .fortune-card {
-    padding: 1.5rem 1rem !important;
+    padding: 1rem 0.75rem !important;
+    border-radius: 20px !important;
   }
 }
 
@@ -150,11 +169,13 @@ body {
   }
   
   h1 {
-    font-size: 1.6rem !important;
+    font-size: 1.3rem !important;
+    line-height: 1.25 !important;
   }
   
   h2 {
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
+    line-height: 1.3 !important;
   }
   
   /* 按钮全宽 */
@@ -162,37 +183,51 @@ body {
   .reset-button, .screenshot-button {
     width: 100% !important;
     justify-content: center !important;
+    padding: 0.75rem !important;
+    min-height: 44px !important; /* 触摸友好 */
   }
   
   /* 按钮容器 */
   .button-container, .button-group {
     flex-direction: column !important;
     width: 100% !important;
-    gap: 0.8rem !important;
+    gap: 0.5rem !important;
   }
   
   /* 留言墙 */
   .message-input-row {
     flex-direction: column !important;
+    gap: 0.5rem !important;
   }
   
   .egg-item {
-    gap: 1rem !important;
+    gap: 0.5rem !important;
     flex-wrap: wrap !important;
+    padding: 0.5rem !important;
   }
   
   .egg-item .secret-message {
     margin-left: 0 !important;
+    font-size: 0.85rem !important;
   }
   
   /* 技能条 */
   .skill-item {
     flex-direction: column !important;
     align-items: flex-start !important;
+    gap: 0.5rem !important;
   }
   
   .skill-bar {
     width: 100% !important;
+    height: 6px !important;
+  }
+  
+  /* 输入框优化 */
+  input[type="text"],
+  input[type="password"] {
+    font-size: 16px !important; /* 防止iOS自动缩放 */
+    min-height: 44px !important;
   }
 }
 </style>

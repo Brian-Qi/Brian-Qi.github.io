@@ -1,10 +1,38 @@
 import { createClient } from '@supabase/supabase-js'
 
-// 替换成你的配置
-const supabaseUrl = 'https://oszjjgzcukgvtsmberdb.supabase.co'
-const supabaseKey = 'sb_publishable_HJyAfHjg3TTw-kH0c0P5EQ_9d1XMfBI'
+// 从环境变量读取配置
+const supabaseUrl = process.env.VUE_APP_SUPABASE_URL
+const supabaseKey = process.env.VUE_APP_SUPABASE_ANON_KEY
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+// 验证配置
+const isValidUrl = (url) => {
+  return url && url.startsWith('http') && !url.includes('your_supabase_url_here')
+}
+
+let supabase = null
+
+if (isValidUrl(supabaseUrl) && supabaseKey) {
+  try {
+    supabase = createClient(supabaseUrl, supabaseKey)
+  } catch (e) {
+    console.warn('Supabase 初始化失败:', e.message)
+  }
+} else {
+  console.warn('警告: Supabase 配置无效，请检查 .env 文件中的 VUE_APP_SUPABASE_URL 和 VUE_APP_SUPABASE_ANON_KEY')
+}
+
+// 如果 supabase 未初始化，创建一个空实现
+if (!supabase) {
+  supabase = {
+    from: () => ({
+      select: () => Promise.resolve({ data: [], error: null }),
+      insert: () => Promise.resolve({ error: { message: 'Supabase 未配置' } }),
+      delete: () => Promise.resolve({ error: { message: 'Supabase 未配置' } })
+    })
+  }
+}
+
+export { supabase }
 
 // console.log('Supabase URL:', supabaseUrl)
 // console.log('Supabase Key:', supabaseKey ? '已设置' : '未设置')
