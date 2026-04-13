@@ -144,7 +144,7 @@ export default {
       {
         type: 'fill',
         text: '输入作者给你的密钥',
-        correct: '852573131',
+        correct: process.env.VUE_APP_SECRET_KEY || 'dev_secret_key_only',
         placeholder: '输入密钥'
       }
     ]
@@ -363,6 +363,10 @@ h2 {
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
+  /* 文本换行保护 */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 .option:hover {
   border-color: #ff69b4;

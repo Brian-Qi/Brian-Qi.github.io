@@ -286,7 +286,8 @@ li {
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
-  gap: 10rem;
+  flex-wrap: wrap; /* 允许换行 */
+  gap: 0.5rem 1rem; /* 合理的间距：行间0.5rem，列间1rem */
   align-items: center;
   user-select: none;
 }
@@ -348,4 +349,127 @@ li {
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(66, 185, 131, 0.3);
 }
+
+/* ========== 移动端优化 ========== */
+@media (max-width: 768px) {
+  .bio-card,
+  .project-card,
+  .skills-card,
+  .easter-eggs {
+    padding: 1.25rem !important;
+    border-radius: 12px !important;
+  }
+  
+  h1 {
+    font-size: 2rem !important;
+    line-height: 1.3 !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  .skill-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+  
+  .skill-bar {
+    width: 100% !important;
+  }
+  
+  .egg-item {
+    padding: 0.75rem !important;
+    gap: 0.5rem !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .egg-icon {
+    margin-right: 0 !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .bio-card,
+  .project-card,
+  .skills-card,
+  .easter-eggs {
+    padding: 1rem !important;
+  }
+  
+  h1 {
+    font-size: 1.6rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  .skill-name {
+    font-size: 0.9rem !important;
+  }
+  
+  .button-container {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0.75rem !important;
+  }
+  
+  button,
+  .back-link {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 375px) {
+  .bio-card,
+  .project-card,
+  .skills-card,
+  .easter-eggs {
+    padding: 0.75rem !important;
+  }
+  
+  h1 {
+    font-size: 1.4rem !important;
+  }
+  
+  h2 {
+    font-size: 1.1rem !important;
+  }
+  
+  .skill-level {
+    font-size: 0.8rem !important;
+  }
+  
+  .construction-note {
+    margin: 1rem 0 !important;
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 0.5rem !important;
+  }
+}
+
+/* ========== 文本换行保护 ========== */
+.text-content,
+.skill-name,
+.project-description,
+.egg-item,
+.secret-message {
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+.long-text {
+  word-break: break-all !important;
+}
+
+.no-wrap {
+  white-space: nowrap !important;
+}
+
 </style>

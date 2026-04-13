@@ -1,0 +1,383 @@
+/**
+ * 移动端优化样式
+ * 优雅的手机端适配方案
+ */
+
+/* ========== 全局字体优化 ========== */
+
+/**
+ * 流体字体系统 - 使用clamp()实现平滑缩放
+ * 在320px-1920px屏幕范围内平滑过渡
+ */
+html {
+  /* 基准字体大小 */
+  font-size: 16px;
+}
+
+/* 在超小屏幕上调整根字体大小 */
+@media (max-width: 320px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* 流体字体 - 标题 */
+h1 {
+  font-size: clamp(1.5rem, 5vw, 3rem) !important; /* 1.5rem-3rem之间平滑缩放 */
+  line-height: 1.3 !important;
+}
+
+h2 {
+  font-size: clamp(1.25rem, 4vw, 2.5rem) !important;
+  line-height: 1.35 !important;
+}
+
+h3 {
+  font-size: clamp(1rem, 3.5vw, 2rem) !important;
+  line-height: 1.4 !important;
+}
+
+/* 流体字体 - 正文 */
+p, .text-content, .message-content, .story-text {
+  font-size: clamp(0.875rem, 2.5vw, 1rem) !important;
+  line-height: 1.6 !important;
+}
+
+/* ========== 文本换行优化 ========== */
+
+/**
+ * 智能文本换行系统
+ * 保证中文、英文、数字、符号都能正确换行
+ */
+.text-content,
+.message-content,
+.story-text,
+.option,
+.quiz-question,
+.achievement-desc,
+.achievement-code,
+.card-info * {
+  /* 强制换行策略 */
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  
+  /* 智能换行，保持可读性 */
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  
+  /* 最小宽度保护 */
+  min-width: 0; /* 允许收缩到0 */
+  
+  /* 防溢出 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/**
+ * 长文本容器优化
+ */
+.long-text-container {
+  /* 对于可能包含长单词/URL的内容 */
+  word-break: break-all !important;
+}
+
+/**
+ * 单行文本保护（不该换行的地方）
+ */
+.no-wrap,
+.button-text,
+.nav-item,
+.tab-label {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* ========== 触摸友好优化 ========== */
+
+/**
+ * 触摸目标最小尺寸 - 符合W3C标准
+ * 最小44×44px，保证手指能准确点击
+ */
+button,
+a,
+input[type="button"],
+input[type="submit"],
+.touch-target {
+  min-height: 44px !important;
+  min-width: 44px !important;
+  padding: 0.75rem 1rem !important;
+}
+
+/**
+ * 小触摸目标（特殊情况）
+ */
+.small-touch-target {
+  min-height: 36px !important;
+  min-width: 36px !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+/**
+ * 触摸反馈优化
+ */
+button:active,
+a:active,
+.touch-target:active {
+  transform: scale(0.97) !important;
+  transition: transform 0.1s ease !important;
+}
+
+/* ========== 布局优化 ========== */
+
+/**
+ * 移动端安全区域
+ */
+.safe-area {
+  padding-left: env(safe-area-inset-left) !important;
+  padding-right: env(safe-area-inset-right) !important;
+  padding-top: env(safe-area-inset-top) !important;
+  padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+/**
+ * 响应式间隙系统
+ */
+.responsive-gap {
+  gap: clamp(0.5rem, 2vw, 2rem) !important;
+}
+
+/**
+ * 响应式内边距
+ */
+.responsive-padding {
+  padding: clamp(1rem, 4vw, 2rem) !important;
+}
+
+/**
+ * 响应式外边距
+ */
+.responsive-margin {
+  margin: clamp(0.5rem, 2vw, 1.5rem) !important;
+}
+
+/* ========== 卡片和容器优化 ========== */
+
+/**
+ * 响应式卡片
+ */
+.responsive-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: clamp(1rem, 4vw, 2rem) !important;
+  margin-bottom: clamp(0.75rem, 3vw, 1.5rem) !important;
+  border-radius: clamp(8px, 2vw, 16px) !important;
+}
+
+/**
+ * 容器宽度限制
+ */
+.container-width-limit {
+  max-width: 100% !important;
+  width: min(100%, 600px) !important; /* 移动端最大600px */
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* ========== 表单优化 ========== */
+
+/**
+ * 移动端表单元素
+ */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+  font-size: 16px !important; /* 防止iOS自动缩放 */
+  min-height: 44px !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 8px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/**
+ * 移动端按钮组
+ */
+.button-group-mobile {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
+}
+
+.button-group-mobile > * {
+  width: 100% !important;
+}
+
+/* ========== 特定组件优化 ========== */
+
+/**
+ * 游戏日志面板优化
+ */
+.log-panel-mobile {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: auto !important;
+  width: 100% !important;
+  max-height: 40vh !important;
+  border-radius: 16px 16px 0 0 !important;
+  z-index: 1000 !important;
+}
+
+/**
+ * 成就卡片移动优化
+ */
+.achievement-card-mobile {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  text-align: center !important;
+  padding: 1rem !important;
+  gap: 0.75rem !important;
+}
+
+/**
+ * 留言墙消息卡片
+ */
+.message-card-mobile {
+  flex-direction: column !important;
+  padding: 0.75rem !important;
+  gap: 0.5rem !important;
+}
+
+/* ========== 媒体查询增强 ========== */
+
+/**
+ * 超小屏幕优化 (≤320px)
+ */
+@media (max-width: 320px) {
+  .extra-small-screen {
+    font-size: 14px !important;
+  }
+  
+  .extra-small-screen h1 {
+    font-size: 1.4rem !important;
+  }
+  
+  .extra-small-screen .container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+}
+
+/**
+ * 小屏幕优化 (≤375px)
+ */
+@media (max-width: 375px) {
+  .small-screen {
+    font-size: 14px !important;
+  }
+  
+  .small-screen .responsive-padding {
+    padding: 0.75rem !important;
+  }
+}
+
+/**
+ * 中等屏幕优化 (≤480px)
+ */
+@media (max-width: 480px) {
+  .medium-screen h1 {
+    font-size: 1.6rem !important;
+  }
+  
+  .medium-screen .button-group-mobile {
+    gap: 0.5rem !important;
+  }
+}
+
+/* ========== 性能优化 ========== */
+
+/**
+ * 减少移动端动画复杂度
+ */
+@media (max-width: 768px) {
+  .reduce-animation * {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* 禁用复杂粒子动画 */
+  .particle-animation {
+    display: none !important;
+  }
+}
+
+/**
+ * 减少阴影和模糊效果（节省GPU）
+ */
+@media (max-width: 768px) {
+  .reduce-effects {
+    backdrop-filter: none !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    filter: none !important;
+  }
+}
+
+/* ========== 实用工具类 ========== */
+
+/**
+ * 隐藏滚动条但保留滚动功能
+ */
+.hide-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+
+/**
+ * 防止文本选中
+ */
+.prevent-select {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+/**
+ * 允许文本选中（表单等）
+ */
+.allow-select {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
+/**
+ * 弹性换行容器
+ */
+.flex-wrap-container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem 1rem !important;
+  align-items: center !important;
+}
+
+/**
+ * 响应式图片
+ */
+.responsive-image {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}

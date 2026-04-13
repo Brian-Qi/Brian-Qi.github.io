@@ -126,7 +126,9 @@ export default {
     }
 
     const checkAdminPassword = async () => {
-      const ADMIN_PASSWORD = '852573131Mm@'
+      // 从环境变量读取管理员密码，开发环境提供默认值
+      const ADMIN_PASSWORD = process.env.VUE_APP_ADMIN_PASSWORD || 'dev_password_only'
+      
       if (adminPassword.value === ADMIN_PASSWORD) {
         isAdmin.value = true
         showAdminPasswordDialog.value = false
@@ -147,7 +149,7 @@ export default {
         messages.value = data || []
       } catch (error) {
         console.error('加载留言失败:', error)
-        alert('加载留言失败：' + error.message)
+        messages.value = []
       }
     }
 
@@ -167,7 +169,7 @@ export default {
         signature.value = ''
         showSignature.value = false
       } catch (error) {
-        alert('留言失败：' + error.message)
+        alert('留言失败：Supabase 未配置')
       } finally {
         loading.value = false
       }

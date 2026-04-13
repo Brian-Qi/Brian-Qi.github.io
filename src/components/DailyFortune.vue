@@ -12,6 +12,8 @@
         <div class="fortune-text">{{ fortuneText }}</div>
         <div class="fortune-date">{{ currentDate }}</div>
         <div class="fortune-tip">✨ 运势每日更新，明天再来看看 ✨</div>
+        
+
       </div>
       
       <div class="button-group">
@@ -27,6 +29,8 @@
 <script>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { getItem, setItem, hasItem, STORAGE_KEYS } from '../utils/storage'
+import { simpleHash } from '../utils/helpers'
 
 export default {
   name: 'DailyFortune',
@@ -49,65 +53,117 @@ export default {
     
     // 检测是否集齐所有运势
     const checkAllFortunes = () => {
-      const allFortunes = ['大吉', '吉', '小吉', '平', '小凶', '凶', '大凶']
-      const collected = localStorage.getItem('collected_fortunes')
-      const collectedList = collected ? JSON.parse(collected) : []
+      const collectedList = getItem(STORAGE_KEYS.FORTUNE.COLLECTED, [])
       
       const currentFortune = fortuneLevel.value
       if (!collectedList.includes(currentFortune)) {
         collectedList.push(currentFortune)
-        localStorage.setItem('collected_fortunes', JSON.stringify(collectedList))
+        setItem(STORAGE_KEYS.FORTUNE.COLLECTED, collectedList)
       }
       
-      if (collectedList.length === 7 && !localStorage.getItem('achieve_fate_blessed')) {
-        localStorage.setItem('achieve_fate_blessed', 'true')
+      if (collectedList.length === 7 && !hasItem(STORAGE_KEYS.ACHIEVEMENTS.FATE_BLESSED)) {
+        setItem(STORAGE_KEYS.ACHIEVEMENTS.FATE_BLESSED, true)
         setTimeout(() => {
           router.push('/who_i_am/fortune/achieve_fate_blessed')
         }, 800)
       }
     }
     
-    const getDailyFortune = () => {
+
+    
+    // 获取用户唯一标识（简化快速版）
+    const getUserIdentifier = async () => {
+      // 快速生成用户标识，避免网络请求卡顿
+      const identifiers = []
+      
+      // 1. 浏览器指纹（快速获取，无网络请求）
+      try {
+        const fingerprint = [
+          navigator.userAgent.substring(0, 30), // 只取前30字符
+          screen.width + 'x' + screen.height,
+          Intl.DateTimeFormat().resolvedOptions().timeZone
+        ].join('|')
+        identifiers.push(`fp:${fingerprint}`)
+      } catch (e) {
+        console.log('生成指纹失败:', e)
+      }
+      
+      // 2. 本地存储ID（快速生成）
+      let storageId = getItem(STORAGE_KEYS.USER.IDENTIFIER)
+      if (!storageId) {
+        storageId = 'uid-' + Date.now().toString(36) + Math.random().toString(36).substring(2, 6)
+        setItem(STORAGE_KEYS.USER.IDENTIFIER, storageId)
+      }
+      identifiers.push(`storage:${storageId}`)
+      
+      // 3. 当前时间戳（毫秒级，确保每次不同）
+      const timestamp = Date.now()
+      identifiers.push(`ts:${timestamp}`)
+      
+      // 生成最终的ID
+      return identifiers.join('#')
+    }
+    
+    // 生成基于IP和日期的运势
+    const generateFortuneFromIPAndDate = async () => {
       const today = new Date()
-      const dateStr = today.toLocaleDateString()
-      currentDate.value = dateStr
+      const dateStr = today.toISOString().slice(0, 10) // YYYY-MM-DD格式
+      currentDate.value = today.toLocaleDateString()
       
-      // 获取或生成用户的唯一种子
-      let userSeed = localStorage.getItem('user_fortune_seed')
-      if (!userSeed) {
-        userSeed = Math.floor(Math.random() * 1000000)
-        localStorage.setItem('user_fortune_seed', userSeed)
-      }
-      
-      // 用日期 + 用户种子 计算运势索引
-      const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000)
-      const hash = (dayOfYear * userSeed) % fortunes.length
-      const index = Math.abs(hash) % fortunes.length
-      
-      const fortune = fortunes[index]
-      fortuneText.value = fortune.text
-      fortuneLevel.value = fortune.level
-      fortuneColor.value = fortune.color
-      
-      // 检查成就解锁
-      if (fortune.level === "大吉") {
-        if (!localStorage.getItem('achieve_05')) {
-          localStorage.setItem('achieve_05', 'true')
-          setTimeout(() => {
-            router.push('/who_i_am/fortune/achieve_lucky_strike')
-          }, 800)
+      try {
+        // 1. 获取用户唯一标识（异步但很快）
+        const userIdentifier = await getUserIdentifier()
+        
+        // 2. 组合种子：用户标识 + 日期
+        const seedString = `${userIdentifier}-${dateStr}`
+        
+        // 3. 生成哈希值
+        const hashValue = simpleHash(seedString)
+        
+        // 4. 映射到7种卦象
+        const index = hashValue % fortunes.length
+        
+        const fortune = fortunes[index]
+        fortuneText.value = fortune.text
+        fortuneLevel.value = fortune.level
+        fortuneColor.value = fortune.color
+        
+        // 检查成就解锁
+        if (fortune.level === "大吉") {
+          if (!hasItem(STORAGE_KEYS.ACHIEVEMENTS.LUCKY_STRIKE)) {
+            setItem(STORAGE_KEYS.ACHIEVEMENTS.LUCKY_STRIKE, true)
+            setTimeout(() => {
+              router.push('/who_i_am/fortune/achieve_lucky_strike')
+            }, 800)
+          }
+        } else if (fortune.level === "大凶") {
+          if (!hasItem(STORAGE_KEYS.ACHIEVEMENTS.TURN_TIDE)) {
+            setItem(STORAGE_KEYS.ACHIEVEMENTS.TURN_TIDE, true)
+            setTimeout(() => {
+              router.push('/who_i_am/fortune/achieve_turn_the_tide')
+            }, 800)
+          }
         }
-      } else if (fortune.level === "大凶") {
-        if (!localStorage.getItem('achieve_06')) {
-          localStorage.setItem('achieve_06', 'true')
-          setTimeout(() => {
-            router.push('/who_i_am/fortune/achieve_turn_the_tide')
-          }, 800)
-        }
+        
+        // 检测集齐所有运势
+        checkAllFortunes()
+        
+      } catch (error) {
+        console.error('生成运势失败，使用备用方案:', error)
+        // 备用方案：使用日期哈希
+        const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000)
+        const index = dayOfYear % fortunes.length
+        const fortune = fortunes[index]
+        fortuneText.value = fortune.text
+        fortuneLevel.value = fortune.level
+        fortuneColor.value = fortune.color
       }
-      
-      // 检测集齐所有运势
-      checkAllFortunes()
+    }
+    
+
+    
+    const getDailyFortune = () => {
+      generateFortuneFromIPAndDate()
     }
     
     onMounted(() => {
@@ -218,6 +274,9 @@ export default {
 .button-icon {
   font-size: 1.2rem;
 }
+
+
+
 @media (max-width: 600px) {
   .fortune-header h1 { font-size: 1.5rem; }
   .header-icon { font-size: 1.5rem; }
