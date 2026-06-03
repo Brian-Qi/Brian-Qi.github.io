@@ -13,7 +13,9 @@ export const STORAGE_KEYS = {
     TRUE_BRO: 'achieve_04',
     LUCKY_STRIKE: 'achieve_05',
     TURN_TIDE: 'achieve_06',
-    FATE_BLESSED: 'achieve_fate_blessed'
+    FATE_BLESSED: 'achieve_fate_blessed',
+    MUSIC_LOVER: 'achieve_music_lover',
+    THEME_FLIPPER: 'achieve_theme_flipper'
   },
   
   // 游戏相关
@@ -58,7 +60,6 @@ export function getItem(key, defaultValue = null) {
     const value = localStorage.getItem(key)
     return value !== null ? JSON.parse(value) : defaultValue
   } catch (error) {
-    console.error(`读取 localStorage 失败 (${key}):`, error)
     return defaultValue
   }
 }
@@ -72,7 +73,7 @@ export function setItem(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value))
   } catch (error) {
-    console.error(`写入 localStorage 失败 (${key}):`, error)
+    // 写入失败，静默处理
   }
 }
 
@@ -84,7 +85,7 @@ export function removeItem(key) {
   try {
     localStorage.removeItem(key)
   } catch (error) {
-    console.error(`移除 localStorage 失败 (${key}):`, error)
+    // 移除失败，静默处理
   }
 }
 
@@ -110,7 +111,6 @@ export function clearAppData() {
       }
     })
   })
-  console.log('应用数据已清除')
 }
 
 /**
@@ -121,7 +121,6 @@ export function checkAndUpgradeDataVersion() {
   const storedVersion = getItem(STORAGE_KEYS.VERSION.DATA_VERSION, '0.0.0')
   
   if (storedVersion !== CURRENT_DATA_VERSION) {
-    console.log(`数据版本升级: ${storedVersion} -> ${CURRENT_DATA_VERSION}`)
     
     // 这里可以添加版本升级逻辑
     // 例如：v1.0.0 -> v1.1.0 的数据迁移
@@ -149,13 +148,11 @@ export function getAllAchievementStatus() {
  */
 export function unlockAchievement(achievementKey) {
   if (!Object.values(STORAGE_KEYS.ACHIEVEMENTS).includes(achievementKey)) {
-    console.error(`无效的成就键名: ${achievementKey}`)
     return false
   }
   
   if (!hasItem(achievementKey)) {
     setItem(achievementKey, true)
-    console.log(`成就解锁: ${achievementKey}`)
     return true
   }
   return false
@@ -168,7 +165,6 @@ export function resetAllAchievements() {
   Object.values(STORAGE_KEYS.ACHIEVEMENTS).forEach(key => {
     removeItem(key)
   })
-  console.log('所有成就已重置')
 }
 
 // ========== 初始化 ==========

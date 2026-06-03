@@ -253,6 +253,16 @@ export default {
         shaking: false,
         redFlash: false,
         cardClass: 'curious-card'
+      },
+      {
+        id: 'achieve_theme_flipper', name: '光影穿梭', code: 'Achievement_08',
+        desc: '反复切换深浅主题20次', icon: '🌓', color: '#f5a623',
+        hiddenDesc: '▓▓▓▓ ▓▓▓▓ ▓▓▓▓ 20 ▓▓',
+        unlocked: false,
+        shaking: false,
+        redFlash: false,
+        cardClass: 'theme-flipper-card',
+        route: '/who_i_am/achievement_theme_flipper'
       }
     ])
 
@@ -265,6 +275,15 @@ export default {
         icon: '✨', 
         color: '#ffd700',
         cardClass: 'fate-blessed-card'
+      },
+      { 
+        id: 'achieve_music_lover', 
+        name: '回到起点', 
+        code: 'HIDDEN_02', 
+        desc: '从首页返回起点 — Da Capo', 
+        icon: '🔁', 
+        color: '#C084FC',
+        cardClass: 'music-lover-card'
       }
     ])
 
@@ -385,6 +404,9 @@ export default {
         localStorage.removeItem('curious_clicks')
         localStorage.removeItem('curious_last_clicked')
         
+        // 清除主题切换计数
+        localStorage.removeItem('theme_flips_count')
+        
         updateNormalUnlocked()
         
         hiddenAchievements.value = [...hiddenAchievements.value]
@@ -457,7 +479,7 @@ export default {
 .stats-achievement-card:not(.unlocked) .achievement-code,
 .stats-achievement-card:not(.unlocked) .achievement-desc {
   animation: glitch 0.3s infinite;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   filter: blur(0.5px);
   opacity: 0.7;
 }
@@ -544,6 +566,16 @@ export default {
 }
 .stats-achievement-card.unlocked.curious-card:hover {
   box-shadow: 0 0 15px rgba(155, 89, 182, 0.6);
+  transform: translateY(-2px);
+}
+
+/* 成就08：光影穿梭 - 暖橙金边框 */
+.stats-achievement-card.unlocked.theme-flipper-card {
+  border: 2px solid #f5a623;
+  box-shadow: 0 0 8px rgba(245, 166, 35, 0.4);
+}
+.stats-achievement-card.unlocked.theme-flipper-card:hover {
+  box-shadow: 0 0 15px rgba(245, 166, 35, 0.6);
   transform: translateY(-2px);
 }
 
@@ -650,18 +682,96 @@ export default {
   animation-duration: 1.5s;
 }
 
+/* 隐藏成就：回到起点 - 优雅流光边框 */
+.stats-achievement-card.unlocked.music-lover-card {
+  position: relative;
+  background: rgba(25, 30, 35, 0.85);
+  border: 2px solid transparent;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 0 25px rgba(192, 132, 252, 0.3);
+  animation: elegantGlowMusic 4s linear infinite;
+}
+
+@keyframes elegantGlowMusic {
+  0%, 100% {
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.3),
+      0 0 25px rgba(192, 132, 252, 0.3),
+      0 0 35px rgba(77, 201, 246, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.3),
+      0 0 25px rgba(77, 201, 246, 0.3),
+      0 0 35px rgba(192, 132, 252, 0.1);
+  }
+}
+
+.stats-achievement-card.unlocked.music-lover-card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 27px;
+  background: linear-gradient(
+    45deg, 
+    #FFFFFF, #4DC9F6, #C084FC, #4DC9F6, #FFFFFF
+  );
+  background-size: 300% 300%;
+  z-index: -1;
+  animation: borderFlow 3s ease infinite;
+  opacity: 0.7;
+}
+
+.stats-achievement-card.unlocked.music-lover-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(25, 30, 35, 0.85);
+  border-radius: 24px;
+  z-index: -1;
+}
+
+.stats-achievement-card.unlocked.music-lover-card .card-info h3,
+.stats-achievement-card.unlocked.music-lover-card .achievement-code,
+.stats-achievement-card.unlocked.music-lover-card .achievement-desc {
+  color: #C084FC !important;
+  text-shadow: 0 0 5px rgba(192, 132, 252, 0.3);
+}
+
+.stats-achievement-card.unlocked.music-lover-card:hover {
+  animation-duration: 2s;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.4),
+    0 0 35px rgba(192, 132, 252, 0.5),
+    0 0 45px rgba(77, 201, 246, 0.2);
+}
+
+.stats-achievement-card.unlocked.music-lover-card:hover::before {
+  opacity: 1;
+  animation-duration: 1.5s;
+}
+
 .achievements-stats {
   min-height: 100vh;
-  background: linear-gradient(145deg, #0a0c0f 0%, #1a1f2a 100%);
+  background: linear-gradient(145deg, var(--app-bg) 0%, var(--app-page-gradient-start) 100%);
   padding: 2rem;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: #e1e7ef;
+  color: var(--app-text);
   position: relative;
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  transition: background var(--app-transition), color var(--app-transition);
 }
 
 /* 漂浮粒子容器 */
@@ -735,8 +845,8 @@ export default {
 }
 
 .stat-card {
-  background: rgba(20, 25, 35, 0.8);
-  border: 1px solid #31465c;
+  background: var(--app-container-bg);
+  border: 1px solid var(--app-divider);
   border-radius: 20px;
   padding: 1rem 2rem;
   text-align: center;
@@ -745,7 +855,7 @@ export default {
 .stat-label {
   display: block;
   font-size: 0.9rem;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   margin-bottom: 0.5rem;
 }
 
@@ -805,9 +915,9 @@ export default {
 }
 
 .stats-achievement-card {
-  background: rgba(18, 22, 28, 0.75);
+  background: var(--app-container-bg);
   backdrop-filter: blur(12px);
-  border: 2px solid #31465c;
+  border: 2px solid var(--app-divider);
   border-radius: 24px;
   padding: 1.5rem;
   display: flex;
@@ -819,7 +929,7 @@ export default {
 /* 已解锁的成就卡片更明亮 */
 .stats-achievement-card.unlocked {
   opacity: 1;
-  background: rgba(25, 30, 35, 0.85);
+  background: var(--app-container-bg);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -836,19 +946,19 @@ export default {
 .card-info h3 {
   font-size: 1.5rem;
   margin-bottom: 0.3rem;
-  color: #e1e7ef;
+  color: var(--app-text);
 }
 
 .achievement-code {
   font-size: 0.8rem;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   font-family: monospace;
   margin-bottom: 0.5rem;
 }
 
 .achievement-desc {
   font-size: 0.9rem;
-  color: #b7cced;
+  color: var(--app-fun-text);
   margin-bottom: 1rem;
 }
 
@@ -861,7 +971,7 @@ export default {
 }
 
 .locked-badge {
-  color: #8f9eff;
+  color: var(--app-accent-text);
   font-weight: bold;
   display: inline-block;
   padding: 0.3rem 1rem;
@@ -886,14 +996,14 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #1f2a36;
-  color: #42b983;
-  border: 1px solid #31465c;
+  background: var(--app-btn-secondary-bg);
+  color: var(--app-accent-green-text);
+  border: 1px solid var(--app-divider);
   transition: all 0.3s ease;
 }
 
 .return-button:hover {
-  background: #2a3848;
+  background: var(--app-btn-secondary-hover);
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(66, 185, 131, 0.3);
 }
@@ -1198,7 +1308,7 @@ export default {
 
 .detail-congrats {
   font-size: 1.2rem;
-  color: #b7cced;
+  color: var(--app-fun-text);
   margin-bottom: 0.5rem;
 }
 
@@ -1211,7 +1321,7 @@ export default {
 }
 
 .detail-desc.locked {
-  color: #8f9eff;
+  color: var(--app-accent-text);
   text-shadow: none;
   font-size: 1rem;
   font-weight: normal;
@@ -1243,7 +1353,7 @@ export default {
 }
 
 .detail-status-badge.locked {
-  color: #8f9eff;
+  color: var(--app-accent-text);
   background: rgba(143, 158, 255, 0.15);
   border: 1px solid rgba(143, 158, 255, 0.3);
 }
@@ -1315,6 +1425,11 @@ export default {
   --ach-color: #9b59b6;
 }
 
+.detail-card.theme-flipper-card {
+  border-color: #f5a623;
+  --ach-color: #f5a623;
+}
+
 .detail-card.fate-blessed-card {
   border: 2px solid transparent;
   background: rgba(25, 30, 35, 0.85);
@@ -1355,6 +1470,48 @@ export default {
 .detail-card.fate-blessed-card .detail-code-badge {
   color: #ffd700 !important;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.detail-card.music-lover-card {
+  border: 2px solid transparent;
+  background: rgba(25, 30, 35, 0.85);
+  --ach-color: #C084FC;
+}
+
+.detail-card.music-lover-card::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50px;
+  background: linear-gradient(
+    45deg,
+    #FFFFFF, #4DC9F6, #C084FC, #4DC9F6, #FFFFFF
+  );
+  background-size: 300% 300%;
+  z-index: -1;
+  animation: borderFlow 3s ease infinite;
+  opacity: 0.8;
+}
+
+.detail-card.music-lover-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(25, 30, 35, 0.9);
+  border-radius: 48px;
+  z-index: -1;
+}
+
+.detail-card.music-lover-card .detail-name,
+.detail-card.music-lover-card .detail-code-badge {
+  color: #C084FC !important;
+  text-shadow: 0 0 10px rgba(192, 132, 252, 0.5);
 }
 
 /* 成就卡片可点击样式 */
@@ -1401,7 +1558,7 @@ export default {
 @keyframes redPulse {
   0%, 100% { 
     box-shadow: none;
-    border: 2px solid #31465c;
+    border: 2px solid var(--app-divider);
   }
   15%, 45%, 75% { 
     box-shadow: 0 0 15px 3px rgba(255, 50, 50, 0.6);
@@ -1409,7 +1566,7 @@ export default {
   }
   30%, 60% { 
     box-shadow: none;
-    border: 2px solid #31465c;
+    border: 2px solid var(--app-divider);
   }
 }
 

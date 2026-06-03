@@ -1,23 +1,346 @@
 <template>
-  <div id="app">
-    <router-view v-slot="{ Component }">
-      <transition name="achievement" mode="out-in">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+  <div id="app" :data-theme="effectiveTheme" :class="{ 'wallpaper-active': effectiveBgMode === 'image', 'intro-mode': !isIntroDone && (isHomeRoute || introOverlayVisible) }">
+    <!-- 壁纸模式 - 全局背景层 -->
+    <div ref="wallpaperRef" class="app-wallpaper" :style="{ opacity: effectiveBgMode === 'image' ? 1 : 0 }"></div>
+
+    <!-- Toast 全局提示 -->
+    <div class="app-toast" :class="{ show: toastVisible }">{{ toastMessage }}</div>
+
+    <!-- 全局导航栏 -->
+    <nav class="app-navbar">
+      <div class="app-navbar-inner">
+        <span class="app-nav-logo">Briandolph Qi</span>
+        <div class="app-nav-actions" v-if="!isHomeRoute">
+          <button class="app-theme-toggle" @click="toggleTheme"
+            :title="themeIcon === '🌙' ? '切换浅色模式' : '切换深色模式'"
+            :aria-label="themeIcon === '🌙' ? '切换浅色模式' : '切换深色模式'">
+            {{ themeIcon }}
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <div class="app-content">
+      <router-view v-slot="{ Component }">
+        <transition name="achievement" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </div>
+
+    <!-- 桌面歌词 — 放在过渡动画外，避免 position:fixed 受 transform 影响 -->
+    <LyricBar v-if="isHomeRoute" />
+
+    <!-- 入场动画遮罩 — 独立于路由，ComingSoon 点击后即覆盖，再切路由 -->
+    <Transition name="intro-out" @after-leave="isIntroDone = true">
+      <div v-if="introOverlayVisible" class="intro-overlay" @click="closeIntroOverlay">
+        <div class="intro-avatar-wrapper">
+          <div class="intro-avatar-box">
+            <div class="intro-avatar-ring"></div>
+            <div class="intro-avatar-inner">BQ</div>
+          </div>
+          <p class="intro-hint">点击进入</p>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <script>
+import { ref, computed, watch, onMounted, onUnmounted, provide } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { getItem, setItem, hasItem } from './utils/storage'
+import LyricBar from './components/LyricBar.vue'
+
+// 模块级标记 — 不依赖 Vue 响应式，一次会话只触发一次遮罩
+let _introDismissed = false
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: { LyricBar },
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
+
+    // ===== 首页固定壁纸，其他页面纯色背景 =====
+    const isHomeRoute = computed(() => route.path === '/index')
+    const effectiveBgMode = computed(() => isHomeRoute.value ? 'image' : 'solid')
+
+    // ===== 深浅主题（非首页切换、首页固定深色） =====
+    const theme = ref(getItem('app_theme', 'dark'))
+    const effectiveTheme = computed(() => isHomeRoute.value ? 'dark' : theme.value)
+    const themeIcon = computed(() => theme.value === 'light' ? '☀️' : '🌙')
+
+    function toggleTheme() {
+      if (isHomeRoute.value) return
+      theme.value = theme.value === 'dark' ? 'light' : 'dark'
+      setItem('app_theme', theme.value)
+
+      // 主题切换计数 & 成就检测
+      const KEY = 'theme_flips_count'
+      const count = (parseInt(localStorage.getItem(KEY) || '0')) + 1
+      localStorage.setItem(KEY, count.toString())
+      if (count >= 20 && !hasItem('achieve_theme_flipper')) {
+        setItem('achieve_theme_flipper', true)
+        showToast('🏆 成就解锁：光影穿梭！')
+        setTimeout(() => {
+          router.push('/who_i_am/achievement_theme_flipper')
+        }, 1800)
+      }
+    }
+
+    // ===== Toast =====
+    const toastVisible = ref(false)
+    const toastMessage = ref('')
+    let toastTimer = null
+
+    function showToast(message) {
+      clearTimeout(toastTimer)
+      toastMessage.value = message
+      toastVisible.value = true
+      toastTimer = setTimeout(() => {
+        toastVisible.value = false
+      }, 2200)
+    }
+
+    // 入场动画状态（跨组件共享，控制导航栏 + 内容区显隐）
+    const isIntroDone = ref(false)
+    provide('isIntroDone', isIntroDone)
+
+    // 遮罩控制
+    const introOverlayVisible = ref(route.path === '/index' && !_introDismissed)
+    function triggerIntroOverlay() {
+      if (!_introDismissed) {
+        introOverlayVisible.value = true
+      }
+    }
+    function closeIntroOverlay() {
+      _introDismissed = true
+      introOverlayVisible.value = false
+    }
+    provide('triggerIntroOverlay', triggerIntroOverlay)
+
+    // 路由守卫：会话内只弹一次
+    const removeGuard = router.beforeEach((to) => {
+      if (to.path === '/index' && !_introDismissed) {
+        introOverlayVisible.value = true
+      }
+    })
+
+    // 提供给子组件使用
+    provide('showToast', showToast)
+    provide('bgMode', effectiveBgMode)
+
+    // ===== 音乐播放器（共享给 LyricBar） =====
+    const musicAudioRef = ref(null)
+    provide('musicAudio', musicAudioRef)
+
+    // ===== 主题同步到 body =====
+    function applyThemeToBody(t) {
+      const isLight = t === 'light'
+      document.body.style.backgroundColor = isLight ? '#f5f7fa' : '#0a0c0f'
+      document.body.style.color = isLight ? '#2c3e50' : '#e2e8f0'
+      document.body.style.transition = 'background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+    }
+
+    watch(effectiveTheme, (newTheme) => {
+      applyThemeToBody(newTheme)
+    }, { immediate: true })
+
+    // ===== 键盘快捷键 =====
+    function handleKeydown(e) {
+      if (e.key === 't' && e.ctrlKey && !e.metaKey) {
+        e.preventDefault()
+        toggleTheme()
+      }
+    }
+
+    // ===== 除成就界面外全局禁用滚动 =====
+    watch(() => route.path, (path) => {
+      if (path.includes('achieve')) {
+        document.documentElement.style.overflow = ''
+        document.body.style.overflow = ''
+      } else {
+        document.documentElement.style.overflow = 'hidden'
+        document.body.style.overflow = 'hidden'
+      }
+    }, { immediate: true })
+
+    const wallpaperRef = ref(null)
+
+    onMounted(() => {
+      window.addEventListener('keydown', handleKeydown)
+      // 延迟加载壁纸：等首屏内容渲染完毕后再下载 83KB 的壁纸图片
+      if (wallpaperRef.value) {
+        const loadWallpaper = () => {
+          const img = new Image()
+          img.onload = () => {
+            wallpaperRef.value.style.background = 'url(\'/壁纸.webp\') center / cover no-repeat fixed'
+          }
+          img.src = '/壁纸.webp'
+        }
+        if (window.requestIdleCallback) {
+          requestIdleCallback(loadWallpaper, { timeout: 2000 })
+        } else {
+          setTimeout(loadWallpaper, 100)
+        }
+      }
+    })
+
+    onUnmounted(() => {
+      removeGuard()
+      window.removeEventListener('keydown', handleKeydown)
+      clearTimeout(toastTimer)
+      document.documentElement.style.overflow = ''
+      document.body.style.overflow = ''
+    })
+
+    return {
+      wallpaperRef,
+      effectiveTheme,
+      effectiveBgMode,
+      isHomeRoute,
+      isIntroDone,
+      introOverlayVisible,
+      closeIntroOverlay,
+      themeIcon,
+      toggleTheme,
+      toastVisible,
+      toastMessage
+    }
+  }
 }
 </script>
 
 <style>
+/* ===== 本地字体 ===== */
+/* LXGW WenKai 霞鹜文楷 — 从 npm 包加载 */
+@import '~lxgw-wenkai-webfont/lxgwwenkai-regular.css';
+
+/* Great Vibes — 本地 ttf */
+@font-face {
+  font-family: 'Great Vibes';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~@/assets/fonts/GreatVibes-Regular.ttf') format('truetype');
+}
+
 /* 导入移动端优化样式 */
 @import './styles/mobile-optimization.css';
 @import './styles/mobile-utils.css';
+
+/* ========== 全局主题变量 ========== */
+#app[data-theme="light"] {
+  --app-bg: #f5f7fa;
+  --app-bg-card: #ffffff;
+  --app-bg-card-hover: #f8f9fc;
+  --app-bg-card-translucent: rgba(255, 255, 255, 0.85);
+  --app-bg-dark-card: #ffffff;
+  --app-bg-dark-section: rgba(245, 248, 252, 0.8);
+  --app-text: #2c3e50;
+  --app-text-secondary: #6b7d95;
+  --app-text-muted: #94a3b8;
+  --app-text-light: #5a6d85;
+  --app-text-muted-dark: #7b8da5;
+  --app-border: #c8d2e0;
+  --app-border-dark: #b0bcc8;
+  --app-accent: #7c5cfc;
+  --app-accent-light: #a78bfa;
+  --app-accent-glow: rgba(124, 92, 252, 0.15);
+  --app-tag-bg: #f0edff;
+  --app-tag-text: #7c5cfc;
+  --app-skill-bg: #eef2ff;
+  --app-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --app-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --app-shadow-card: 0 30px 50px -20px rgba(0, 0, 0, 0.1);
+  --app-radius: 16px;
+  --app-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --app-footer-border: #c8d2e0;
+  --app-status-tag-bg: #f0f4ff;
+  --app-status-tag-text: #6b8ab5;
+  --app-status-tag-border: #b4c2d6;
+  --app-fun-section-bg: rgba(240, 244, 250, 0.8);
+  --app-fun-section-border: #bfcada;
+  --app-fun-text: #5a6d85;
+  --app-progress-bg: #e8ecf2;
+  --app-progress-border: #bcc8d6;
+  --app-construction-bg: #f0f4fa;
+  --app-construction-border: #bfcada;
+  --app-dialog-bg: linear-gradient(145deg, #ffffff, #f0f4fa);
+  --app-dialog-border: #7c5cfc;
+  --app-dialog-text: #2c3e50;
+  --app-dialog-shadow: 0 0 60px rgba(124, 92, 252, 0.3);
+  --app-face-color: #7c5cfc;
+  --app-gradient-text: linear-gradient(135deg, #2c3e50, #7c5cfc);
+  /* 泛用变量 - 覆盖所有子页面 */
+  --app-page-gradient-start: #e8ecf2;
+  --app-page-gradient-end: #f0eef4;
+  --app-container-bg: rgba(255, 255, 255, 0.9);
+  --app-input-bg: #eef2f7;
+  --app-input-border: #c0c8d4;
+  --app-btn-secondary-bg: #eef2f7;
+  --app-btn-secondary-hover: #e0e6ef;
+  --app-btn-secondary-border: #c0c8d4;
+  --app-divider: #d0d7e2;
+  --app-accent-text: #5a6dff;
+  --app-accent-green-text: #2d9d6f;
+}
+
+#app[data-theme="dark"] {
+  --app-bg: #0f1117;
+  --app-bg-card: #1a1d28;
+  --app-bg-card-hover: #202436;
+  --app-bg-card-translucent: rgba(18, 22, 28, 0.75);
+  --app-bg-dark-card: #1f2a36;
+  --app-bg-dark-section: rgba(8, 12, 17, 0.6);
+  --app-text: #e2e8f0;
+  --app-text-secondary: #94a3b8;
+  --app-text-muted: #64748b;
+  --app-text-light: #ccdeff;
+  --app-text-muted-dark: #7f95b5;
+  --app-border: #2d3344;
+  --app-border-dark: #31465c;
+  --app-accent: #a78bfa;
+  --app-accent-light: #c4b5fd;
+  --app-accent-glow: rgba(167, 139, 250, 0.2);
+  --app-tag-bg: #1e1b4b;
+  --app-tag-text: #c4b5fd;
+  --app-skill-bg: #1e2332;
+  --app-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --app-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --app-shadow-card: 0 30px 50px -20px rgba(0, 0, 0, 0.8);
+  --app-footer-border: #2d3344;
+  --app-status-tag-bg: #1f2a36;
+  --app-status-tag-text: #bdd3f0;
+  --app-status-tag-border: #31465c;
+  --app-fun-section-bg: rgba(8, 12, 17, 0.6);
+  --app-fun-section-border: #26323f;
+  --app-fun-text: #b7cced;
+  --app-progress-bg: #1b232e;
+  --app-progress-border: #2c3a48;
+  --app-construction-bg: #131e28;
+  --app-construction-border: #334252;
+  --app-dialog-bg: linear-gradient(145deg, #1f2a36, #0f1a22);
+  --app-dialog-border: #ffd700;
+  --app-dialog-text: #ffd700;
+  --app-dialog-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
+  --app-face-color: #18dddd;
+  --app-gradient-text: linear-gradient(135deg, #ffffff, #c0ccd9);
+  /* 泛用变量 - 覆盖所有子页面 */
+  --app-page-gradient-start: #1a1f2a;
+  --app-page-gradient-end: #2a1f2a;
+  --app-container-bg: rgba(20, 25, 35, 0.9);
+  --app-input-bg: #1b232e;
+  --app-input-border: #31465c;
+  --app-btn-secondary-bg: #1f2a36;
+  --app-btn-secondary-hover: #2a3848;
+  --app-btn-secondary-border: #31465c;
+  --app-divider: #31465c;
+  --app-accent-text: #8f9eff;
+  --app-accent-green-text: #42b983;
+}
 
 * {
   margin: 0;
@@ -30,7 +353,6 @@ export default {
 }
 
 body {
-  background-color: #0a0c0f;
   min-height: 100vh;
   font-size: 16px;
 }
@@ -39,42 +361,257 @@ body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #e1e7ef;
-  background-color: #0a0c0f;
+  color: var(--app-text, #e1e7ef);
+  background-color: var(--app-bg, #0a0c0f);
   min-height: 100vh;
+  transition: background var(--app-transition), color var(--app-transition);
 }
 
+/* 页面内容区 - 为固定导航栏留出空间 */
+.app-content {
+  padding-top: 60px;
+  transition: opacity 0.6s ease;
+}
+
+/* ========== 全局导航栏 ========== */
+.app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--app-bg-card);
+  border-bottom: 1px solid var(--app-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 0 1.5rem;
+  transition: background var(--app-transition), border var(--app-transition), opacity 0.6s ease;
+}
+
+/* 入场动画期间完全隐藏导航栏 */
+#app.intro-mode .app-navbar {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 入场动画期间完全隐藏页面内容区（杜绝闪现） */
+#app.intro-mode .app-content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ========== 入场遮罩 ========== */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0f1117;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.intro-avatar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  opacity: 0;
+  animation: intro-content-in 0.55s ease 0.08s forwards;
+}
+
+@keyframes intro-content-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.intro-avatar-box {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.intro-avatar-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: conic-gradient(#a78bfa, #6366f1, #ec4899, #a78bfa);
+  animation: spin 6s linear infinite;
+  opacity: 0.4;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.intro-avatar-inner {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a78bfa, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  animation: intro-pulse 2s ease-in-out infinite;
+  user-select: none;
+}
+
+@keyframes intro-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+.intro-hint {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.42);
+  letter-spacing: 0.15em;
+}
+
+/* 入场遮罩退出 — 点击后淡出放大 */
+.intro-out-leave-active {
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.intro-out-leave-to {
+  opacity: 0;
+  transform: scale(1.08);
+}
+
+/* 壁纸模式 - 导航栏毛玻璃 */
+.app-wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+#app.wallpaper-active .app-navbar {
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+#app.wallpaper-active .app-theme-toggle {
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+#app.wallpaper-active .app-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.app-navbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.app-nav-logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--app-accent), #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.app-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.app-theme-toggle {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--app-border);
+  border-radius: 50%;
+  background: var(--app-bg-card);
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--app-text);
+}
+
+.app-theme-toggle:hover {
+  border-color: var(--app-accent);
+  box-shadow: 0 0 16px var(--app-accent-glow);
+  transform: rotate(15deg);
+}
+
+/* ========== 全局 Toast ========== */
+.app-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: linear-gradient(135deg, var(--app-accent), #6366f1);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 30px var(--app-accent-glow);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.app-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ========== 路由过渡动画 ========== */
 .achievement-enter-active {
-  animation: shineIn 0.5s ease;
+  animation: shineIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .achievement-leave-active {
-  animation: shineOut 0.3s ease;
+  animation: shineOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 @keyframes shineIn {
   0% {
-    transform: scale(0.9);
     opacity: 0;
-    filter: brightness(2) blur(5px);
+    transform: translateY(16px) scale(0.96);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
   100% {
-    transform: scale(1);
     opacity: 1;
-    filter: brightness(1) blur(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 @keyframes shineOut {
   0% {
-    transform: scale(1);
     opacity: 1;
-    filter: brightness(1);
+    transform: translateY(0) scale(1);
   }
   100% {
-    transform: scale(0.9);
     opacity: 0;
-    filter: brightness(2) blur(5px);
+    transform: translateY(-10px) scale(0.98);
   }
 }
 
@@ -97,7 +634,7 @@ h2 {
 
 /* 通用容器响应式内边距 */
 .container, .quiz-container, .achievement-card, .fortune-card,
-.bio-card, .project-card, .skills-card, .easter-eggs {
+.project-card, .skills-card, .easter-eggs {
   padding-left: clamp(0.5rem, 3vw, 2rem) !important;
   padding-right: clamp(0.5rem, 3vw, 2rem) !important;
   padding-top: clamp(1rem, 4vw, 2rem) !important;
@@ -106,8 +643,22 @@ h2 {
 
 /* 卡片响应式圆角 */
 .achievement-card, .fortune-card, .quiz-container,
-.bio-card, .project-card, .skills-card, .easter-eggs {
+.project-card, .skills-card, .easter-eggs {
   border-radius: clamp(8px, 2vw, 16px) !important;
+}
+
+@media (max-width: 768px) {
+  .app-theme-toggle {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .intro-avatar-inner {
+    width: 100px;
+    height: 100px;
+    font-size: 2.2rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -176,6 +727,18 @@ h2 {
   h2 {
     font-size: 1.1rem !important;
     line-height: 1.3 !important;
+  }
+
+  .app-navbar-inner {
+    height: 52px;
+  }
+
+  .app-content {
+    padding-top: 52px;
+  }
+
+  .app-nav-logo {
+    font-size: 1.05rem;
   }
   
   /* 按钮全宽 */

@@ -85,7 +85,7 @@ export default {
         ].join('|')
         identifiers.push(`fp:${fingerprint}`)
       } catch (e) {
-        console.log('生成指纹失败:', e)
+        // 指纹生成失败，静默处理
       }
       
       // 2. 本地存储ID（快速生成）
@@ -96,11 +96,7 @@ export default {
       }
       identifiers.push(`storage:${storageId}`)
       
-      // 3. 当前时间戳（毫秒级，确保每次不同）
-      const timestamp = Date.now()
-      identifiers.push(`ts:${timestamp}`)
-      
-      // 生成最终的ID
+      // 生成最终的ID（不含时间戳，保持每日固定）
       return identifiers.join('#')
     }
     
@@ -149,7 +145,7 @@ export default {
         checkAllFortunes()
         
       } catch (error) {
-        console.error('生成运势失败，使用备用方案:', error)
+        // 生成失败，使用备用方案
         // 备用方案：使用日期哈希
         const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000)
         const index = dayOfYear % fortunes.length
@@ -183,12 +179,13 @@ export default {
 <style scoped>
 .daily-fortune {
   min-height: 100vh;
-  background: linear-gradient(145deg, #1a1f2a, #2a1f2a);
+  background: linear-gradient(145deg, var(--app-page-gradient-start), var(--app-page-gradient-end));
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
   font-family: 'Inter', sans-serif;
+  transition: background var(--app-transition);
 }
 .fortune-container {
   max-width: 500px;
@@ -214,7 +211,7 @@ export default {
   margin: 0;
 }
 .fortune-card {
-  background: rgba(20, 25, 35, 0.9);
+  background: var(--app-container-bg);
   backdrop-filter: blur(12px);
   border: 2px solid #ff69b4;
   border-radius: 48px;
@@ -234,21 +231,21 @@ export default {
 }
 .fortune-text {
   font-size: 1.5rem;
-  color: #e1e7ef;
+  color: var(--app-text);
   margin-bottom: 2rem;
   line-height: 1.6;
 }
 .fortune-date {
   font-size: 0.9rem;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   margin-bottom: 1rem;
 }
 .fortune-tip {
   font-size: 0.8rem;
-  color: #506277;
+  color: var(--app-text-muted);
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px dashed #31465c;
+  border-top: 1px dashed var(--app-divider);
 }
 .button-group {
   margin-top: 2rem;
@@ -258,16 +255,16 @@ export default {
   align-items: center;
   gap: 0.5rem;
   padding: 0.8rem 2rem;
-  background: #1f2a36;
-  color: #42b983;
+  background: var(--app-btn-secondary-bg);
+  color: var(--app-accent-green-text);
   text-decoration: none;
   border-radius: 40px;
   font-size: 1rem;
-  border: 1px solid #31465c;
+  border: 1px solid var(--app-divider);
   transition: all 0.3s ease;
 }
 .back-button:hover {
-  background: #2a3848;
+  background: var(--app-btn-secondary-hover);
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(66, 185, 131, 0.3);
 }

@@ -80,23 +80,25 @@ export default {
 <style scoped>
 .run-game-selector {
   min-height: 100vh;
-  background: linear-gradient(145deg, #1a1f2a, #2a1f2a);
+  background: linear-gradient(145deg, var(--app-page-gradient-start), var(--app-page-gradient-end));
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
   font-family: 'Inter', sans-serif;
+  transition: background var(--app-transition);
 }
 
 .selector-container {
   max-width: 600px;
   width: 100%;
-  background: rgba(20, 25, 35, 0.9);
+  background: var(--app-container-bg);
   backdrop-filter: blur(12px);
   border: 2px solid #ff69b4;
   border-radius: 32px;
   padding: 2rem;
   box-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+  transition: background var(--app-transition);
 }
 
 h1 {
@@ -108,7 +110,7 @@ h1 {
 
 .subtitle {
   text-align: center;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   margin-bottom: 2rem;
 }
 
@@ -123,17 +125,17 @@ h1 {
   display: flex;
   gap: 1rem;
   padding: 1.2rem;
-  background: #1f2a36;
+  background: var(--app-btn-secondary-bg);
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid #31465c;
+  border: 1px solid var(--app-divider);
 }
 
 .story-card:not(.coming-soon):hover {
   transform: translateX(5px);
   border-color: #ff69b4;
-  background: #2a3848;
+  background: var(--app-btn-secondary-hover);
 }
 
 .story-card.coming-soon {
@@ -149,13 +151,13 @@ h1 {
 
 .story-info h3 {
   font-size: 1.2rem;
-  color: #e1e7ef;
+  color: var(--app-text);
   margin-bottom: 0.3rem;
 }
 
 .story-info p {
   font-size: 0.85rem;
-  color: #b7cced;
+  color: var(--app-fun-text);
   margin-bottom: 0.5rem;
 }
 
@@ -163,7 +165,7 @@ h1 {
   display: flex;
   gap: 1rem;
   font-size: 0.75rem;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   margin-bottom: 0.3rem;
 }
 

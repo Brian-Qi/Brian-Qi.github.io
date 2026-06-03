@@ -104,37 +104,37 @@ export default {
     const questions = [
       {
         type: 'single',
-        text: '作者的性别:',
+        text: '作者的性别(单选，不是这题多选的想搞么子):',
         options: ['男', '女', '其他', '未知'],
         correct: 0
       },
       {
         type: 'single',
-        text: '作者玩的最多的游戏的开发商？',
+        text: '作者玩的最多的游戏的开发商(单选):',
         options: ['米哈游', '库洛', '鹰角', '作者自己(不会真有人选这个吧)'],
         correct: 3 
       },
       {
         type: 'multiple',
-        text: '作者高中都干过？',
+        text: '作者高中都干过(多选):',
         options: ['coser扫楼(我天这是高中)','顺个火柴棒(一人高的火柴见过吗)','达摩小图标(是那个光头吗？)','不知道，我的身材很曼妙(不管是谁，你确实很曼妙)'],
         correct: [0,2]
       },//在此鸣谢  与夏卿 达摩(?)
       {
         type: 'multiple',
-        text: '作者爱喝的小饮料？',
+        text: '作者爱喝的小饮料(多选):',
         options: ['茶水(养生呢)', '气泡小甜水(爽的嘞)', '奶茶(好喝爱喝天天喝)', '风油精(不是哥们诗人啊)'],
         correct: [0,3]
       },//在此鸣谢  神级的欧胖
       {
         type: 'multiple',
-        text: '作者的外号？',
+        text: '作者的外号(多选):',
         options: ['骚furry','奇骚','神秘代码男','骚哥'],
         correct: [1,3] 
       },//在此鸣谢  Leeronly
       {
         type: 'multiple',
-        text: '关于以下关于作者正确的：',
+        text: '关于以下关于作者正确的(多选):',
         options: ['香香软软小蛋糕','编程用微软大战代码','觉得mcm是好老师','原神nb'],
         correct: [1,3],
         failOnWrong: true,
@@ -290,23 +290,25 @@ export default {
 <style scoped>
 .secret-quiz {
   min-height: 100vh;
-  background: linear-gradient(145deg, #1a1f2a, #2a1f2a);
+  background: linear-gradient(145deg, var(--app-page-gradient-start), var(--app-page-gradient-end));
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
   font-family: 'Inter', sans-serif;
   position: relative;
+  transition: background var(--app-transition);
 }
 .quiz-container {
   max-width: 600px;
   width: 100%;
-  background: rgba(20, 25, 35, 0.9);
+  background: var(--app-container-bg);
   backdrop-filter: blur(12px);
   border: 2px solid #ff69b4;
   border-radius: 32px;
   padding: 3rem 2rem;
   box-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+  transition: background var(--app-transition);
 }
 h1 {
   font-size: 2.5rem;
@@ -326,7 +328,7 @@ h1 {
 }
 h2 {
   font-size: 1.3rem;
-  color: #e1e7ef;
+  color: var(--app-text);
   margin-bottom: 1.5rem;
   line-height: 1.5;
 }
@@ -343,11 +345,11 @@ h2 {
   border-radius: 16px;
 }
 .locked-question h2 {
-  color: #8f9eff;
+  color: var(--app-accent-text);
   margin-bottom: 1rem;
 }
 .locked-question p {
-  color: #506277;
+  color: var(--app-text-muted);
 }
 .options {
   display: flex;
@@ -356,14 +358,13 @@ h2 {
 }
 .option {
   padding: 1rem;
-  background: #1b232e;
-  border: 2px solid #31465c;
+  background: var(--app-input-bg);
+  border: 2px solid var(--app-input-border);
   border-radius: 12px;
-  color: #e1e7ef;
+  color: var(--app-text);
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
-  /* 文本换行保护 */
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -382,10 +383,10 @@ h2 {
 }
 .toggle-password {
   padding: 1rem;
-  background: #1b232e;
-  border: 2px solid #31465c;
+  background: var(--app-input-bg);
+  border: 2px solid var(--app-input-border);
   border-radius: 12px;
-  color: #e1e7ef;
+  color: var(--app-text);
   cursor: pointer;
   font-size: 1.2rem;
   transition: all 0.2s ease;
@@ -396,16 +397,16 @@ h2 {
 }
 .option.selected {
   border-color: #42b983;
-  background: #1f2f3a;
+  background: var(--app-btn-secondary-bg);
   box-shadow: 0 0 15px rgba(66, 185, 131, 0.3);
 }
 input {
   width: 100%;
   padding: 1rem;
-  background: #1b232e;
-  border: 2px solid #31465c;
+  background: var(--app-input-bg);
+  border: 2px solid var(--app-input-border);
   border-radius: 12px;
-  color: #e1e7ef;
+  color: var(--app-text);
   font-size: 1rem;
   transition: all 0.2s ease;
 }

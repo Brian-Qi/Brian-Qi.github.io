@@ -12,13 +12,7 @@ export function showRouterDebugInfo() {
   const savedRoute = getSavedRoute()
   const routeHistory = getRouteHistory()
   
-  console.group('🔧 路由调试信息')
-  console.log('📌 当前URL:', window.location.href)
-  console.log('📌 当前路径:', window.location.pathname)
-  console.log('💾 保存的路由:', savedRoute || '无')
-  console.log('📚 路由历史:', routeHistory)
-  console.log('🗺️ 总历史记录数:', routeHistory.length)
-  console.groupEnd()
+
   
   // 在页面右下角显示浮动调试面板（仅开发环境）
   if (process.env.NODE_ENV === 'development') {
@@ -94,7 +88,6 @@ function createFloatingDebugPanel() {
       clearAllRouteHistory()
       panel.remove()
       createFloatingDebugPanel()
-      console.log('路由状态已清除')
     },
     hide: () => {
       panel.remove()
@@ -121,7 +114,6 @@ function addKeyboardShortcuts() {
       e.preventDefault()
       clearSavedRoute()
       clearAllRouteHistory()
-      console.log('路由状态已清除')
       showRouterDebugInfo()
     }
   })
@@ -142,7 +134,6 @@ export function initRouterDebug() {
       // 监听路由变化
       if (window.__VUE_ROUTER__) {
         window.__VUE_ROUTER__.afterEach((to, from) => {
-          console.log(`路由变化: ${from.path} -> ${to.path}`)
           if (window.__routerDebug) {
             window.__routerDebug.refresh()
           }
@@ -150,7 +141,6 @@ export function initRouterDebug() {
       }
     }, 1000)
     
-    console.log('路由调试工具已初始化')
   }
 }
 
