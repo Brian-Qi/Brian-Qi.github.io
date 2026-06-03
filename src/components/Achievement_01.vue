@@ -273,7 +273,7 @@ export default {
 }
 .congrats {
   font-size: 1.2rem;
-  color: #b7cced;
+  color: var(--app-fun-text);
   margin-bottom: 0.5rem;
 }
 .highlight {
@@ -315,7 +315,7 @@ export default {
 }
 .reward-text {
   text-align: center;
-  color: #e1e7ef;
+  color: var(--app-text);
 }
 .reward-text p {
   margin: 0.3rem 0;
@@ -339,11 +339,11 @@ export default {
 .achievement-footer {
   display: flex;
   justify-content: space-between;
-  color: #506277;
+  color: var(--app-text-muted);
   font-size: 0.9rem;
   margin-top: 2rem;
   padding-top: 1rem;
-  border-top: 1px dashed #31465c;
+  border-top: 1px dashed var(--app-divider);
 }
 .signature {
   font-style: italic;
@@ -393,7 +393,7 @@ export default {
 .disclaimer {
   margin-top: 2rem;
   text-align: center;
-  color: #506277;
+  color: var(--app-text-muted);
   font-size: 0.8rem;
   position: relative;
   z-index: 1;

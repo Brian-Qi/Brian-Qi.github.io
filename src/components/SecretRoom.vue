@@ -42,13 +42,14 @@ export default {
 <style scoped>
 .secret-room {
   min-height: 100vh;
-  background: linear-gradient(145deg, #2a1f2a, #1a1f2a);
+  background: linear-gradient(145deg, var(--app-page-gradient-end), var(--app-page-gradient-start));
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #e1e7ef;
+  color: var(--app-text);
   font-family: 'Inter', sans-serif;
+  transition: background var(--app-transition), color var(--app-transition);
 }
 
 h1 {
@@ -110,18 +111,18 @@ h1 {
 
 p {
   font-size: 1.2rem;
-  color: #b7cced;
+  color: var(--app-fun-text);
   margin-bottom: 2rem;
 }
 
 .back-link {
-  color: #42b983;
+  color: var(--app-accent-green-text);
   text-decoration: none;
   font-size: 1.1rem;
   padding: 0.5rem 1rem;
-  border: 1px solid #31465c;
+  border: 1px solid var(--app-divider);
   border-radius: 40px;
-  background: #1f2a36;
+  background: var(--app-btn-secondary-bg);
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
@@ -129,7 +130,7 @@ p {
 }
 
 .back-link:hover {
-  background: #2a3848;
+  background: var(--app-btn-secondary-hover);
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(66, 185, 131, 0.3);
 }

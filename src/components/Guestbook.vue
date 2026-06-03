@@ -148,7 +148,6 @@ export default {
         const data = await getMessages()
         messages.value = data || []
       } catch (error) {
-        console.error('加载留言失败:', error)
         messages.value = []
       }
     }
@@ -222,10 +221,11 @@ export default {
 <style scoped>
 .guestbook {
   min-height: 100vh;
-  background: linear-gradient(145deg, #1a1f2a, #2a1f2a);
+  background: linear-gradient(145deg, var(--app-page-gradient-start), var(--app-page-gradient-end));
   padding: 2rem;
   font-family: 'Inter', sans-serif;
-  color: #e1e7ef;
+  color: var(--app-text);
+  transition: background var(--app-transition), color var(--app-transition);
 }
 h1 {
   text-align: center;
@@ -243,17 +243,17 @@ h1 {
   align-items: center;
   gap: 0.3rem;
   padding: 0.4rem 1rem;
-  background: #1f2a36;
-  color: #8f9eff;
+  background: var(--app-btn-secondary-bg);
+  color: var(--app-accent-text);
   text-decoration: none;
   border-radius: 30px;
   font-size: 0.9rem;
-  border: 1px solid #31465c;
+  border: 1px solid var(--app-divider);
   transition: all 0.2s ease;
   cursor: pointer;
 }
 .admin-entrance-button:hover {
-  background: #2a3848;
+  background: var(--app-btn-secondary-hover);
   color: #ff69b4;
   transform: scale(1.05);
 }
@@ -272,7 +272,7 @@ h1 {
 }
 .exit-admin {
   padding: 0.3rem 1rem;
-  background: #1f2a36;
+  background: var(--app-btn-secondary-bg);
   color: #ff9b8c;
   border: 1px solid #5c3a48;
   border-radius: 20px;
@@ -280,7 +280,7 @@ h1 {
   transition: all 0.2s ease;
 }
 .exit-admin:hover {
-  background: #2a3848;
+  background: var(--app-btn-secondary-hover);
   transform: scale(1.05);
 }
 .password-dialog-overlay {
@@ -297,7 +297,7 @@ h1 {
   backdrop-filter: blur(5px);
 }
 .password-dialog {
-  background: linear-gradient(145deg, #1f2a36, #0f1a22);
+  background: linear-gradient(145deg, var(--app-btn-secondary-bg), var(--app-bg));
   border: 2px solid #ff69b4;
   border-radius: 24px;
   padding: 2rem;
@@ -313,10 +313,10 @@ h1 {
 .password-dialog input {
   width: 100%;
   padding: 1rem;
-  background: #1b232e;
-  border: 2px solid #31465c;
+  background: var(--app-input-bg);
+  border: 2px solid var(--app-input-border);
   border-radius: 12px;
-  color: #e1e7ef;
+  color: var(--app-text);
   font-size: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -338,9 +338,9 @@ h1 {
   transition: all 0.2s ease;
 }
 .dialog-buttons button:first-child {
-  background: #1f2a36;
-  color: #8f9eff;
-  border: 1px solid #31465c;
+  background: var(--app-btn-secondary-bg);
+  color: var(--app-accent-text);
+  border: 1px solid var(--app-divider);
 }
 .dialog-buttons .confirm-btn {
   background: linear-gradient(135deg, #ff69b4, #8a6de9);
@@ -363,17 +363,18 @@ h1 {
   padding: 3rem;
   background: rgba(0,0,0,0.3);
   border-radius: 24px;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   font-size: 1.2rem;
 }
 .message-card {
-  background: rgba(20, 25, 35, 0.8);
+  background: var(--app-container-bg);
   backdrop-filter: blur(12px);
-  border: 1px solid #31465c;
+  border: 1px solid var(--app-divider);
   border-radius: 16px;
   padding: 1rem;
   margin-bottom: 1rem;
   position: relative;
+  transition: background var(--app-transition), border-color var(--app-transition);
 }
 .message-header {
   display: flex;
@@ -387,7 +388,7 @@ h1 {
   font-weight: bold;
 }
 .message-date {
-  color: #8f9eff;
+  color: var(--app-accent-text);
 }
 .delete-btn {
   background: none;
@@ -403,7 +404,7 @@ h1 {
   color: #ff0000;
 }
 .message-content {
-  color: #e1e7ef;
+  color: var(--app-text);
   line-height: 1.5;
 }
 .message-input-section {
@@ -443,8 +444,8 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #1b232e;
-  border: 1px solid #31465c;
+  background-color: var(--app-input-bg);
+  border: 1px solid var(--app-input-border);
   border-radius: 24px;
   transition: 0.3s;
 }
@@ -455,7 +456,7 @@ h1 {
   width: 18px;
   left: 3px;
   bottom: 2px;
-  background-color: #8f9eff;
+  background-color: var(--app-accent-text);
   border-radius: 50%;
   transition: 0.3s;
 }
@@ -468,7 +469,7 @@ input:checked + .toggle-slider:before {
   background-color: white;
 }
 .toggle-label {
-  color: #e1e7ef;
+  color: var(--app-text);
 }
 .signature-input {
   margin-bottom: 1rem;
@@ -476,10 +477,10 @@ input:checked + .toggle-slider:before {
 .signature-input input {
   width: 100%;
   padding: 0.8rem;
-  background: #1b232e;
-  border: 2px solid #31465c;
+  background: var(--app-input-bg);
+  border: 2px solid var(--app-input-border);
   border-radius: 12px;
-  color: #e1e7ef;
+  color: var(--app-text);
 }
 .signature-input input:focus {
   outline: none;
@@ -492,10 +493,10 @@ input:checked + .toggle-slider:before {
 .message-input-row input {
   flex: 1;
   padding: 1rem;
-  background: #1b232e;
-  border: 2px solid #31465c;
+  background: var(--app-input-bg);
+  border: 2px solid var(--app-input-border);
   border-radius: 12px;
-  color: #e1e7ef;
+  color: var(--app-text);
   font-size: 1rem;
 }
 .message-input-row input:focus {

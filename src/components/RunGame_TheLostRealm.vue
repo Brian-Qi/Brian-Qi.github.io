@@ -477,24 +477,26 @@ export default {
 <style scoped>
 .run-game {
   min-height: 100vh;
-  background: linear-gradient(145deg, #1a1f2a 0%, #2a1f2a 100%);
+  background: linear-gradient(145deg, var(--app-page-gradient-start) 0%, var(--app-page-gradient-end) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
   font-family: 'Inter', sans-serif;
+  transition: background var(--app-transition);
 }
 
 .game-container {
   max-width: 700px;
   width: 100%;
-  background: rgba(20, 25, 35, 0.9);
+  background: var(--app-container-bg);
   backdrop-filter: blur(12px);
   border: 2px solid #ff69b4;
   border-radius: 32px;
   padding: 2rem;
   box-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
   position: relative;
+  transition: background var(--app-transition);
 }
 
 .story-title {
@@ -514,7 +516,7 @@ export default {
 .story-text {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #e1e7ef;
+  color: var(--app-text);
   white-space: pre-line;
 }
 
@@ -537,7 +539,7 @@ export default {
 
 .dot {
   font-size: 1.5rem;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   animation: pulse 1.5s infinite;
 }
 
@@ -563,10 +565,10 @@ export default {
 
 .option-btn {
   padding: 0.8rem 1.5rem;
-  background: #1f2a36;
-  border: 1px solid #31465c;
+  background: var(--app-btn-secondary-bg);
+  border: 1px solid var(--app-divider);
   border-radius: 40px;
-  color: #e1e7ef;
+  color: var(--app-text);
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -574,7 +576,7 @@ export default {
 }
 
 .option-btn:hover:not(:disabled) {
-  background: #2a3848;
+  background: var(--app-btn-secondary-hover);
   border-color: #ff69b4;
   transform: translateX(5px);
 }
@@ -618,10 +620,10 @@ export default {
   gap: 1rem;
   justify-content: center;
   font-size: 0.9rem;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px dashed #31465c;
+  border-top: 1px dashed var(--app-divider);
 }
 
 /* 冒险日志面板 - 固定在右上角 */
@@ -630,7 +632,7 @@ export default {
   right: 20px;
   top: 20px;
   width: 300px;
-  background: rgba(10, 12, 15, 0.95);
+  background: var(--app-bg-card-translucent);
   backdrop-filter: blur(12px);
   border: 1px solid #ff69b4;
   border-radius: 16px;
@@ -663,7 +665,7 @@ export default {
   cursor: pointer;
   color: #ff69b4;
   font-weight: bold;
-  border-bottom: 1px solid #31465c;
+  border-bottom: 1px solid var(--app-divider);
 }
 
 .log-icon {
@@ -684,7 +686,7 @@ export default {
   font-family: 'Courier New', monospace;
   font-size: 0.75rem;
   line-height: 1.5;
-  color: #b7cced;
+  color: var(--app-fun-text);
   white-space: pre-wrap;
   word-wrap: break-word;
   margin: 0;
@@ -704,7 +706,7 @@ export default {
 }
 
 .log-content::-webkit-scrollbar-track {
-  background: #1f2a36;
+  background: var(--app-btn-secondary-bg);
   border-radius: 3px;
 }
 
@@ -730,13 +732,13 @@ export default {
 }
 
 .back-btn {
-  background: #1f2a36;
-  border: 1px solid #31465c;
-  color: #8f9eff;
+  background: var(--app-btn-secondary-bg);
+  border: 1px solid var(--app-divider);
+  color: var(--app-accent-text);
 }
 
 .back-btn:hover {
-  background: #2a3848;
+  background: var(--app-btn-secondary-hover);
   border-color: #ff9b8c;
 }
 
@@ -767,7 +769,7 @@ export default {
 }
 
 .dialog-content {
-  background: linear-gradient(145deg, #1f2a36, #0f1a22);
+  background: linear-gradient(145deg, var(--app-btn-secondary-bg), var(--app-bg));
   border: 2px solid #ff69b4;
   border-radius: 24px;
   padding: 2rem;
@@ -795,7 +797,7 @@ export default {
 }
 
 .dialog-content p {
-  color: #e1e7ef;
+  color: var(--app-text);
   margin-bottom: 1.5rem;
   line-height: 1.5;
 }
@@ -816,9 +818,9 @@ export default {
 }
 
 .dialog-btn.cancel {
-  background: #1f2a36;
-  color: #8f9eff;
-  border: 1px solid #31465c;
+  background: var(--app-btn-secondary-bg);
+  color: var(--app-accent-text);
+  border: 1px solid var(--app-divider);
 }
 
 .dialog-btn.confirm {

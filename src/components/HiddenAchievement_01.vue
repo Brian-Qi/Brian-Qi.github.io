@@ -74,7 +74,7 @@ export default {
 <style scoped>
 .hidden-achievement {
   min-height: 100vh;
-  background: linear-gradient(145deg, #0a0c0f 0%, #1a1f2a 100%);
+  background: linear-gradient(145deg, var(--app-bg) 0%, var(--app-page-gradient-start) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -83,6 +83,7 @@ export default {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   position: relative;
   overflow: hidden;
+  transition: background var(--app-transition);
 }
 
 .achievement-header {
@@ -145,7 +146,7 @@ export default {
 .achievement-card {
   max-width: 600px;
   width: 100%;
-  background: rgba(20, 25, 35, 0.8);
+  background: var(--app-container-bg);
   backdrop-filter: blur(12px);
   border: 2px solid rgba(255, 215, 0, 0.3);
   border-radius: 48px;
@@ -201,8 +202,8 @@ export default {
 
 .achievement-code {
   font-size: 0.9rem;
-  color: #8f9eff;
-  background: #1f2a36;
+  color: var(--app-accent-text);
+  background: var(--app-btn-secondary-bg);
   padding: 0.2rem 1rem;
   border-radius: 40px;
   letter-spacing: 1px;
@@ -238,7 +239,7 @@ export default {
 
 .congrats {
   font-size: 1.2rem;
-  color: #b7cced;
+  color: var(--app-fun-text);
   margin-bottom: 0.5rem;
 }
 
@@ -280,7 +281,7 @@ export default {
 
 .reward-text {
   text-align: center;
-  color: #e1e7ef;
+  color: var(--app-text);
 }
 
 .reward-text p {
@@ -295,18 +296,18 @@ export default {
 
 .as-reward {
   font-size: 1rem;
-  color: #8f9eff;
+  color: var(--app-accent-text);
   font-style: italic;
 }
 
 .achievement-footer {
   display: flex;
   justify-content: space-between;
-  color: #506277;
+  color: var(--app-text-muted);
   font-size: 0.9rem;
   margin-top: 2rem;
   padding-top: 1rem;
-  border-top: 1px dashed #31465c;
+  border-top: 1px dashed var(--app-divider);
 }
 
 .signature {
@@ -330,14 +331,14 @@ export default {
   align-items: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  background: #1f2a36;
-  color: #42b983;
-  border: 1px solid #31465c;
+  background: var(--app-btn-secondary-bg);
+  color: var(--app-accent-green-text);
+  border: 1px solid var(--app-divider);
   cursor: pointer;
 }
 
 .return-button:hover {
-  background: #2a3848;
+  background: var(--app-btn-secondary-hover);
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(66, 185, 131, 0.3);
 }
@@ -349,7 +350,7 @@ export default {
 .disclaimer {
   margin-top: 2rem;
   text-align: center;
-  color: #506277;
+  color: var(--app-text-muted);
   font-size: 0.8rem;
   position: relative;
   z-index: 1;
@@ -358,7 +359,7 @@ export default {
 .small-text {
   font-size: 0.7rem;
   margin-top: 0.3rem;
-  color: #3c536b;
+  color: var(--app-text-muted);
 }
 
 @media (max-width: 600px) {

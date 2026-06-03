@@ -13,9 +13,8 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.3",
-    "axios": "^1.13.6",
     "core-js": "^3.8.3",
-    "cors-anywhere": "^0.4.4",
+    "lxgw-wenkai-webfont": "^1.7.0",
     "vue": "^3.2.13",
     "vue-router": "^4.6.4"
   },

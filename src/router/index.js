@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 // 路由懒加载 - 提升首屏性能
+const Index = () => import('../components/Index.vue')
+const NewIndex = () => import('../components/NewIndex.vue')
 const ComingSoon = () => import('../components/ComingSoon.vue')
 const WhoIAm = () => import('../components/WhoIAm.vue')
 const Achievement01 = () => import('../components/Achievement_01.vue')
@@ -11,6 +13,7 @@ const Achievement05 = () => import('../components/Achievement_05.vue')
 const Achievement06 = () => import('../components/Achievement_06.vue')
 const AchievementsStats = () => import('../components/AchievementsStats.vue')
 const HiddenAchievement01 = () => import('../components/HiddenAchievement_01.vue')
+const HiddenAchievement02 = () => import('../components/HiddenAchievement_02.vue')
 const SecretRoom = () => import('../components/SecretRoom.vue')
 const SecretQuiz = () => import('../components/SecretQuiz.vue')
 const Guestbook = () => import('../components/Guestbook.vue')
@@ -18,12 +21,21 @@ const DailyFortune = () => import('../components/DailyFortune.vue')
 const RunGameSelector = () => import('../components/RunGameSelector.vue')
 const TheLostRealm = () => import('../components/RunGame_TheLostRealm.vue')
 const AchievementUnlock = () => import('../components/Achievement_07.vue')
+const Achievement08 = () => import('../components/Achievement_08.vue')
+// CompanyInfo 已整合到 NewIndex 弹窗，不再作为独立页面
+// const CompanyInfo = () => import('../components/CompanyInfo.vue')
+// const PoolGame = () => import('../components/PoolGame.vue')
 
 const routes = [
   {
     path: '/',
     name: 'comingSoon',
     component: ComingSoon
+  },
+  {
+    path: '/index',
+    name: 'index',
+    component: NewIndex
   },
   {
     path: '/who_i_am',
@@ -91,6 +103,11 @@ const routes = [
     component: HiddenAchievement01
   },
   {
+    path: '/who_i_am/hidden_achievement_music',
+    name: 'HiddenAchievement02',
+    component: HiddenAchievement02
+  },
+  {
     path: '/who_i_am/secret_quiz/secret_room/run_game',
     name: 'RunGameSelector',
     component: RunGameSelector
@@ -105,6 +122,22 @@ const routes = [
     name: 'Achievement07',
     component: AchievementUnlock
   },
+  {
+    path: '/who_i_am/achievement_theme_flipper',
+    name: 'Achievement08',
+    component: Achievement08
+  },
+  // 公司信息已整合到首页弹窗
+  // {
+  //   path: '/company',
+  //   name: 'CompanyInfo',
+  //   component: CompanyInfo
+  // },
+  // {
+  //   path: '/who_i_am/pool_game',
+  //   name: 'PoolGame',
+  //   component: PoolGame
+  // },
 ]
 
 const router = createRouter({

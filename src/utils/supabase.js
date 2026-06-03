@@ -15,10 +15,8 @@ if (isValidUrl(supabaseUrl) && supabaseKey) {
   try {
     supabase = createClient(supabaseUrl, supabaseKey)
   } catch (e) {
-    console.warn('Supabase 初始化失败:', e.message)
+    // 初始化失败，静默处理
   }
-} else {
-  console.warn('警告: Supabase 配置无效，请检查 .env 文件中的 VUE_APP_SUPABASE_URL 和 VUE_APP_SUPABASE_ANON_KEY')
 }
 
 // 如果 supabase 未初始化，创建一个空实现
@@ -34,9 +32,6 @@ if (!supabase) {
 
 export { supabase }
 
-// console.log('Supabase URL:', supabaseUrl)
-// console.log('Supabase Key:', supabaseKey ? '已设置' : '未设置')
-
 // 获取留言
 export const getMessages = async () => {
   try {
@@ -46,18 +41,12 @@ export const getMessages = async () => {
       .order('id', { ascending: false })
   
     if (error) {
-      console.error('Supabase查询错误:', error)
       throw error
     }
-    
-    // console.log('Supabase原始返回:', data)
-    // console.log('data类型:', typeof data)
-    // console.log('是数组吗:', Array.isArray(data))
     
     // 确保返回数组
     return Array.isArray(data) ? data : []
   } catch (error) {
-    console.error('读取留言失败:', error)
     return []
   }
 }

@@ -15,16 +15,7 @@ export function testEnvironmentVariables() {
     allEnvKeys: Object.keys(process.env).filter(key => key.startsWith('VUE_APP_'))
   }
   
-  console.log('=== 环境变量测试 ===')
-  console.log('Supabase URL:', envInfo.supabaseUrl)
-  console.log('Supabase Key 已设置:', envInfo.supabaseKey)
-  console.log('管理员密码已设置:', envInfo.adminPassword)
-  console.log('密钥已设置:', envInfo.secretKey)
-  console.log('调试模式:', envInfo.debugMode)
-  console.log('版本:', envInfo.version)
-  console.log('NODE_ENV:', envInfo.nodeEnv)
-  console.log('所有 VUE_APP_ 环境变量:', envInfo.allEnvKeys)
-  console.log('===================')
+
   
   // 检查是否有默认值（可能未正确配置）
   const warnings = []
@@ -45,10 +36,7 @@ export function testEnvironmentVariables() {
     warnings.push('密钥使用开发默认值，生产环境请修改')
   }
   
-  if (warnings.length > 0) {
-    console.warn('⚠️ 环境变量警告：')
-    warnings.forEach(warning => console.warn('  -', warning))
-  }
+
   
   return envInfo
 }

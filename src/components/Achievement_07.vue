@@ -146,23 +146,23 @@ export default {
 .achievement-name h2 { font-size: 3.5rem; background: linear-gradient(135deg, #fff, #9b59b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0.5rem 0; }
 .achievement-divider { display: flex; justify-content: center; gap: 1rem; color: #9b59b6; font-size: 1.2rem; margin: 1.5rem 0; }
 .achievement-description { text-align: center; margin-bottom: 2rem; }
-.congrats { font-size: 1.2rem; color: #b7cced; margin-bottom: 0.5rem; }
+.congrats { font-size: 1.2rem; color: var(--app-fun-text); margin-bottom: 0.5rem; }
 .highlight { font-size: 2.5rem; color: #9b59b6; font-weight: bold; text-shadow: 0 0 20px rgba(155, 89, 182, 0.5); margin: 1rem 0; }
 .achievement-reward { background: rgba(0, 0, 0, 0.3); border-radius: 32px; padding: 2rem; margin: 2rem 0; border: 1px solid #9b59b633; }
 .reward-badge { display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
 .reward-icon { font-size: 3rem; animation: wave 2s infinite; }
 @keyframes wave { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(20deg); } 75% { transform: rotate(-20deg); } }
-.reward-text { text-align: center; color: #e1e7ef; }
+.reward-text { text-align: center; color: var(--app-text); }
 .reward-text p { margin: 0.3rem 0; }
 .big-slap { font-size: 2rem; color: #ff9b8c; font-weight: bold; text-shadow: 0 0 10px rgba(255, 155, 140, 0.5); margin: 0.5rem 0 !important; }
 .as-reward { font-size: 1rem; color: #9b59b6; font-style: italic; }
-.achievement-footer { display: flex; justify-content: space-between; color: #506277; font-size: 0.9rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px dashed #31465c; }
+.achievement-footer { display: flex; justify-content: space-between; color: var(--app-text-muted); font-size: 0.9rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px dashed var(--app-divider); }
 .signature { font-style: italic; }
 .button-container { display: flex; gap: 1rem; margin-top: 3rem; position: relative; z-index: 1; }
 .return-button { padding: 0.8rem 2rem; border-radius: 40px; font-size: 1.1rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; background: #2a1a3a; color: #9b59b6; border: 1px solid #5a3a7a; cursor: pointer; }
 .return-button:hover { background: #3a2a5a; transform: scale(1.05); box-shadow: 0 0 20px rgba(155, 89, 182, 0.3); }
 .button-icon { font-size: 1.2rem; }
-.disclaimer { margin-top: 2rem; text-align: center; color: #506277; font-size: 0.8rem; position: relative; z-index: 1; }
+.disclaimer { margin-top: 2rem; text-align: center; color: var(--app-text-muted); font-size: 0.8rem; position: relative; z-index: 1; }
 .small-text { font-size: 0.7rem; margin-top: 0.3rem; color: #5a4a6a; }
 @media (max-width: 600px) {
   .achievement-title { font-size: 1.8rem; }

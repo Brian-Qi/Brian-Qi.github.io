@@ -22,7 +22,8 @@ const ROUTER_CONFIG = {
     '/who_i_am/secret_quiz/achieve_true_bro',
     '/who_i_am/fortune/achieve_lucky_strike',
     '/who_i_am/fortune/achieve_turn_the_tide',
-    '/who_i_am/fortune/achieve_fate_blessed'
+    '/who_i_am/fortune/achieve_fate_blessed',
+    '/who_i_am/hidden_achievement_music'
   ],
   
   // 存储键名
@@ -89,9 +90,8 @@ export function saveCurrentRoute(path) {
       localStorage.setItem(ROUTER_CONFIG.STORAGE_KEYS.ROUTE_HISTORY, JSON.stringify(history))
     }
     
-    console.log(`路由已保存: ${path}`)
   } catch (error) {
-    console.error('保存路由失败:', error)
+    // 保存失败，静默处理
   }
 }
 
@@ -121,7 +121,6 @@ export function getSavedRoute() {
     
     return null
   } catch (error) {
-    console.error('获取保存路由失败:', error)
     return null
   }
 }
@@ -148,7 +147,7 @@ export function getRouteHistory() {
       return valid
     }
   } catch (error) {
-    console.error('获取路由历史失败:', error)
+    // 获取失败，静默处理
   }
   
   return []
@@ -161,9 +160,8 @@ export function clearSavedRoute() {
   try {
     localStorage.removeItem(ROUTER_CONFIG.STORAGE_KEYS.LAST_ROUTE)
     localStorage.removeItem(ROUTER_CONFIG.STORAGE_KEYS.LAST_ROUTE_TIMESTAMP)
-    console.log('保存的路由已清除')
   } catch (error) {
-    console.error('清除路由失败:', error)
+    // 清除失败，静默处理
   }
 }
 
@@ -174,9 +172,8 @@ export function clearAllRouteHistory() {
   try {
     clearSavedRoute()
     localStorage.removeItem(ROUTER_CONFIG.STORAGE_KEYS.ROUTE_HISTORY)
-    console.log('所有路由历史已清除')
   } catch (error) {
-    console.error('清除路由历史失败:', error)
+    // 清除失败，静默处理
   }
 }
 
@@ -230,6 +227,4 @@ export function initRouterPersistence(router) {
       saveCurrentRoute(router.currentRoute.value.path)
     }
   })
-  
-  console.log('路由持久化已初始化')
 }
