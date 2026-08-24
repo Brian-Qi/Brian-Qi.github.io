@@ -1,15 +1,4 @@
----
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: 70a68c9d958f9faadbbad77f7e46187d_5e96fc039f9a11f1a238525400e6dd8f
-    ReservedCode1: eidUMc6hoO/wNafnd0ALFJTzhFRKiSztQ7DbdokFz9vVqRIHfpRYoMa7REgdhiipU0dpNozl4uWZcsd0TxSZDjcrlcxVfUlLrjrhOm+qj1J6dSDbSTXZ7h+j3Eq1bzAJWM96iXPcBVcOyRbhqLDEfQNNv3+PMzb0RfJkcVngs3moBR6O68oERjgFImc=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: 70a68c9d958f9faadbbad77f7e46187d_5e96fc039f9a11f1a238525400e6dd8f
-    ReservedCode2: eidUMc6hoO/wNafnd0ALFJTzhFRKiSztQ7DbdokFz9vVqRIHfpRYoMa7REgdhiipU0dpNozl4uWZcsd0TxSZDjcrlcxVfUlLrjrhOm+qj1J6dSDbSTXZ7h+j3Eq1bzAJWM96iXPcBVcOyRbhqLDEfQNNv3+PMzb0RfJkcVngs3moBR6O68oERjgFImc=
----
-
-# Briandolph Qi 的个人网站
+﻿# Briandolph Qi 的个人网站
 
 > Vue 3 搭建的个人主页，集成了壁纸首页、背景音乐、每日运势、成就系统、秘密答题、密室彩蛋、单人跑团游戏等彩蛋功能。
 
