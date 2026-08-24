@@ -22,9 +22,6 @@ const RunGameSelector = () => import('../components/RunGameSelector.vue')
 const TheLostRealm = () => import('../components/RunGame_TheLostRealm.vue')
 const AchievementUnlock = () => import('../components/Achievement_07.vue')
 const Achievement08 = () => import('../components/Achievement_08.vue')
-// CompanyInfo 已整合到 NewIndex 弹窗，不再作为独立页面
-// const CompanyInfo = () => import('../components/CompanyInfo.vue')
-// const PoolGame = () => import('../components/PoolGame.vue')
 
 const routes = [
   {
@@ -127,17 +124,6 @@ const routes = [
     name: 'Achievement08',
     component: Achievement08
   },
-  // 公司信息已整合到首页弹窗
-  // {
-  //   path: '/company',
-  //   name: 'CompanyInfo',
-  //   component: CompanyInfo
-  // },
-  // {
-  //   path: '/who_i_am/pool_game',
-  //   name: 'PoolGame',
-  //   component: PoolGame
-  // },
 ]
 
 const router = createRouter({

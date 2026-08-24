@@ -124,10 +124,6 @@
             <span v-if="hasVisitedSecretRoom" class="secret-message" style="margin-left: auto;">🔓 已解锁，点击进入</span>
             <span v-else-if="showSecret" class="secret-message" style="margin-left: auto;">并没有什么秘密</span>
           </div>
-          <!-- <div class="egg-item" @click="goToPoolGame">
-            <span>🎱 桌球</span>
-            <span class="secret-message" style="margin-left: auto;">摸鱼时间 →</span>
-          </div> -->
         </div>
       </section>
     </div>
@@ -234,10 +230,6 @@ export default {
       router.push('/who_i_am/fortune')
     }
 
-    // const goToPoolGame = () => {
-    //   router.push('/who_i_am/pool_game')
-    // }
-
     const handleSecretClick = () => {
       if (hasVisitedSecretRoom.value) {
         router.push('/who_i_am/secret_quiz')
@@ -265,7 +257,6 @@ export default {
       handleEggClick,
       handleSecretClick,
       goToFortune,
-      // goToPoolGame,
       goToSection
     }
   }
