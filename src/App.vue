@@ -2,6 +2,8 @@
   <div id="app" :data-theme="effectiveTheme" :class="{ 'wallpaper-active': effectiveBgMode === 'image', 'intro-mode': !isIntroDone && (isHomeRoute || introOverlayVisible) }">
     <!-- 壁纸模式 - 全局背景层 -->
     <div ref="wallpaperRef" class="app-wallpaper" :style="{ opacity: effectiveBgMode === 'image' ? 1 : 0 }"></div>
+    <!-- 深色模糊遮罩 - 压暗背景突出文字 -->
+    <div class="app-wallpaper-overlay" v-show="effectiveBgMode === 'image'"></div>
 
     <!-- Toast 全局提示 -->
     <div class="app-toast" :class="{ show: toastVisible }">{{ toastMessage }}</div>
@@ -34,8 +36,11 @@
 
     <!-- 入场动画遮罩 — 独立于路由，ComingSoon 点击后即覆盖，再切路由 -->
     <Transition name="intro-out" @after-leave="isIntroDone = true">
-      <div v-if="introOverlayVisible" class="intro-overlay" @click="closeIntroOverlay">
-        <div class="intro-avatar-wrapper">
+      <div v-if="introOverlayVisible" class="intro-overlay" @click.stop>
+        <div class="intro-bg-blur" :style="{ backgroundImage: `url('/壁纸.webp')` }"></div>
+        <div class="intro-noise"></div>
+        <canvas ref="particleCanvas" class="intro-canvas"></canvas>
+        <div class="intro-avatar-wrapper" @click.stop="onIntroClick">
           <div class="intro-avatar-box">
             <div class="intro-avatar-ring"></div>
             <div class="intro-avatar-inner">BQ</div>
@@ -48,13 +53,180 @@
 </template>
 
 <script>
-import { ref, computed, watch, onMounted, onUnmounted, provide } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, provide, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getItem, setItem, hasItem } from './utils/storage'
 import LyricBar from './components/LyricBar.vue'
 
 // 模块级标记 — 不依赖 Vue 响应式，一次会话只触发一次遮罩
 let _introDismissed = false
+
+// ========== 粒子系统 (module-level, 蓝紫配色) ==========
+const PARTICLE_COLORS = ['#3b82f6', '#60a5fa', '#6366f1', '#8b5cf6', '#a78bfa', '#818cf8', '#2563eb', '#4f46e5']
+
+function createParticleArray(canvas, count) {
+  const arr = []
+  for (let i = 0; i < count; i++) {
+    arr.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.6,
+      vy: (Math.random() - 0.5) * 0.6 - 0.06,
+      size: 1.5 + Math.random() * 4,
+      color: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)],
+      opacity: 0.15 + Math.random() * 0.35
+    })
+  }
+  return arr
+}
+
+function initParticles(canvas) {
+  const ctx = canvas.getContext('2d')
+  const dpr = window.devicePixelRatio || 1
+
+  function resize() {
+    canvas.width = window.innerWidth * dpr
+    canvas.height = window.innerHeight * dpr
+    canvas.style.width = window.innerWidth + 'px'
+    canvas.style.height = window.innerHeight + 'px'
+    ctx.scale(dpr, dpr)
+  }
+  resize()
+
+  const isMobile = window.innerWidth < 768
+  const particleCount = isMobile ? 45 : 100
+  const particles = createParticleArray(canvas, particleCount)
+  const CONNECTION_DIST = isMobile ? 0 : 110
+  const MOUSE_RADIUS = 130
+
+  let mouseX = -9999
+  let mouseY = -9999
+  let burstActive = false
+  let burstProgress = 0
+  let animId = null
+  let destroyed = false
+
+  function onMouseMove(e) {
+    mouseX = e.clientX
+    mouseY = e.clientY
+  }
+  function onResize() { resize() }
+
+  window.addEventListener('mousemove', onMouseMove)
+  window.addEventListener('resize', onResize)
+
+  function burst(cx, cy) {
+    burstActive = true
+    burstProgress = 0
+    for (const p of particles) {
+      const dx = p.x - cx
+      const dy = p.y - cy
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1
+      const force = 4 + Math.random() * 6
+      p.vx += (dx / dist) * force
+      p.vy += (dy / dist) * force
+    }
+  }
+
+  function loop() {
+    if (destroyed) return
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr)
+
+    if (burstActive) {
+      burstProgress += 0.02
+      if (burstProgress >= 1) burstActive = false
+    }
+
+    // connect lines first (behind particles)
+    if (!isMobile && !destroyed) {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x
+          const dy = particles[i].y - particles[j].y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < CONNECTION_DIST) {
+            // disconnect near mouse
+            const mx1 = particles[i].x - mouseX
+            const my1 = particles[i].y - mouseY
+            const mx2 = particles[j].x - mouseX
+            const my2 = particles[j].y - mouseY
+            const nearMouse = Math.min(
+              Math.sqrt(mx1 * mx1 + my1 * my1),
+              Math.sqrt(mx2 * mx2 + my2 * my2)
+            ) < MOUSE_RADIUS
+
+            if (!nearMouse) {
+              ctx.beginPath()
+              ctx.moveTo(particles[i].x, particles[i].y)
+              ctx.lineTo(particles[j].x, particles[j].y)
+              const alpha = (1 - dist / CONNECTION_DIST) * 0.18
+              ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`
+              ctx.lineWidth = 0.5
+              ctx.stroke()
+            }
+          }
+        }
+      }
+    }
+
+    // update & draw particles
+    for (const p of particles) {
+      // mouse repulsion
+      const dx = p.x - mouseX
+      const dy = p.y - mouseY
+      const dist = Math.sqrt(dx * dx + dy * dy)
+      if (dist < MOUSE_RADIUS && dist > 0) {
+        const force = (1 - dist / MOUSE_RADIUS) * 1.2
+        p.vx += (dx / dist) * force
+        p.vy += (dy / dist) * force
+      }
+
+      p.x += p.vx
+      p.y += p.vy
+
+      // damping
+      if (!burstActive) {
+        p.vx *= 0.995
+        p.vy *= 0.995
+      }
+
+      // wrap around
+      if (p.x < -20) p.x = canvas.width / dpr + 20
+      if (p.x > canvas.width / dpr + 20) p.x = -20
+      if (p.y < -20) p.y = canvas.height / dpr + 20
+      if (p.y > canvas.height / dpr + 20) p.y = -20
+
+      // drift — slow rise with irregular wandering
+      if (!burstActive) {
+        p.vx += (Math.random() - 0.5) * 0.10
+        p.vy += (Math.random() - 0.5) * 0.10 - 0.004
+      }
+
+      // draw
+      const alpha = burstActive ? p.opacity * (1 - burstProgress) : p.opacity
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+      ctx.fillStyle = p.color
+      ctx.globalAlpha = alpha
+      ctx.fill()
+      ctx.globalAlpha = 1
+    }
+
+    animId = requestAnimationFrame(loop)
+  }
+
+  animId = requestAnimationFrame(loop)
+
+  return {
+    burst: (cx, cy) => burst(cx, cy),
+    destroy: () => {
+      destroyed = true
+      if (animId) cancelAnimationFrame(animId)
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('resize', onResize)
+    }
+  }
+}
 
 export default {
   name: 'App',
@@ -120,6 +292,39 @@ export default {
       introOverlayVisible.value = false
     }
     provide('triggerIntroOverlay', triggerIntroOverlay)
+
+    // 粒子系统 — 遮罩显示时初始化，隐藏时销毁
+    const particleCanvas = ref(null)
+    let particleSystem = null
+
+    watch(introOverlayVisible, async (visible) => {
+      if (visible) {
+        await nextTick()
+        if (particleCanvas.value) {
+          particleSystem = initParticles(particleCanvas.value)
+        }
+      } else {
+        if (particleSystem) {
+          particleSystem.destroy()
+          particleSystem = null
+        }
+      }
+    })
+
+    function onIntroClick(e) {
+      if (particleSystem && particleSystem.burst) {
+        particleSystem.burst(e.clientX, e.clientY)
+      }
+      closeIntroOverlay()
+      // 头像点击时手动触发音乐（click 被 .stop 拦截无法到达 document）
+      if (musicAudioRef.value) {
+        if (!musicAudioRef.value.src) {
+          musicAudioRef.value.src = '/music/bg.mp3'
+          musicAudioRef.value.load()
+        }
+        musicAudioRef.value.play().catch(() => {})
+      }
+    }
 
     // 路由守卫：会话内只弹一次
     const removeGuard = router.beforeEach((to) => {
@@ -198,12 +403,13 @@ export default {
 
     return {
       wallpaperRef,
+      particleCanvas,
       effectiveTheme,
       effectiveBgMode,
       isHomeRoute,
       isIntroDone,
       introOverlayVisible,
-      closeIntroOverlay,
+      onIntroClick,
       themeIcon,
       toggleTheme,
       toastVisible,
@@ -405,14 +611,46 @@ body {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #0f1117;
+  background: #0a0c10;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  overflow: hidden;
+}
+
+/* 模糊壁纸背景层 */
+.intro-bg-blur {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  filter: blur(50px);
+  opacity: 0.13;
+  transform: scale(1.1);
+}
+
+/* 噪点纹理层 */
+.intro-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* Canvas 粒子层 */
+.intro-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .intro-avatar-wrapper {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -436,9 +674,9 @@ body {
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  background: conic-gradient(#a78bfa, #6366f1, #ec4899, #a78bfa);
+  background: conic-gradient(#3b82f6, #8b5cf6, #a78bfa, #3b82f6);
   animation: spin 6s linear infinite;
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -448,7 +686,7 @@ body {
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #a78bfa, #6366f1);
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -458,6 +696,7 @@ body {
   cursor: pointer;
   animation: intro-pulse 2s ease-in-out infinite;
   user-select: none;
+  box-shadow: 0 0 40px rgba(99, 102, 241, 0.25);
 }
 
 @keyframes intro-pulse {
@@ -487,6 +726,15 @@ body {
   z-index: 0;
   pointer-events: none;
   transition: opacity 0.6s ease;
+}
+.app-wallpaper-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 #app.wallpaper-active .app-navbar {
   background: rgba(255, 255, 255, 0.01);

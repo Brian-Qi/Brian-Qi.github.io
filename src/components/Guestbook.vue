@@ -97,13 +97,11 @@
 
 <script>
 import { ref, onMounted, nextTick } from 'vue'
-import { useRoute } from 'vue-router'
 import { getMessages, addMessage, deleteMessage as supabaseDeleteMessage } from '../utils/supabase'
 
 export default {
   name: 'Guestbook',
   setup() {
-    const route = useRoute()
     const messages = ref([])
     const newMessage = ref('')
     const showSignature = ref(false)
@@ -115,10 +113,6 @@ export default {
     const passwordError = ref(false)
     const passwordInput = ref(null)
     let isDeleting = false
-
-    if (route.query.admin === 'true') {
-      // isAdmin.value = true
-    }
 
     const exitAdmin = () => {
       isAdmin.value = false

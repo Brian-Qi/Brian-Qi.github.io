@@ -47,7 +47,7 @@
 
       <div class="construction-zone">
         <div><span class="emoji-big">🛸</span> 正在调试虫洞</div>
-        <div><span class="emoji-big">🤖</span> 与AI斗嘴中</div>
+        <div><span class="emoji-big">🤖</span> 与 AI 斗嘴中</div>
         <div><span class="emoji-big">🧪</span> 锟斤拷烫烫烫</div>
       </div>
 
