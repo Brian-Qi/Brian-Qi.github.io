@@ -135,7 +135,7 @@ export default {
       {
         type: 'multiple',
         text: '关于以下关于作者正确的(多选):',
-        options: ['香香软软小蛋糕','编程用微软大战代码','觉得mcm是好老师','原神nb'],
+        options: ['香香软软小蛋糕','编程用微软大战代码','可可爱爱小猫娘','原神nb'],
         correct: [1,3],
         failOnWrong: true,
         scored: false,
