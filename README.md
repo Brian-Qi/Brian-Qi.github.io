@@ -13,10 +13,10 @@
 - **前端框架**：Vue 3 + Composition API
 - **构建工具**：Vue CLI 5（vue-cli-service）
 - **路由管理**：Vue Router 4（全路由懒加载，History 模式）
-- **数据存储**：Supabase（留言墙，通过环境变量配置，未配置时自动降级）
+- **数据存储**：自建 Node 后端（`/api`，MySQL 存储留言墙数据，部署于服务器 `/opt/guestbook-api`）
 - **样式方案**：SCSS + CSS 自定义属性
 - **字体**：LXGW WenKai 霞鹜文楷（npm 包）、Great Vibes、DigifaceWide（本地字体）
-- **部署**：GitHub Pages（gh-pages）+ Netlify（Serverless Functions）
+- **部署**：Nginx 自建服务器（站点静态资源 + `/api` 反向代理到后端）；仓库另备 GitHub Pages（gh-pages）
 
 ## 📁 项目结构
 
@@ -45,7 +45,8 @@ briandolph_test/
 │   │   ├── WhoIAm.vue             # 关于我 `/who_i_am`
 │   │   ├── CompanyInfo.vue        # 公司信息弹窗
 │   │   ├── LyricBar.vue           # 桌面歌词栏
-│   │   ├── Guestbook.vue          # 留言墙
+│   │   ├── Guestbook.vue          # 留言墙（走 `/api` 后端；按住标题 3 秒进控制台）
+│   │   ├── AdminPanel.vue         # 留言墙管理控制台（留言 / 改密 / 管理员）
 │   │   ├── DailyFortune.vue       # 每日运势
 │   │   ├── SecretQuiz.vue         # 秘密答题
 │   │   ├── SecretRoom.vue         # 密室彩蛋
@@ -61,7 +62,7 @@ briandolph_test/
 │   │   └── mobile-utils.css
 │   ├── utils/
 │   │   ├── storage.js             # localStorage 统一管理
-│   │   ├── supabase.js            # Supabase 客户端（留言墙）
+│   │   ├── guestbook-api.js       # 留言墙 `/api` 接口层（含管理员鉴权）
 │   │   ├── helpers.js             # 工具函数（simpleHash 等）
 │   │   ├── router-persistence.js  # 路由持久化
 │   │   ├── env-test.js            # 环境变量自检
@@ -138,9 +139,9 @@ briandolph_test/
 - 单人跑团入口
 
 ### 📝 留言墙 `/guestbook`
-- 匿名 / 署名可选
-- Supabase 云端存储，跨设备同步（未配置时自动降级）
-- 管理员密码管理，管理员可删除留言
+- 匿名 / 署名可选，支持按页加载（每页 10 条）与点赞
+- 数据由自建 Node 后端（`/api`）存储于 MySQL，跨设备同步
+- 按住标题约 3 秒进入「控制台」：管理员按权重分级，可发布 / 删除留言、修改密码、由最高权重管理员增删管理员账号
 
 ### 🎲 单人跑团（隐藏彩蛋游戏）
 - 秘密房间入口 → 选择剧本（当前 1 个：遗落之境）

@@ -13,7 +13,6 @@
     "readme": "git add README.md && git commit -m \"update README\" && git push"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.99.3",
     "core-js": "^3.8.3",
     "lxgw-wenkai-webfont": "^1.7.0",
     "vue": "^3.2.13",
