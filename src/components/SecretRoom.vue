@@ -42,6 +42,14 @@
             </div>
           </div>
         </a>
+        
+        <div class="arg-modal-more">
+          <div class="arg-modal-more-icon">🚧</div>
+          <div class="arg-modal-more-text">
+            <h4>敬请期待</h4>
+            <p>这里不止放一个项目，新的还在路上。</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -212,6 +220,37 @@ h1 {
 .arg-modal .arg-card {
   width: 100%;
   margin-bottom: 0;
+}
+
+.arg-modal-more {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.9rem;
+  padding: 0.9rem 1.2rem;
+  border: 1px dashed var(--app-border-dark, rgba(66, 80, 96, 0.5));
+  border-radius: 20px;
+  background: var(--app-btn-secondary-bg);
+  opacity: 0.75;
+}
+
+.arg-modal-more-icon {
+  font-size: 1.6rem;
+  min-width: 36px;
+  text-align: center;
+  filter: grayscale(0.2);
+}
+
+.arg-modal-more-text h4 {
+  font-size: 0.95rem;
+  color: var(--app-text);
+  margin-bottom: 0.15rem;
+}
+
+.arg-modal-more-text p {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--app-fun-text);
 }
 
 .arg-modal-close {
