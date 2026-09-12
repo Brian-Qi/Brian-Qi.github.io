@@ -143,6 +143,20 @@ h1 {
   box-shadow: 0 0 30px rgba(255, 105, 180, 0.6);
 }
 
+/* 三个入口按钮尺寸统一（需 !important 覆盖全局触摸/移动端样式） */
+.guestbook-button,
+.run-game-button,
+.arg-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: min(220px, 80vw) !important;
+  padding: 1rem 2rem !important;
+  font-size: 1.2rem !important;
+  line-height: 1.5 !important;
+  box-sizing: border-box !important;
+}
+
 .arg-card {
   display: flex;
   align-items: center;
@@ -310,9 +324,9 @@ p {
     font-size: 2rem;
   }
   
-  .guestbook-button, .run-game-button {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+  .guestbook-button, .run-game-button, .arg-button {
+    padding: 0.8rem 1.5rem !important;
+    font-size: 1rem !important;
   }
 }
 </style>
