@@ -62,7 +62,7 @@ briandolph_test/
 │   │   └── mobile-utils.css
 │   ├── utils/
 │   │   ├── storage.js             # localStorage 统一管理
-│   │   ├── guestbook-api.js       # 留言墙 `/api` 接口层（含管理员鉴权）
+│   │   ├── messages.js            # 留言墙 `/api` 数据层（含管理员鉴权）
 │   │   ├── helpers.js             # 工具函数（simpleHash 等）
 │   │   ├── router-persistence.js  # 路由持久化
 │   │   ├── env-test.js            # 环境变量自检
