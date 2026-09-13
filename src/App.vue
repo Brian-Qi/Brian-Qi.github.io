@@ -311,14 +311,6 @@ export default {
         particleSystem.burst(e.clientX, e.clientY)
       }
       closeIntroOverlay()
-      // 头像点击时手动触发音乐（click 被 .stop 拦截无法到达 document）
-      if (musicAudioRef.value) {
-        if (!musicAudioRef.value.src) {
-          musicAudioRef.value.src = '/music/bg.mp3'
-          musicAudioRef.value.load()
-        }
-        musicAudioRef.value.play().catch(() => {})
-      }
     }
 
     // 路由守卫：会话内只弹一次
@@ -331,10 +323,6 @@ export default {
     // 提供给子组件使用
     provide('showToast', showToast)
     provide('bgMode', effectiveBgMode)
-
-    // ===== 音乐播放器 =====
-    const musicAudioRef = ref(null)
-    provide('musicAudio', musicAudioRef)
 
     // ===== 主题同步到 body =====
     function applyThemeToBody(t) {
