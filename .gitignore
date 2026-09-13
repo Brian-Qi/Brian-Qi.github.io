@@ -31,3 +31,6 @@ pnpm-debug.log*
 
 # 本地归档（旧组件与已下线素材，仅本地保留，不入库）
 backup/
+# �����ô������
+/dist_new.tgz
+*.tgz

@@ -7,7 +7,7 @@
     <nav class="app-navbar">
       <div class="app-navbar-inner">
         <span class="app-nav-logo">Briandolph Qi</span>
-        <div class="app-nav-actions" v-if="!isHomeRoute">
+        <div class="app-nav-actions">
           <button class="app-theme-toggle" @click="toggleTheme"
             :title="themeIcon === '🌙' ? '切换浅色模式' : '切换深色模式'"
             :aria-label="themeIcon === '🌙' ? '切换浅色模式' : '切换深色模式'">
@@ -34,7 +34,7 @@
         <div class="intro-avatar-wrapper" @click.stop="onIntroClick">
           <div class="intro-avatar-box">
             <div class="intro-avatar-ring"></div>
-            <div class="intro-avatar-inner">BQ</div>
+            <div class="intro-avatar-inner"><img :src="avatar" alt="" /></div>
           </div>
           <p class="intro-hint">点击进入</p>
         </div>
@@ -47,6 +47,7 @@
 import { ref, computed, watch, onMounted, onUnmounted, provide, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getItem, setItem, hasItem } from './utils/storage'
+import avatar from '@/assets/avatar.webp'
 
 // 模块级标记 — 不依赖 Vue 响应式，一次会话只触发一次遮罩
 let _introDismissed = false
@@ -224,16 +225,15 @@ export default {
     const route = useRoute()
     const router = useRouter()
 
-    // ===== 首页路由判定（首页固定深色、非首页可切主题） =====
+    // ===== 首页路由判定（用于入场遮罩触发） =====
     const isHomeRoute = computed(() => route.path === '/index')
 
-    // ===== 深浅主题（非首页切换、首页固定深色） =====
+    // ===== 深浅主题（各页面都可切换） =====
     const theme = ref(getItem('app_theme', 'dark'))
-    const effectiveTheme = computed(() => isHomeRoute.value ? 'dark' : theme.value)
+    const effectiveTheme = computed(() => theme.value)
     const themeIcon = computed(() => theme.value === 'light' ? '☀️' : '🌙')
 
     function toggleTheme() {
-      if (isHomeRoute.value) return
       theme.value = theme.value === 'dark' ? 'light' : 'dark'
       setItem('app_theme', theme.value)
 
@@ -360,6 +360,7 @@ export default {
     })
 
     return {
+      avatar,
       particleCanvas,
       effectiveTheme,
       isHomeRoute,
@@ -629,18 +630,17 @@ body {
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  overflow: hidden;
+  background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.8rem;
-  font-weight: 700;
-  color: #fff;
   cursor: pointer;
   animation: intro-pulse 2s ease-in-out infinite;
   user-select: none;
   box-shadow: 0 0 40px rgba(99, 102, 241, 0.25);
 }
+.intro-avatar-inner img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 @keyframes intro-pulse {
   0%, 100% { transform: scale(1); }

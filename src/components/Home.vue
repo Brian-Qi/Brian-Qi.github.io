@@ -1,7 +1,7 @@
 <template>
   <div class="c-page">
     <div class="c-card">
-      <div class="c-avatar">BQ</div>
+      <div class="c-avatar"><img :src="avatar" alt="Briandolph Qi" /></div>
 
       <h1 class="c-name">Briandolph Qi</h1>
       <p class="c-role"><span class="c-dot"></span>Developer · 彼岸时墟游戏工作室</p>
@@ -31,7 +31,10 @@
       </div>
     </div>
 
-    <footer class="c-foot">Copyright © {{ now.year }} Briandolph Qi</footer>
+    <footer class="c-foot">
+      <span>Copyright © {{ now.year }} Briandolph Qi</span>
+      <RouterLink class="c-back" to="/">↩ 回到 ComingSoon</RouterLink>
+    </footer>
 
     <Transition name="c-fade">
       <div v-if="showCompany" class="c-mask" @click.self="showCompany = false">
@@ -46,6 +49,7 @@ import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import hitokotoData from '@/data/hitokoto.json'
 import CompanyInfo from './CompanyInfo.vue'
+import avatar from '@/assets/avatar.webp'
 
 const WEEK = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
 
@@ -111,7 +115,7 @@ export default {
     })
     onUnmounted(() => clearInterval(timer))
 
-    return { now, bioLines, toggleBio, hitokoto, fetchHitokoto, showCompany, socialLinks, onSocial }
+    return { avatar, now, bioLines, toggleBio, hitokoto, fetchHitokoto, showCompany, socialLinks, onSocial }
   }
 }
 </script>
@@ -145,19 +149,20 @@ export default {
 }
 
 .c-avatar {
-  width: 74px;
-  height: 74px;
+  width: 84px;
+  height: 84px;
   margin: 0 auto 1.4rem;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--app-accent), #6366f1);
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.5rem;
+  overflow: hidden;
+  background: #000;
   box-shadow: 0 14px 34px -12px var(--app-accent-glow);
   animation: c-rise 0.7s ease both;
+}
+.c-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .c-name {
@@ -251,7 +256,20 @@ export default {
   margin-top: 2.6rem;
   font-size: 0.75rem;
   color: var(--app-text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
 }
+
+.c-back {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--app-text-muted);
+  opacity: 0.55;
+  transition: opacity 0.25s ease, color 0.25s ease;
+}
+.c-back:hover { opacity: 1; color: var(--app-accent); }
 
 .c-mask {
   position: fixed;
