@@ -31,9 +31,6 @@
       </router-view>
     </div>
 
-    <!-- 桌面歌词 — 放在过渡动画外，避免 position:fixed 受 transform 影响 -->
-    <LyricBar v-if="isHomeRoute" />
-
     <!-- 入场动画遮罩 — 独立于路由，ComingSoon 点击后即覆盖，再切路由 -->
     <Transition name="intro-out" @after-leave="isIntroDone = true">
       <div v-if="introOverlayVisible" class="intro-overlay" @click.stop>
@@ -56,7 +53,6 @@
 import { ref, computed, watch, onMounted, onUnmounted, provide, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getItem, setItem, hasItem } from './utils/storage'
-import LyricBar from './components/LyricBar.vue'
 
 // 模块级标记 — 不依赖 Vue 响应式，一次会话只触发一次遮罩
 let _introDismissed = false
@@ -230,7 +226,6 @@ function initParticles(canvas) {
 
 export default {
   name: 'App',
-  components: { LyricBar },
   setup() {
     const route = useRoute()
     const router = useRouter()
@@ -337,7 +332,7 @@ export default {
     provide('showToast', showToast)
     provide('bgMode', effectiveBgMode)
 
-    // ===== 音乐播放器（共享给 LyricBar） =====
+    // ===== 音乐播放器 =====
     const musicAudioRef = ref(null)
     provide('musicAudio', musicAudioRef)
 
