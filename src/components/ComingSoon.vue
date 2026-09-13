@@ -15,7 +15,7 @@
           <router-link to="/who_i_am" class="name-link">
             <span class="name-highlight">Briandolph Qi</span>
           </router-link>
-          的私人网站
+          <span class="h1-plain">的私人网站</span>
         </h1>
         <div class="status-tag">
           ⏳ 目前仍在开发中 · 悄然生长
@@ -208,15 +208,21 @@ export default {
     font-size: 2.8rem;
     font-weight: 500;
     letter-spacing: -0.02em;
-    background: var(--app-gradient-text, linear-gradient(135deg, #ffffff, #c0ccd9));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     margin-bottom: 0.5rem;
     line-height: 1.2;
 
     @media (max-width: 600px) { font-size: 2rem; }
   }
+}
+
+// 渐变只挂在末尾那截文字自己身上：
+// 若挂在 h1 上，hover 时 .name-link 的 transform/filter 会与祖先的
+// background-clip:text 打架，把渐变文字重影出一层残影。
+.h1-plain {
+  background: var(--app-gradient-text, linear-gradient(135deg, #ffffff, #c0ccd9));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .name-link {

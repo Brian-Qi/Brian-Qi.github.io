@@ -19,7 +19,7 @@ router.isReady().then(() => {
   const savedRoute = getSavedRoute()
   const currentPath = router.currentRoute.value.path
   
-  if (savedRoute && savedRoute !== currentPath && shouldRestoreRoute(currentPath)) {
+  if (savedRoute && savedRoute !== currentPath && shouldRestoreRoute(currentPath, router)) {
     // 检查路由是否存在
     const matched = router.resolve(savedRoute)
     if (matched.matched.length > 0) {

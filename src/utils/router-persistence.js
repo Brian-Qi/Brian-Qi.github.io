@@ -180,21 +180,28 @@ export function clearAllRouteHistory() {
 /**
  * 检查是否应该恢复路由
  * @param {string} currentPath - 当前路径
+ * @param {Object} [router] - 路由实例（用于判断地址是否为站内已知路由）
  * @returns {boolean} 是否应该恢复
  */
-export function shouldRestoreRoute(currentPath) {
+export function shouldRestoreRoute(currentPath, router) {
+  // 地址本身就是站内已知路由时，一律以地址为准：
+  // 用户显式输入 /index_01、/index_02 等具体地址，不该被“上次访问”覆盖掉。
+  if (router && router.resolve(currentPath).matched.length > 0) {
+    return false
+  }
+
   // 如果是排除的路由，不恢复
   if (isExcludedRoute(currentPath)) {
     return false
   }
-  
+
   // 如果是成就页面，检查是否应该显示（基于解锁状态）
   if (isAchievementRoute(currentPath)) {
     const savedRoute = getSavedRoute()
     return savedRoute === currentPath
   }
-  
-  // 其他页面都允许恢复
+
+  // 地址匹配不到任何路由（例如 404 回退）时，才用上次访问的路由兜底
   return true
 }
 

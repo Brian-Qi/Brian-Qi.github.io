@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 // 路由懒加载 - 提升首屏性能
-const Index = () => import('../components/Index.vue')
-const NewIndex = () => import('../components/NewIndex.vue')
+const Home = () => import('../components/Home.vue')
 const ComingSoon = () => import('../components/ComingSoon.vue')
 const WhoIAm = () => import('../components/WhoIAm.vue')
 const Achievement01 = () => import('../components/Achievement_01.vue')
@@ -32,7 +31,11 @@ const routes = [
   {
     path: '/index',
     name: 'index',
-    component: NewIndex
+    component: Home
+  },
+  {
+    path: '/index_01',
+    redirect: '/index'
   },
   {
     path: '/who_i_am',
