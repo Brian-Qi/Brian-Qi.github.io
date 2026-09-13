@@ -1,10 +1,5 @@
 <template>
-  <div id="app" :data-theme="effectiveTheme" :class="{ 'wallpaper-active': effectiveBgMode === 'image', 'intro-mode': !isIntroDone && (isHomeRoute || introOverlayVisible) }">
-    <!-- 壁纸模式 - 全局背景层 -->
-    <div ref="wallpaperRef" class="app-wallpaper" :style="{ opacity: effectiveBgMode === 'image' ? 1 : 0 }"></div>
-    <!-- 深色模糊遮罩 - 压暗背景突出文字 -->
-    <div class="app-wallpaper-overlay" v-show="effectiveBgMode === 'image'"></div>
-
+  <div id="app" :data-theme="effectiveTheme" :class="{ 'intro-mode': !isIntroDone && (isHomeRoute || introOverlayVisible) }">
     <!-- Toast 全局提示 -->
     <div class="app-toast" :class="{ show: toastVisible }">{{ toastMessage }}</div>
 
@@ -34,7 +29,6 @@
     <!-- 入场动画遮罩 — 独立于路由，ComingSoon 点击后即覆盖，再切路由 -->
     <Transition name="intro-out" @after-leave="isIntroDone = true">
       <div v-if="introOverlayVisible" class="intro-overlay" @click.stop>
-        <div class="intro-bg-blur" :style="{ backgroundImage: `url('/壁纸.webp')` }"></div>
         <div class="intro-noise"></div>
         <canvas ref="particleCanvas" class="intro-canvas"></canvas>
         <div class="intro-avatar-wrapper" @click.stop="onIntroClick">
@@ -230,9 +224,8 @@ export default {
     const route = useRoute()
     const router = useRouter()
 
-    // ===== 首页固定壁纸，其他页面纯色背景 =====
+    // ===== 首页路由判定（首页固定深色、非首页可切主题） =====
     const isHomeRoute = computed(() => route.path === '/index')
-    const effectiveBgMode = computed(() => isHomeRoute.value ? 'image' : 'solid')
 
     // ===== 深浅主题（非首页切换、首页固定深色） =====
     const theme = ref(getItem('app_theme', 'dark'))
@@ -322,7 +315,6 @@ export default {
 
     // 提供给子组件使用
     provide('showToast', showToast)
-    provide('bgMode', effectiveBgMode)
 
     // ===== 主题同步到 body =====
     function applyThemeToBody(t) {
@@ -355,25 +347,8 @@ export default {
       }
     }, { immediate: true })
 
-    const wallpaperRef = ref(null)
-
     onMounted(() => {
       window.addEventListener('keydown', handleKeydown)
-      // 延迟加载壁纸：等首屏内容渲染完毕后再下载 83KB 的壁纸图片
-      if (wallpaperRef.value) {
-        const loadWallpaper = () => {
-          const img = new Image()
-          img.onload = () => {
-            wallpaperRef.value.style.background = 'url(\'/壁纸.webp\') center / cover no-repeat fixed'
-          }
-          img.src = '/壁纸.webp'
-        }
-        if (window.requestIdleCallback) {
-          requestIdleCallback(loadWallpaper, { timeout: 2000 })
-        } else {
-          setTimeout(loadWallpaper, 100)
-        }
-      }
     })
 
     onUnmounted(() => {
@@ -385,10 +360,8 @@ export default {
     })
 
     return {
-      wallpaperRef,
       particleCanvas,
       effectiveTheme,
-      effectiveBgMode,
       isHomeRoute,
       isIntroDone,
       introOverlayVisible,
@@ -602,19 +575,6 @@ body {
   overflow: hidden;
 }
 
-/* 模糊壁纸背景层 */
-.intro-bg-blur {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  filter: blur(50px);
-  opacity: 0.13;
-  transform: scale(1.1);
-}
-
 /* 噪点纹理层 */
 .intro-noise {
   position: absolute;
@@ -700,44 +660,6 @@ body {
 .intro-out-leave-to {
   opacity: 0;
   transform: scale(1.08);
-}
-
-/* 壁纸模式 - 导航栏毛玻璃 */
-.app-wallpaper {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease;
-}
-.app-wallpaper-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-#app.wallpaper-active .app-navbar {
-  background: rgba(255, 255, 255, 0.01);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-#app.wallpaper-active .app-theme-toggle {
-  background: rgba(255, 255, 255, 0.01);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-#app.wallpaper-active .app-theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 
 .app-navbar-inner {
