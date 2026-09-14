@@ -20,7 +20,7 @@
     <!-- 页面内容 -->
     <div class="app-content">
       <router-view v-slot="{ Component }">
-        <transition name="achievement" mode="out-in">
+        <transition :name="pageTransition" mode="out-in">
           <component :is="Component" />
         </transition>
       </router-view>
@@ -228,6 +228,11 @@ export default {
     // ===== 首页路由判定（用于入场遮罩触发） =====
     const isHomeRoute = computed(() => route.path === '/index')
 
+    // ===== 路由过渡：成就/解锁页干脆弹入，其余内容页柔和淡入 =====
+    const pageTransition = computed(() =>
+      (route.path.includes('achieve') && route.path !== '/achievements') ? 'snap' : 'page'
+    )
+
     // ===== 深浅主题（各页面都可切换） =====
     const theme = ref(getItem('app_theme', 'dark'))
     const effectiveTheme = computed(() => theme.value)
@@ -361,6 +366,7 @@ export default {
 
     return {
       avatar,
+      pageTransition,
       particleCanvas,
       effectiveTheme,
       isHomeRoute,
@@ -734,38 +740,35 @@ body {
 }
 
 /* ========== 路由过渡动画 ========== */
-.achievement-enter-active {
-  animation: shineIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+/* 内容页：柔和淡入上浮（带一点虚化），离场快速收干净 */
+.page-enter-active { animation: pageIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.page-leave-active { animation: pageOut 0.18s cubic-bezier(0.4, 0, 0.9, 0.4) both; }
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(12px); filter: blur(5px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes pageOut {
+  from { opacity: 1; transform: translateY(0); filter: blur(0); }
+  to   { opacity: 0; transform: translateY(-8px); filter: blur(4px); }
 }
 
-.achievement-leave-active {
-  animation: shineOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+/* 成就/解锁页：干脆利落的弹入 */
+.snap-enter-active { animation: snapIn 0.32s cubic-bezier(0.34, 1.45, 0.6, 1) both; }
+.snap-leave-active { animation: snapOut 0.15s cubic-bezier(0.5, 0, 0.9, 0.55) both; }
+
+@keyframes snapIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes snapOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.04); }
 }
 
-@keyframes shineIn {
-  0% {
-    opacity: 0;
-    transform: translateY(16px) scale(0.96);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes shineOut {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.98);
-  }
+@media (prefers-reduced-motion: reduce) {
+  .page-enter-active, .page-leave-active,
+  .snap-enter-active, .snap-leave-active { animation: none; }
 }
 
 /* ========== 全局响应式适配 ========== */
