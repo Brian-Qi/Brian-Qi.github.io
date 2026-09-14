@@ -263,8 +263,7 @@ export default {
       el.style.top = (y - r) + 'px'
       el.style.background = theme.value === 'light' ? '#f5f7fa' : '#0a0c0f'
       document.body.appendChild(el)
-      requestAnimationFrame(() => el.classList.add('go'))
-      setTimeout(() => el.remove(), 720)
+      setTimeout(() => el.remove(), 850)
     }
 
     function toggleTheme(e) {
@@ -729,9 +728,11 @@ body {
 /* ========== 昼夜切换：日月升降 + 天空轨 + 径向揭幕 ========== */
 .app-theme-toggle {
   position: relative;
-  width: 76px;
-  height: 36px;
-  padding: 0;
+  width: 58px !important;
+  height: 30px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
   border: 1px solid var(--app-border);
   border-radius: 999px;
   background: var(--app-bg-card);
@@ -773,29 +774,34 @@ body {
 /* 滑块：太阳沉下、月亮升起 */
 .tt-knob {
   position: absolute; top: 3px; left: 3px;
-  width: 30px; height: 30px; border-radius: 50%; overflow: hidden;
+  width: 24px; height: 24px; border-radius: 50%; overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
   transition: transform 0.55s cubic-bezier(0.34, 1.35, 0.6, 1);
 }
-.app-theme-toggle.is-night .tt-knob { transform: translateX(40px); }
+.app-theme-toggle.is-night .tt-knob { transform: translateX(28px); }
 
 .tt-sun, .tt-moon {
   position: absolute; inset: 0; border-radius: 50%;
   transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
 }
 .tt-sun { background: radial-gradient(circle at 35% 32%, #fff7cf, #ffcb45 62%, #ff9f1c); }
-.tt-moon { background: radial-gradient(circle at 64% 34%, #ffffff, #cdd7ff 56%, #98a7e6); transform: translateY(34px); }
-.app-theme-toggle.is-night .tt-sun { transform: translateY(34px); }
+.tt-moon { background: radial-gradient(circle at 64% 34%, #ffffff, #cdd7ff 56%, #98a7e6); transform: translateY(28px); }
+.app-theme-toggle.is-night .tt-sun { transform: translateY(28px); }
 .app-theme-toggle.is-night .tt-moon { transform: translateY(0); }
 
-/* 径向揭幕层 */
+/* 径向揭幕层：随放大逐步增大 α，收尾再淡出 */
 .theme-wipe {
   position: fixed; z-index: 9998; pointer-events: none; border-radius: 50%;
-  transform: scale(0); opacity: 0.96;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+  transform: scale(0); opacity: 0;
+  will-change: transform, opacity;
+  animation: theme-wipe 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards;
 }
-.theme-wipe.go { transform: scale(1); }
+@keyframes theme-wipe {
+  0%   { transform: scale(0); opacity: 0; }
+  55%  { transform: scale(1); opacity: 1; }
+  78%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .tt-sky, .tt-knob, .tt-sun, .tt-moon { transition: none; }
