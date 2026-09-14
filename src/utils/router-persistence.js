@@ -22,8 +22,7 @@ const ROUTER_CONFIG = {
     '/who_i_am/secret_quiz/achieve_true_bro',
     '/who_i_am/fortune/achieve_lucky_strike',
     '/who_i_am/fortune/achieve_turn_the_tide',
-    '/who_i_am/fortune/achieve_fate_blessed',
-    '/who_i_am/hidden_achievement_music'
+    '/who_i_am/fortune/achieve_fate_blessed'
   ],
   
   // 存储键名

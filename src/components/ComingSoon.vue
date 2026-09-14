@@ -60,9 +60,8 @@
 </template>
 
 <script>
-import { ref, onMounted, inject, nextTick } from 'vue'
+import { ref, inject, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { hasItem, setItem, STORAGE_KEYS } from '../utils/storage'
 
 export default {
   name: 'ComingSoon',
@@ -102,15 +101,6 @@ export default {
       await nextTick()            // 等 Vue 完成遮罩 DOM 挂载
       router.push('/index')      // 切路由，ComingSoon 在遮罩下退出
     }
-    
-    // 隐藏成就：第一次从 Index 返回 ComingSoon 时触发
-    onMounted(() => {
-      if (hasItem('from_index_visited') && !hasItem(STORAGE_KEYS.ACHIEVEMENTS.MUSIC_LOVER)) {
-        localStorage.removeItem('from_index_visited')
-        setItem(STORAGE_KEYS.ACHIEVEMENTS.MUSIC_LOVER, true)
-        router.push('/who_i_am/hidden_achievement_music')
-      }
-    })
     
     return {
       tmp_line,

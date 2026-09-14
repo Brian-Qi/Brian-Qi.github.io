@@ -12,7 +12,6 @@ const Achievement05 = () => import('../components/Achievement_05.vue')
 const Achievement06 = () => import('../components/Achievement_06.vue')
 const AchievementsStats = () => import('../components/AchievementsStats.vue')
 const HiddenAchievement01 = () => import('../components/HiddenAchievement_01.vue')
-const HiddenAchievement02 = () => import('../components/HiddenAchievement_02.vue')
 const SecretRoom = () => import('../components/SecretRoom.vue')
 const SecretQuiz = () => import('../components/SecretQuiz.vue')
 const Guestbook = () => import('../components/Guestbook.vue')
@@ -101,11 +100,6 @@ const routes = [
     path: '/who_i_am/fortune/achieve_fate_blessed',
     name: 'HiddenAchievement01',
     component: HiddenAchievement01
-  },
-  {
-    path: '/who_i_am/hidden_achievement_music',
-    name: 'HiddenAchievement02',
-    component: HiddenAchievement02
   },
   {
     path: '/who_i_am/secret_quiz/secret_room/run_game',

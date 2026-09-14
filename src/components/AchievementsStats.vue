@@ -275,15 +275,6 @@ export default {
         icon: '✨', 
         color: '#ffd700',
         cardClass: 'fate-blessed-card'
-      },
-      { 
-        id: 'achieve_music_lover', 
-        name: '回到起点', 
-        code: 'HIDDEN_02', 
-        desc: '从首页返回起点 — Da Capo', 
-        icon: '🔁', 
-        color: '#C084FC',
-        cardClass: 'music-lover-card'
       }
     ])
 
@@ -678,83 +669,6 @@ export default {
 }
 
 .stats-achievement-card.unlocked.fate-blessed-card:hover::before {
-  opacity: 1;
-  animation-duration: 1.5s;
-}
-
-/* 隐藏成就：回到起点 - 优雅流光边框 */
-.stats-achievement-card.unlocked.music-lover-card {
-  position: relative;
-  background: rgba(25, 30, 35, 0.85);
-  border: 2px solid transparent;
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.3),
-    0 0 25px rgba(192, 132, 252, 0.3);
-  animation: elegantGlowMusic 4s linear infinite;
-}
-
-@keyframes elegantGlowMusic {
-  0%, 100% {
-    box-shadow: 
-      0 4px 20px rgba(0, 0, 0, 0.3),
-      0 0 25px rgba(192, 132, 252, 0.3),
-      0 0 35px rgba(77, 201, 246, 0.1);
-  }
-  50% {
-    box-shadow: 
-      0 4px 20px rgba(0, 0, 0, 0.3),
-      0 0 25px rgba(77, 201, 246, 0.3),
-      0 0 35px rgba(192, 132, 252, 0.1);
-  }
-}
-
-.stats-achievement-card.unlocked.music-lover-card::before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border-radius: 27px;
-  background: linear-gradient(
-    45deg, 
-    #FFFFFF, #4DC9F6, #C084FC, #4DC9F6, #FFFFFF
-  );
-  background-size: 300% 300%;
-  z-index: -1;
-  animation: borderFlow 3s ease infinite;
-  opacity: 0.7;
-}
-
-.stats-achievement-card.unlocked.music-lover-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(25, 30, 35, 0.85);
-  border-radius: 24px;
-  z-index: -1;
-}
-
-.stats-achievement-card.unlocked.music-lover-card .card-info h3,
-.stats-achievement-card.unlocked.music-lover-card .achievement-code,
-.stats-achievement-card.unlocked.music-lover-card .achievement-desc {
-  color: #C084FC !important;
-  text-shadow: 0 0 5px rgba(192, 132, 252, 0.3);
-}
-
-.stats-achievement-card.unlocked.music-lover-card:hover {
-  animation-duration: 2s;
-  transform: translateY(-2px);
-  box-shadow: 
-    0 8px 30px rgba(0, 0, 0, 0.4),
-    0 0 35px rgba(192, 132, 252, 0.5),
-    0 0 45px rgba(77, 201, 246, 0.2);
-}
-
-.stats-achievement-card.unlocked.music-lover-card:hover::before {
   opacity: 1;
   animation-duration: 1.5s;
 }
@@ -1470,48 +1384,6 @@ export default {
 .detail-card.fate-blessed-card .detail-code-badge {
   color: #ffd700 !important;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-.detail-card.music-lover-card {
-  border: 2px solid transparent;
-  background: rgba(25, 30, 35, 0.85);
-  --ach-color: #C084FC;
-}
-
-.detail-card.music-lover-card::before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border-radius: 50px;
-  background: linear-gradient(
-    45deg,
-    #FFFFFF, #4DC9F6, #C084FC, #4DC9F6, #FFFFFF
-  );
-  background-size: 300% 300%;
-  z-index: -1;
-  animation: borderFlow 3s ease infinite;
-  opacity: 0.8;
-}
-
-.detail-card.music-lover-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(25, 30, 35, 0.9);
-  border-radius: 48px;
-  z-index: -1;
-}
-
-.detail-card.music-lover-card .detail-name,
-.detail-card.music-lover-card .detail-code-badge {
-  color: #C084FC !important;
-  text-shadow: 0 0 10px rgba(192, 132, 252, 0.5);
 }
 
 /* 成就卡片可点击样式 */

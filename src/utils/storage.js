@@ -14,7 +14,6 @@ export const STORAGE_KEYS = {
     LUCKY_STRIKE: 'achieve_05',
     TURN_TIDE: 'achieve_06',
     FATE_BLESSED: 'achieve_fate_blessed',
-    MUSIC_LOVER: 'achieve_music_lover',
     THEME_FLIPPER: 'achieve_theme_flipper'
   },
   
