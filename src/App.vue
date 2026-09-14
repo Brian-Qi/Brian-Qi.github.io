@@ -250,40 +250,44 @@ export default {
     // ===== 深浅主题（各页面都可切换） =====
     const theme = ref(getItem('app_theme', 'dark'))
     const effectiveTheme = computed(() => theme.value)
-    // 径向揭幕：新主题底色从按钮处铺开（只用 transform/opacity，GPU 合成）
-    function playThemeWipe(x, y) {
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-      const w = window.innerWidth
-      const h = window.innerHeight
-      const r = Math.hypot(Math.max(x, w - x), Math.max(y, h - y))
-      const el = document.createElement('div')
-      el.className = 'theme-wipe'
-      el.style.width = el.style.height = (r * 2) + 'px'
-      el.style.left = (x - r) + 'px'
-      el.style.top = (y - r) + 'px'
-      el.style.background = theme.value === 'light' ? '#f5f7fa' : '#0a0c0f'
-      document.body.appendChild(el)
-      setTimeout(() => el.remove(), 850)
-    }
-
     function toggleTheme(e) {
       const rect = e && e.currentTarget ? e.currentTarget.getBoundingClientRect() : null
       const x = rect ? rect.left + rect.width / 2 : window.innerWidth - 40
       const y = rect ? rect.top + rect.height / 2 : 40
-      theme.value = theme.value === 'dark' ? 'light' : 'dark'
-      setItem('app_theme', theme.value)
-      playThemeWipe(x, y)
 
-      // 主题切换计数 & 成就检测
-      const KEY = 'theme_flips_count'
-      const count = (parseInt(localStorage.getItem(KEY) || '0')) + 1
-      localStorage.setItem(KEY, count.toString())
-      if (count >= 20 && !hasItem('achieve_theme_flipper')) {
-        setItem('achieve_theme_flipper', true)
-        showToast('🏆 成就解锁：光影穿梭！')
-        setTimeout(() => {
-          router.push('/who_i_am/achievement_theme_flipper')
-        }, 1800)
+      const apply = () => {
+        theme.value = theme.value === 'dark' ? 'light' : 'dark'
+        setItem('app_theme', theme.value)
+
+        // 主题切换计数 & 成就检测
+        const KEY = 'theme_flips_count'
+        const count = (parseInt(localStorage.getItem(KEY) || '0')) + 1
+        localStorage.setItem(KEY, count.toString())
+        if (count >= 20 && !hasItem('achieve_theme_flipper')) {
+          setItem('achieve_theme_flipper', true)
+          showToast('🏆 成就解锁：光影穿梭！')
+          setTimeout(() => {
+            router.push('/who_i_am/achievement_theme_flipper')
+          }, 1800)
+        }
+      }
+
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      const root = document.documentElement
+
+      // 圆形揭幕：View Transitions 把旧主题作为底、新主题从按钮处用圆窗揭开。
+      // 内容全程都在（不是盖住再露出），所以不会有「啪」的跳变。
+      if (!reduce && typeof document.startViewTransition === 'function') {
+        root.style.setProperty('--tx', x + 'px')
+        root.style.setProperty('--ty', y + 'px')
+        root.classList.add('vt-theme')
+        const vt = document.startViewTransition(async () => {
+          apply()
+          await nextTick()
+        })
+        vt.finished.finally(() => root.classList.remove('vt-theme'))
+      } else {
+        apply()
       }
     }
 
@@ -789,24 +793,29 @@ body {
 .app-theme-toggle.is-night .tt-sun { transform: translateY(28px); }
 .app-theme-toggle.is-night .tt-moon { transform: translateY(0); }
 
-/* 径向揭幕层：随放大逐步增大 α，收尾再淡出 */
-.theme-wipe {
-  position: fixed; z-index: 9998; pointer-events: none; border-radius: 50%;
-  transform: scale(0); opacity: 0;
-  will-change: transform, opacity;
-  animation: theme-wipe 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+/* ========== 圆形揭幕（View Transitions） ========== */
+/* 切换期间关掉颜色过渡，避免新快照被抓到中间态 */
+.vt-theme #app,
+.vt-theme body,
+.vt-theme .app-navbar,
+.vt-theme .app-content { transition: none !important; }
+
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+
+/* 新主题用一扇从按钮处张开的圆窗揭开；旧主题作为底保持不动 */
+::view-transition-new(root) {
+  animation: theme-reveal 0.68s cubic-bezier(0.45, 0.05, 0.35, 1);
 }
-@keyframes theme-wipe {
-  0%   { transform: scale(0); opacity: 0; }
-  55%  { transform: scale(1); opacity: 1; }
-  78%  { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1); opacity: 0; }
+@keyframes theme-reveal {
+  from { clip-path: circle(0% at var(--tx, 100%) var(--ty, 0px)); }
+  to   { clip-path: circle(150% at var(--tx, 100%) var(--ty, 0px)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tt-sky, .tt-knob, .tt-sun, .tt-moon { transition: none; }
   .tt-star { animation: none; }
-  .theme-wipe { display: none; }
+  ::view-transition-new(root) { animation: none; }
 }
 
 /* ========== 全局 Toast ========== */
