@@ -8,10 +8,24 @@
       <div class="app-navbar-inner">
         <span class="app-nav-logo">Briandolph Qi</span>
         <div class="app-nav-actions">
-          <button class="app-theme-toggle" @click="toggleTheme"
-            :title="themeIcon === '🌙' ? '切换浅色模式' : '切换深色模式'"
-            :aria-label="themeIcon === '🌙' ? '切换浅色模式' : '切换深色模式'">
-            {{ themeIcon }}
+          <button
+            class="app-theme-toggle"
+            :class="{ 'is-night': theme === 'dark' }"
+            @click="toggleTheme"
+            :title="theme === 'dark' ? '切换到白天' : '切换到夜晚'"
+            :aria-label="theme === 'dark' ? '切换到白天' : '切换到夜晚'"
+          >
+            <span class="tt-track">
+              <span class="tt-sky tt-day"></span>
+              <span class="tt-sky tt-night">
+                <i class="tt-star"></i><i class="tt-star"></i><i class="tt-star"></i>
+                <i class="tt-star"></i><i class="tt-star"></i>
+              </span>
+              <span class="tt-knob">
+                <span class="tt-sun"></span>
+                <span class="tt-moon"></span>
+              </span>
+            </span>
           </button>
         </div>
       </div>
@@ -236,11 +250,30 @@ export default {
     // ===== 深浅主题（各页面都可切换） =====
     const theme = ref(getItem('app_theme', 'dark'))
     const effectiveTheme = computed(() => theme.value)
-    const themeIcon = computed(() => theme.value === 'light' ? '☀️' : '🌙')
+    // 径向揭幕：新主题底色从按钮处铺开（只用 transform/opacity，GPU 合成）
+    function playThemeWipe(x, y) {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      const w = window.innerWidth
+      const h = window.innerHeight
+      const r = Math.hypot(Math.max(x, w - x), Math.max(y, h - y))
+      const el = document.createElement('div')
+      el.className = 'theme-wipe'
+      el.style.width = el.style.height = (r * 2) + 'px'
+      el.style.left = (x - r) + 'px'
+      el.style.top = (y - r) + 'px'
+      el.style.background = theme.value === 'light' ? '#f5f7fa' : '#0a0c0f'
+      document.body.appendChild(el)
+      requestAnimationFrame(() => el.classList.add('go'))
+      setTimeout(() => el.remove(), 720)
+    }
 
-    function toggleTheme() {
+    function toggleTheme(e) {
+      const rect = e && e.currentTarget ? e.currentTarget.getBoundingClientRect() : null
+      const x = rect ? rect.left + rect.width / 2 : window.innerWidth - 40
+      const y = rect ? rect.top + rect.height / 2 : 40
       theme.value = theme.value === 'dark' ? 'light' : 'dark'
       setItem('app_theme', theme.value)
+      playThemeWipe(x, y)
 
       // 主题切换计数 & 成就检测
       const KEY = 'theme_flips_count'
@@ -368,12 +401,12 @@ export default {
       avatar,
       pageTransition,
       particleCanvas,
+      theme,
       effectiveTheme,
       isHomeRoute,
       isIntroDone,
       introOverlayVisible,
       onIntroClick,
-      themeIcon,
       toggleTheme,
       toastVisible,
       toastMessage
@@ -693,25 +726,81 @@ body {
   gap: 0.75rem;
 }
 
+/* ========== 昼夜切换：日月升降 + 天空轨 + 径向揭幕 ========== */
 .app-theme-toggle {
-  width: 42px;
-  height: 42px;
+  position: relative;
+  width: 76px;
+  height: 36px;
+  padding: 0;
   border: 1px solid var(--app-border);
-  border-radius: 50%;
+  border-radius: 999px;
   background: var(--app-bg-card);
   cursor: pointer;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: var(--app-text);
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+.app-theme-toggle:hover { border-color: var(--app-accent); box-shadow: 0 0 16px var(--app-accent-glow); }
+.app-theme-toggle:active { transform: scale(0.97); }
 
-.app-theme-toggle:hover {
-  border-color: var(--app-accent);
-  box-shadow: 0 0 16px var(--app-accent-glow);
-  transform: rotate(15deg);
+.tt-track { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
+
+/* 两层天空：白天在上、夜晚在下方，切换时垂直错位（日月升降） */
+.tt-sky {
+  position: absolute; inset: 0;
+  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tt-day { background: linear-gradient(180deg, #dff0ff 0%, #bfe0ff 58%, #ffe6bf 100%); }
+.tt-night {
+  background: linear-gradient(180deg, #0b1230 0%, #141a3a 60%, #1c1740 100%);
+  opacity: 0; transform: translateY(-30px);
+}
+.app-theme-toggle.is-night .tt-day { opacity: 0; transform: translateY(30px); }
+.app-theme-toggle.is-night .tt-night { opacity: 1; transform: translateY(0); }
+
+/* 星星 */
+.tt-star {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: #fff; opacity: 0.9;
+  animation: tt-twinkle 2.4s ease-in-out infinite;
+}
+.tt-star:nth-child(1) { left: 14%; top: 30%; animation-delay: -0.2s; }
+.tt-star:nth-child(2) { left: 34%; top: 62%; animation-delay: -1.1s; }
+.tt-star:nth-child(3) { left: 52%; top: 26%; animation-delay: -1.7s; }
+.tt-star:nth-child(4) { left: 68%; top: 58%; animation-delay: -0.7s; }
+.tt-star:nth-child(5) { left: 82%; top: 36%; animation-delay: -1.4s; }
+@keyframes tt-twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+
+/* 滑块：太阳沉下、月亮升起 */
+.tt-knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 30px; height: 30px; border-radius: 50%; overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  transition: transform 0.55s cubic-bezier(0.34, 1.35, 0.6, 1);
+}
+.app-theme-toggle.is-night .tt-knob { transform: translateX(40px); }
+
+.tt-sun, .tt-moon {
+  position: absolute; inset: 0; border-radius: 50%;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+}
+.tt-sun { background: radial-gradient(circle at 35% 32%, #fff7cf, #ffcb45 62%, #ff9f1c); }
+.tt-moon { background: radial-gradient(circle at 64% 34%, #ffffff, #cdd7ff 56%, #98a7e6); transform: translateY(34px); }
+.app-theme-toggle.is-night .tt-sun { transform: translateY(34px); }
+.app-theme-toggle.is-night .tt-moon { transform: translateY(0); }
+
+/* 径向揭幕层 */
+.theme-wipe {
+  position: fixed; z-index: 9998; pointer-events: none; border-radius: 50%;
+  transform: scale(0); opacity: 0.96;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.theme-wipe.go { transform: scale(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-sky, .tt-knob, .tt-sun, .tt-moon { transition: none; }
+  .tt-star { animation: none; }
+  .theme-wipe { display: none; }
 }
 
 /* ========== 全局 Toast ========== */
@@ -804,11 +893,6 @@ h2 {
 }
 
 @media (max-width: 768px) {
-  .app-theme-toggle {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
-  }
 
   .intro-avatar-inner {
     width: 100px;
