@@ -219,15 +219,6 @@ export default {
         cardClass: 'achievement-03-card'
       },
       {
-        id: 'achieve_04', name: '最佳损友', code: 'Achievement_04',
-        desc: '答对所有题目，获得损友认证', icon: '🤝', color: '#6ab0ff',
-        hiddenDesc: '▓▓▓▓ ▓▓▓▓ ▓▓▓▓ ▓▓',
-        unlocked: false,
-        shaking: false,
-        redFlash: false,
-        cardClass: 'best-friend-card'
-      },
-      {
         id: 'achieve_05', name: '鸿运当头', code: 'Achievement_05',
         desc: '首次在运势页面抽到大吉', icon: '🍀', color: '#42b983',
         hiddenDesc: '▓▓▓▓ ▓▓▓▓ ▓▓▓▓ ▓▓',
@@ -517,16 +508,6 @@ export default {
 }
 .stats-achievement-card.unlocked.achievement-03-card:hover {
   box-shadow: 0 0 15px rgba(80, 255, 128, 0.6);
-  transform: translateY(-2px);
-}
-
-/* 成就04：最佳损友 - 蓝色边框 */
-.stats-achievement-card.unlocked.best-friend-card {
-  border: 2px solid #6ab0ff;
-  box-shadow: 0 0 8px rgba(106, 176, 255, 0.4);
-}
-.stats-achievement-card.unlocked.best-friend-card:hover {
-  box-shadow: 0 0 15px rgba(106, 176, 255, 0.6);
   transform: translateY(-2px);
 }
 
@@ -1317,11 +1298,6 @@ export default {
 .detail-card.achievement-03-card {
   border-color: #50ff80;
   --ach-color: #50ff80;
-}
-
-.detail-card.best-friend-card {
-  border-color: #6ab0ff;
-  --ach-color: #6ab0ff;
 }
 
 .detail-card.lucky-strike-card {

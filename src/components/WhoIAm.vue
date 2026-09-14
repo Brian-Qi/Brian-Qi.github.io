@@ -119,10 +119,9 @@
             <span v-else-if="eggCount > 20" class="secret-message" style="margin-left: auto;">给你闲的(*￣︿￣)</span>
             <span v-else-if="eggCount > 10" class="secret-message" style="margin-left: auto;">你还真点啊？</span>
           </div>
-          <div class="egg-item" @click="handleSecretClick">
-            <span>🤫 秘密按钮</span>
-            <span v-if="hasVisitedSecretRoom" class="secret-message" style="margin-left: auto;">🔓 已解锁，点击进入</span>
-            <span v-else-if="showSecret" class="secret-message" style="margin-left: auto;">并没有什么秘密</span>
+          <div class="egg-item" @click="goToMoyu">
+            <span>🐟 摸鱼区</span>
+            <span class="secret-message" style="margin-left: auto;">点击进入 →</span>
           </div>
         </div>
       </section>
@@ -149,9 +148,6 @@ export default {
     const containerRef = ref(null)
     const currentSection = ref(0)
     const eggCount = ref(0)
-    const showSecret = ref(false)
-    const secretClickCount = ref(0)
-    const hasVisitedSecretRoom = ref(localStorage.getItem('hasVisitedSecretRoom') === 'true')
 
     let isScrolling = false
     let scrollTimeout = null
@@ -230,32 +226,20 @@ export default {
       router.push('/who_i_am/fortune')
     }
 
-    const handleSecretClick = () => {
-      if (hasVisitedSecretRoom.value) {
-        router.push('/who_i_am/secret_quiz')
-        return
-      }
-
-      secretClickCount.value++
-      showSecret.value = !showSecret.value
-
-      if (secretClickCount.value >= 20) {
-        router.push('/who_i_am/secret_quiz')
-      }
+    const goToMoyu = () => {
+      router.push('/moyu')
     }
 
     return {
       containerRef,
       currentSection,
       eggCount,
-      showSecret,
-      hasVisitedSecretRoom,
       handleWheel,
       handleTouchStart,
       handleTouchMove,
       handleTouchEnd,
       handleEggClick,
-      handleSecretClick,
+      goToMoyu,
       goToFortune,
       goToSection
     }

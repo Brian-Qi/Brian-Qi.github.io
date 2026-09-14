@@ -33,9 +33,9 @@
       </div>
       
       <div class="button-container">
-        <router-link to="/who_i_am/secret_quiz/secret_room" class="back-button">
+        <router-link to="/moyu" class="back-button">
           <span class="button-icon">←</span>
-          返回秘密空间
+          返回摸鱼区
         </router-link>
       </div>
     </div>
@@ -57,7 +57,7 @@ export default {
     
     const selectStory = (story) => {
       if (story === 'basic') {
-        router.push('/who_i_am/secret_quiz/secret_room/run_game/the_lost_realm')
+        router.push('/moyu/run_game/the_lost_realm')
       }
     }
     

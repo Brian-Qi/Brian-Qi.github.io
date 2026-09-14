@@ -19,7 +19,6 @@ const ROUTER_CONFIG = {
     '/who_i_am/achieve_idle',
     '/who_i_am/achieve_idle/achieve_super_idle',
     '/achieve_slacking',
-    '/who_i_am/secret_quiz/achieve_true_bro',
     '/who_i_am/fortune/achieve_lucky_strike',
     '/who_i_am/fortune/achieve_turn_the_tide',
     '/who_i_am/fortune/achieve_fate_blessed'

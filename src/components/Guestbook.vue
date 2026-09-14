@@ -83,9 +83,9 @@
 
       <!-- 返回按钮 -->
       <div class="button-container">
-        <router-link to="/who_i_am/secret_quiz/secret_room" class="return-button">
+        <router-link to="/moyu" class="return-button">
           <span class="button-icon">🔙</span>
-          返回秘密空间
+          返回摸鱼区
         </router-link>
       </div>
 

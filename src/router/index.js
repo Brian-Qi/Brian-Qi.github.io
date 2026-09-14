@@ -7,13 +7,11 @@ const WhoIAm = () => import('../components/WhoIAm.vue')
 const Achievement01 = () => import('../components/Achievement_01.vue')
 const Achievement02 = () => import('../components/Achievement_02.vue')
 const Achievement03 = () => import('../components/Achievement_03.vue')
-const Achievement04 = () => import('../components/Achievement_04.vue')
 const Achievement05 = () => import('../components/Achievement_05.vue')
 const Achievement06 = () => import('../components/Achievement_06.vue')
 const AchievementsStats = () => import('../components/AchievementsStats.vue')
 const HiddenAchievement01 = () => import('../components/HiddenAchievement_01.vue')
-const SecretRoom = () => import('../components/SecretRoom.vue')
-const SecretQuiz = () => import('../components/SecretQuiz.vue')
+const Moyu = () => import('../components/Moyu.vue')
 const Guestbook = () => import('../components/Guestbook.vue')
 const DailyFortune = () => import('../components/DailyFortune.vue')
 const RunGameSelector = () => import('../components/RunGameSelector.vue')
@@ -62,19 +60,9 @@ const routes = [
     component: AchievementsStats
   },
   {
-    path: '/who_i_am/secret_quiz/secret_room',
-    name: 'SecretRoom',
-    component: SecretRoom
-  },
-  {
-    path: '/who_i_am/secret_quiz',
-    name: 'SecretQuiz',
-    component: SecretQuiz
-  },
-  {
-    path: '/who_i_am/secret_quiz/achieve_true_bro',
-    name: 'Achievement04',
-    component: Achievement04
+    path: '/moyu',
+    name: 'Moyu',
+    component: Moyu
   },
   {
     path: '/guestbook',
@@ -102,15 +90,20 @@ const routes = [
     component: HiddenAchievement01
   },
   {
-    path: '/who_i_am/secret_quiz/secret_room/run_game',
+    path: '/moyu/run_game',
     name: 'RunGameSelector',
     component: RunGameSelector
   },
   {
-    path: '/who_i_am/secret_quiz/secret_room/run_game/the_lost_realm',
+    path: '/moyu/run_game/the_lost_realm',
     name: 'TheLostRealm',
     component: TheLostRealm
   },
+  // 旧「秘密空间」路径重定向到摸鱼区
+  { path: '/who_i_am/secret_quiz', redirect: '/moyu' },
+  { path: '/who_i_am/secret_quiz/secret_room', redirect: '/moyu' },
+  { path: '/who_i_am/secret_quiz/secret_room/run_game', redirect: '/moyu/run_game' },
+  { path: '/who_i_am/secret_quiz/secret_room/run_game/the_lost_realm', redirect: '/moyu/run_game/the_lost_realm' },
   {
     path: '/who_i_am/achievement_curious',
     name: 'Achievement07',

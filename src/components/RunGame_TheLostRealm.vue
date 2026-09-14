@@ -431,7 +431,7 @@ export default {
     
     const confirmBack = () => {
       showBackDialog.value = false
-      router.push('/who_i_am/secret_quiz/secret_room/run_game')
+        router.push('/moyu/run_game')
     }
 
     // 格式化日志文本，为玩家选择添加颜色

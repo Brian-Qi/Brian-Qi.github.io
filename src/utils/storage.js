@@ -10,7 +10,6 @@ export const STORAGE_KEYS = {
     IDLE: 'achieve_idle',
     SUPER_IDLE: 'achieve_02',
     SLACKING: 'achieve_03',
-    TRUE_BRO: 'achieve_04',
     LUCKY_STRIKE: 'achieve_05',
     TURN_TIDE: 'achieve_06',
     FATE_BLESSED: 'achieve_fate_blessed',
@@ -19,9 +18,7 @@ export const STORAGE_KEYS = {
   
   // 游戏相关
   GAME: {
-    ENDINGS: 'story_endings',
-    SECRET_ROOM_VISITED: 'hasVisitedSecretRoom',
-    SECRET_ROOM_UNLOCKED: 'secret_room_unlocked'
+    ENDINGS: 'story_endings'
   },
   
   // 运势相关
