@@ -377,15 +377,12 @@ export default {
       }
     }
 
-    // ===== 除成就界面外全局禁用滚动 =====
-    watch(() => route.path, (path) => {
-      if (path.includes('achieve')) {
-        document.documentElement.style.overflow = ''
-        document.body.style.overflow = ''
-      } else {
-        document.documentElement.style.overflow = 'hidden'
-        document.body.style.overflow = 'hidden'
-      }
+    // ===== 全局允许纵向滚动 =====
+    // 页面多为“满屏”设计，屏幕偏矮（小笔记本 / 系统缩放 125%+）或浏览器缩小窗口时，
+    // 内容会高于视口；此前一律 overflow:hidden 会把底部裁掉且用户无法滚动，故不再禁用。
+    watch(() => route.path, () => {
+      document.documentElement.style.overflow = ''
+      document.body.style.overflow = ''
     }, { immediate: true })
 
     onMounted(() => {
