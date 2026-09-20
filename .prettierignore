@@ -1,0 +1,9 @@
+dist/
+node_modules/
+public/
+backup/
+netlify/
+package-lock.json
+*.tgz
+*.bat
+*.md

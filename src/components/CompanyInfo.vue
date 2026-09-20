@@ -55,9 +55,7 @@
 
         <!-- 关闭按钮 -->
         <div class="footer-return">
-          <button class="return-btn" @click="$emit('close')">
-            ← 关闭
-          </button>
+          <button class="return-btn" @click="$emit('close')">← 关闭</button>
         </div>
       </div>
 
@@ -65,7 +63,9 @@
       <div class="card-right">
         <div class="scope-block">
           <div class="scope-title">经营范围</div>
-          <p class="scope-text">一般项目：数字文化创意软件开发；数字文化创意内容应用服务；数字文化创意技术装备销售；数字内容制作服务（不含出版发行）；文化场馆用智能设备制造；计算机软硬件及外围设备制造；软件开发；大数据服务；数据处理和存储支持服务；信息技术咨询服务；动漫游戏开发；非物质文化遗产保护；软件销售；软件外包服务；人工智能基础软件开发；网络与信息安全软件开发；区块链技术相关软件和服务；人工智能应用软件开发；人工智能理论与算法软件开发；技术服务、技术开发、技术咨询、技术交流、技术转让、技术推广；建筑信息模型技术开发、技术咨询、技术服务</p>
+          <p class="scope-text">
+            一般项目：数字文化创意软件开发；数字文化创意内容应用服务；数字文化创意技术装备销售；数字内容制作服务（不含出版发行）；文化场馆用智能设备制造；计算机软硬件及外围设备制造；软件开发；大数据服务；数据处理和存储支持服务；信息技术咨询服务；动漫游戏开发；非物质文化遗产保护；软件销售；软件外包服务；人工智能基础软件开发；网络与信息安全软件开发；区块链技术相关软件和服务；人工智能应用软件开发；人工智能理论与算法软件开发；技术服务、技术开发、技术咨询、技术交流、技术转让、技术推广；建筑信息模型技术开发、技术咨询、技术服务
+          </p>
           <p class="scope-note">（依法须经批准的项目，经相关部门批准后方可开展经营活动）</p>
         </div>
       </div>
@@ -96,7 +96,13 @@ export default {
   border-radius: 6px;
   position: relative;
   transition: all 0.3s ease;
-  font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Segoe UI',
+    'PingFang SC',
+    'Microsoft YaHei',
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 /* ---------- 顶部封条 ---------- */

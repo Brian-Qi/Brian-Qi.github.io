@@ -11,7 +11,7 @@ export function simpleHash(str) {
   let hash = 0
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i)
-    hash = ((hash << 5) - hash) + char
+    hash = (hash << 5) - hash + char
     hash = hash & hash // 转换为32位整数
   }
   return Math.abs(hash)
@@ -25,14 +25,14 @@ export function simpleHash(str) {
  */
 export function formatDate(date, format = 'YYYY-MM-DD') {
   const d = new Date(date)
-  
+
   const year = d.getFullYear()
   const month = String(d.getMonth() + 1).padStart(2, '0')
   const day = String(d.getDate()).padStart(2, '0')
   const hours = String(d.getHours()).padStart(2, '0')
   const minutes = String(d.getMinutes()).padStart(2, '0')
   const seconds = String(d.getSeconds()).padStart(2, '0')
-  
+
   return format
     .replace('YYYY', year)
     .replace('MM', month)
@@ -94,7 +94,7 @@ export function throttle(func, limit = 300) {
     if (!inThrottle) {
       func(...args)
       inThrottle = true
-      setTimeout(() => inThrottle = false, limit)
+      setTimeout(() => (inThrottle = false), limit)
     }
   }
 }
@@ -107,11 +107,11 @@ export function throttle(func, limit = 300) {
 export function deepClone(obj) {
   if (obj === null || typeof obj !== 'object') return obj
   if (obj instanceof Date) return new Date(obj.getTime())
-  if (obj instanceof Array) return obj.map(item => deepClone(item))
-  
+  if (obj instanceof Array) return obj.map((item) => deepClone(item))
+
   const clonedObj = {}
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       clonedObj[key] = deepClone(obj[key])
     }
   }
@@ -128,7 +128,7 @@ export function deepClone(obj) {
 export function getSafe(obj, path, defaultValue = undefined) {
   const keys = path.split('.')
   let result = obj
-  
+
   for (const key of keys) {
     if (result && typeof result === 'object' && key in result) {
       result = result[key]
@@ -136,7 +136,7 @@ export function getSafe(obj, path, defaultValue = undefined) {
       return defaultValue
     }
   }
-  
+
   return result !== undefined ? result : defaultValue
 }
 
@@ -146,7 +146,7 @@ export function getSafe(obj, path, defaultValue = undefined) {
  * @returns {Promise} Promise对象
  */
 export function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 /**
@@ -186,12 +186,12 @@ export function checkPasswordStrength(password) {
     hasNumber: /\d/.test(password),
     hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(password)
   }
-  
+
   const passed = Object.values(requirements).filter(Boolean).length
   let strength = 'weak'
-  
+
   if (passed >= 4) strength = 'strong'
   else if (passed >= 3) strength = 'medium'
-  
+
   return { strength, requirements }
 }

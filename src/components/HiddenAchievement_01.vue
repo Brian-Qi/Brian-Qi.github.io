@@ -20,7 +20,9 @@
       <div class="achievement-reward">
         <div class="reward-badge">
           <div class="fortune-colors">
-            <span v-for="(item, i) in fortunesList" :key="i" class="fortune-tag" :style="{ background: item.color }">{{ item.name }}</span>
+            <span v-for="(item, i) in fortunesList" :key="i" class="fortune-tag" :style="{ background: item.color }">{{
+              item.name
+            }}</span>
           </div>
           <div class="reward-text">
             <p>集齐七种运势</p>
@@ -35,7 +37,9 @@
       </div>
     </div>
     <div class="button-container">
-      <router-link to="/who_i_am/fortune" class="return-button"><span class="button-icon">❌</span>关闭界面</router-link>
+      <router-link to="/who_i_am/fortune" class="return-button"
+        ><span class="button-icon">❌</span>关闭界面</router-link
+      >
     </div>
     <div class="disclaimer">
       <p>* 能集齐所有运势，已是天选之人 *</p>
@@ -45,7 +49,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 export default {
   name: 'HiddenAchievement_01',
   setup() {
@@ -80,7 +84,11 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   position: relative;
   overflow: hidden;
   transition: background var(--app-transition);
@@ -126,9 +134,15 @@ export default {
 }
 
 @keyframes titleFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .stars {
@@ -139,8 +153,14 @@ export default {
 }
 
 @keyframes twinkle {
-  from { opacity: 0.5; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1.1); }
+  from {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .achievement-card {
@@ -153,14 +173,20 @@ export default {
   padding: 3rem 2rem;
   position: relative;
   z-index: 1;
-  box-shadow: 0 30px 50px -20px rgba(0,0,0,0.8),
-              0 0 30px rgba(255, 215, 0, 0.2);
+  box-shadow:
+    0 30px 50px -20px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(255, 215, 0, 0.2);
   animation: cardFloat 3s ease-in-out infinite;
 }
 
 @keyframes cardFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .card-shine {
@@ -169,12 +195,14 @@ export default {
   left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   animation: shine 3s infinite;
 }
 
 @keyframes shine {
-  to { left: 150%; }
+  to {
+    left: 150%;
+  }
 }
 
 .achievement-icon-large {
@@ -190,9 +218,16 @@ export default {
 }
 
 @keyframes bounce {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(10deg); }
-  75% { transform: rotate(-10deg); }
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
 }
 
 .achievement-name {
@@ -275,7 +310,7 @@ export default {
   font-size: 0.9rem;
   font-weight: bold;
   color: #fff;
-  text-shadow: 0 0 3px rgba(0,0,0,0.5);
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 10px currentColor;
 }
 

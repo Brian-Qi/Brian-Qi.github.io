@@ -114,6 +114,12 @@ const routes = [
     name: 'Achievement08',
     component: Achievement08
   },
+  // 兜底 404：必须放在最后。此前缺少该路由，未知地址会回退到 index.html 后白屏
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../components/NotFound.vue')
+  }
 ]
 
 const router = createRouter({
@@ -121,9 +127,6 @@ const router = createRouter({
   routes
 })
 
-
-
 // 检查是否有重定向路径
-
 
 export default router

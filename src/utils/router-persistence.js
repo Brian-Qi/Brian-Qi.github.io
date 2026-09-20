@@ -3,17 +3,16 @@
  * 用于在页面刷新后保持当前路由状态
  */
 
-import { STORAGE_KEYS } from './storage'
 
 // 路由持久化配置
 const ROUTER_CONFIG = {
   // 需要排除的路由（不保存）
   EXCLUDED_ROUTES: [
-    '/',                     // 首页
-    '/coming-soon',          // 建设中页面
-    '/achievements'          // 成就图鉴（通常作为入口点）
+    '/', // 首页
+    '/coming-soon', // 建设中页面
+    '/achievements' // 成就图鉴（通常作为入口点）
   ],
-  
+
   // 需要特殊处理的成就解锁页面
   ACHIEVEMENT_ROUTES: [
     '/who_i_am/achieve_idle',
@@ -23,7 +22,7 @@ const ROUTER_CONFIG = {
     '/who_i_am/fortune/achieve_turn_the_tide',
     '/who_i_am/fortune/achieve_fate_blessed'
   ],
-  
+
   // 存储键名
   STORAGE_KEYS: {
     LAST_ROUTE: 'last_visited_route',
@@ -38,7 +37,7 @@ const ROUTER_CONFIG = {
  * @returns {boolean} 是否排除
  */
 function isExcludedRoute(path) {
-  return ROUTER_CONFIG.EXCLUDED_ROUTES.some(route => path === route)
+  return ROUTER_CONFIG.EXCLUDED_ROUTES.some((route) => path === route)
 }
 
 /**
@@ -47,7 +46,7 @@ function isExcludedRoute(path) {
  * @returns {boolean} 是否为成就页面
  */
 function isAchievementRoute(path) {
-  return ROUTER_CONFIG.ACHIEVEMENT_ROUTES.some(route => path === route)
+  return ROUTER_CONFIG.ACHIEVEMENT_ROUTES.some((route) => path === route)
 }
 
 /**
@@ -60,34 +59,33 @@ export function saveCurrentRoute(path) {
     if (isExcludedRoute(path)) {
       return
     }
-    
+
     // 保存最后访问的路由
     localStorage.setItem(ROUTER_CONFIG.STORAGE_KEYS.LAST_ROUTE, path)
     localStorage.setItem(ROUTER_CONFIG.STORAGE_KEYS.LAST_ROUTE_TIMESTAMP, Date.now().toString())
-    
+
     // 更新路由历史（最多保存最近10个）
     const history = getRouteHistory()
     const lastEntry = history[history.length - 1]
-    
+
     // 如果最后一个不是当前路由，则添加
     if (!lastEntry || lastEntry.path !== path) {
       // 如果是成就页面，短暂保存（5分钟）
       const ttl = isAchievementRoute(path) ? 5 * 60 * 1000 : 24 * 60 * 60 * 1000 // 5分钟或24小时
-      
+
       history.push({
         path,
         timestamp: Date.now(),
         ttl
       })
-      
+
       // 限制历史记录长度
       if (history.length > 10) {
         history.shift()
       }
-      
+
       localStorage.setItem(ROUTER_CONFIG.STORAGE_KEYS.ROUTE_HISTORY, JSON.stringify(history))
     }
-    
   } catch (error) {
     // 保存失败，静默处理
   }
@@ -101,13 +99,13 @@ export function getSavedRoute() {
   try {
     const path = localStorage.getItem(ROUTER_CONFIG.STORAGE_KEYS.LAST_ROUTE)
     const timestamp = localStorage.getItem(ROUTER_CONFIG.STORAGE_KEYS.LAST_ROUTE_TIMESTAMP)
-    
+
     // 检查是否过期（超过24小时）
     if (path && timestamp) {
       const timeDiff = Date.now() - parseInt(timestamp, 10)
       const isAchievement = isAchievementRoute(path)
       const maxAge = isAchievement ? 5 * 60 * 1000 : 24 * 60 * 60 * 1000 // 5分钟或24小时
-      
+
       if (timeDiff < maxAge) {
         return path
       } else {
@@ -116,7 +114,7 @@ export function getSavedRoute() {
         return null
       }
     }
-    
+
     return null
   } catch (error) {
     return null
@@ -133,21 +131,21 @@ export function getRouteHistory() {
     if (history) {
       const parsed = JSON.parse(history)
       const now = Date.now()
-      
+
       // 过滤过期项
-      const valid = parsed.filter(entry => now - entry.timestamp < entry.ttl)
-      
+      const valid = parsed.filter((entry) => now - entry.timestamp < entry.ttl)
+
       // 如果有过期项，保存过滤后的列表
       if (valid.length !== parsed.length) {
         localStorage.setItem(ROUTER_CONFIG.STORAGE_KEYS.ROUTE_HISTORY, JSON.stringify(valid))
       }
-      
+
       return valid
     }
   } catch (error) {
     // 获取失败，静默处理
   }
-  
+
   return []
 }
 
@@ -214,7 +212,7 @@ export function routeGuard(to, from, next) {
   if (from && from.path) {
     saveCurrentRoute(from.path)
   }
-  
+
   next()
 }
 
@@ -225,7 +223,7 @@ export function routeGuard(to, from, next) {
 export function initRouterPersistence(router) {
   // 添加路由守卫
   router.beforeEach(routeGuard)
-  
+
   // 页面刷新前保存当前路由
   window.addEventListener('beforeunload', () => {
     if (router.currentRoute && router.currentRoute.value) {

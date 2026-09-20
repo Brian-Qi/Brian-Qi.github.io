@@ -1,6 +1,5 @@
 <template>
   <div class="achievement-02">
-     
     <div class="achievement-header">
       <div class="stars">
         <span v-for="n in 5" :key="n">⭐</span>
@@ -13,27 +12,27 @@
 
     <div class="achievement-card">
       <div class="card-shine"></div>
-      
+
       <div class="achievement-icon-large">
         <span class="icon-display">💥💥💥</span>
       </div>
-      
+
       <div class="achievement-name">
         <span class="achievement-code">Achievement_02</span>
         <h2>捣蛋专家</h2>
       </div>
-      
+
       <div class="achievement-divider">
         <span>✦</span>
         <span>✦</span>
         <span>✦</span>
       </div>
-      
+
       <div class="achievement-description">
         <p class="congrats">恭喜你获得成就：</p>
         <p class="highlight">捣蛋专家</p>
       </div>
-      
+
       <div class="achievement-reward">
         <div class="reward-badge">
           <span class="reward-icon">👋</span>
@@ -46,7 +45,7 @@
           <span class="reward-icon">👋</span>
         </div>
       </div>
-      
+
       <div class="achievement-footer">
         <span class="date">{{ currentDate }}</span>
         <span class="signature">—— 捣蛋认证 · 官方盖章</span>
@@ -68,7 +67,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 
 export default {
   name: 'Achievement_02',
@@ -105,7 +104,11 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -115,16 +118,22 @@ export default {
   position: absolute;
   width: 150%;
   height: 150%;
-  background: radial-gradient(circle at center, 
+  background: radial-gradient(
+    circle at center,
     rgba(255, 215, 0, 0.15) 0%,
     rgba(255, 140, 0, 0.1) 30%,
-    transparent 70%);
+    transparent 70%
+  );
   animation: rotate 30s linear infinite;
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg) translate(-10%, -10%); }
-  to { transform: rotate(360deg) translate(-10%, -10%); }
+  from {
+    transform: rotate(0deg) translate(-10%, -10%);
+  }
+  to {
+    transform: rotate(360deg) translate(-10%, -10%);
+  }
 }
 
 .achievement-header {
@@ -153,8 +162,14 @@ export default {
 }
 
 @keyframes twinkle {
-  from { opacity: 0.5; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1.1); }
+  from {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .achievement-card {
@@ -167,14 +182,20 @@ export default {
   padding: 3rem 2rem;
   position: relative;
   z-index: 1;
-  box-shadow: 0 30px 50px -20px rgba(0,0,0,0.8),
-              0 0 30px rgba(255, 215, 0, 0.2);
+  box-shadow:
+    0 30px 50px -20px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(255, 215, 0, 0.2);
   animation: cardFloat 3s ease-in-out infinite;
 }
 
 @keyframes cardFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .card-shine {
@@ -183,12 +204,14 @@ export default {
   left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   animation: shine 3s infinite;
 }
 
 @keyframes shine {
-  to { left: 150%; }
+  to {
+    left: 150%;
+  }
 }
 
 .achievement-icon-large {
@@ -214,9 +237,16 @@ export default {
 }
 
 @keyframes bounce {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(10deg); }
-  75% { transform: rotate(-10deg); }
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
 }
 
 .achievement-name {
@@ -301,9 +331,16 @@ export default {
 }
 
 @keyframes wave {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(20deg); }
-  75% { transform: rotate(-20deg); }
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(20deg);
+  }
+  75% {
+    transform: rotate(-20deg);
+  }
 }
 
 .reward-text {
@@ -408,25 +445,25 @@ export default {
   .achievement-title {
     font-size: 1.8rem;
   }
-  
+
   .achievement-name h2 {
     font-size: 2.5rem;
   }
-  
+
   .highlight {
     font-size: 2rem;
   }
-  
+
   .reward-badge {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .button-container {
     flex-direction: column;
     width: 100%;
   }
-  
+
   .return-button {
     justify-content: center;
   }

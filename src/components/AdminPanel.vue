@@ -35,7 +35,9 @@
           class="tab-btn"
           :class="{ active: activeTab === tab.key }"
           @click="activeTab = tab.key"
-        >{{ tab.icon }} {{ tab.label }}</button>
+        >
+          {{ tab.icon }} {{ tab.label }}
+        </button>
       </nav>
 
       <!-- ====== Tab 1: 留言管理 ====== -->
@@ -49,21 +51,32 @@
               placeholder="以管理员身份写点什么..."
               maxlength="200"
               @keyup.enter="doPublish"
-            >
+            />
             <button @click="doPublish" :disabled="publishing || !publishContent.trim()">
               {{ publishing ? '发布中...' : '发布' }}
             </button>
           </div>
-          <p class="publish-hint">署名将自动设为 <b>{{ isSuper ? '系统 ' + me.username : '管理员 ' + me.username }}</b></p>
+          <p class="publish-hint">
+            署名将自动设为 <b>{{ isSuper ? '系统 ' + me.username : '管理员 ' + me.username }}</b>
+          </p>
         </div>
 
         <div class="card">
-          <h3>🗑️ 留言列表 <span class="count-pill">共 {{ totalMessages }} 条</span></h3>
+          <h3>
+            🗑️ 留言列表 <span class="count-pill">共 {{ totalMessages }} 条</span>
+          </h3>
           <p v-if="messages.length === 0 && !loadingList" class="empty-tip">空空如也</p>
           <div v-for="msg in messages" :key="msg.id" class="msg-row">
             <div class="msg-main">
               <div class="msg-meta">
-                <span class="msg-author" :class="{ 'admin-super': msg.author && msg.author.startsWith('系统 '), 'admin-low': msg.author && msg.author.startsWith('管理员 ') }">{{ msg.author || '匿名摸鱼人' }}</span>
+                <span
+                  class="msg-author"
+                  :class="{
+                    'admin-super': msg.author && msg.author.startsWith('系统 '),
+                    'admin-low': msg.author && msg.author.startsWith('管理员 ')
+                  }"
+                  >{{ msg.author || '匿名摸鱼人' }}</span
+                >
                 <span class="msg-date">{{ msg.date }}</span>
                 <span class="msg-likes">❤ {{ msg.likes || 0 }}</span>
               </div>
@@ -80,9 +93,14 @@
       <section v-if="activeTab === 'password'" class="tab-panel">
         <div class="card narrow">
           <h3>🔑 修改密码</h3>
-          <input type="password" v-model="pwForm.oldPassword" placeholder="当前密码">
-          <input type="password" v-model="pwForm.newPassword" placeholder="新密码（至少 6 位）">
-          <input type="password" v-model="pwForm.confirmPassword" placeholder="确认新密码" @keyup.enter="doChangePassword">
+          <input type="password" v-model="pwForm.oldPassword" placeholder="当前密码" />
+          <input type="password" v-model="pwForm.newPassword" placeholder="新密码（至少 6 位）" />
+          <input
+            type="password"
+            v-model="pwForm.confirmPassword"
+            placeholder="确认新密码"
+            @keyup.enter="doChangePassword"
+          />
           <button class="primary-btn" @click="doChangePassword" :disabled="changingPw">
             {{ changingPw ? '修改中...' : '确认修改' }}
           </button>
@@ -96,8 +114,8 @@
         <div class="card">
           <h3>➕ 添加管理员</h3>
           <div class="admin-form">
-            <input v-model="newAdmin.username" type="text" placeholder="账号（2~32 位）" maxlength="32">
-            <input v-model="newAdmin.password" type="password" placeholder="密码（至少 6 位）" maxlength="64">
+            <input v-model="newAdmin.username" type="text" placeholder="账号（2~32 位）" maxlength="32" />
+            <input v-model="newAdmin.password" type="password" placeholder="密码（至少 6 位）" maxlength="64" />
             <div class="weight-picker">
               <label>权限等级</label>
               <select v-model.number="newAdmin.weight">
@@ -125,12 +143,7 @@
               </div>
               <div class="msg-content subtle">创建于 {{ a.createdAt }}</div>
             </div>
-            <button
-              v-if="a.username !== me.username"
-              class="del-btn"
-              @click="doDeleteAdmin(a)"
-              title="删除"
-            >✖</button>
+            <button v-if="a.username !== me.username" class="del-btn" @click="doDeleteAdmin(a)" title="删除">✖</button>
           </div>
           <p v-if="admins.length === 0" class="empty-tip">加载中...</p>
         </div>
@@ -150,7 +163,6 @@
 import { ref, computed, onMounted } from 'vue'
 import {
   getMessages,
-  addMessage,
   adminAddMessage,
   deleteMessage as apiDeleteMessage,
   adminLogout,
@@ -233,7 +245,9 @@ export default {
         hasMore.value = !!(data && data.hasMore)
         totalMessages.value = (data && data.total) || 0
         page.value += 1
-      } catch (e) { /* 保持现状 */ } finally {
+      } catch (e) {
+        /* 保持现状 */
+      } finally {
         loadingList.value = false
       }
     }
@@ -274,7 +288,7 @@ export default {
       if (!confirm('确定要删除这条留言吗？')) return
       try {
         await apiDeleteMessage(id)
-        messages.value = messages.value.filter(m => m.id !== id)
+        messages.value = messages.value.filter((m) => m.id !== id)
         totalMessages.value = Math.max(0, totalMessages.value - 1)
       } catch (e) {
         if (e.status === 401) {
@@ -306,7 +320,9 @@ export default {
         await adminChangePassword(oldPassword, newPassword)
         pwSuccess.value = true
         pwForm.value = { oldPassword: '', newPassword: '', confirmPassword: '' }
-        setTimeout(() => { pwSuccess.value = false }, 2000)
+        setTimeout(() => {
+          pwSuccess.value = false
+        }, 2000)
       } catch (e) {
         pwError.value = e.message || '修改失败'
       } finally {
@@ -328,7 +344,9 @@ export default {
         createSuccess.value = true
         newAdmin.value = { username: '', password: '', weight: 1 }
         loadAdmins()
-        setTimeout(() => { createSuccess.value = false }, 2000)
+        setTimeout(() => {
+          createSuccess.value = false
+        }, 2000)
       } catch (e) {
         if (e.status === 401) {
           emit('logout')
@@ -371,14 +389,34 @@ export default {
 
     return {
       loading,
-      me, superWeight, isSuper,
-      tabs, visibleTabs, activeTab,
-      messages, totalMessages, hasMore, loadingList,
-      publishContent, publishing,
-      pwForm, pwError, pwSuccess, changingPw,
-      admins, newAdmin, createError, createSuccess, creatingAdmin, midWeights,
-      doLogout, doPublish, doDeleteMessage,
-      doChangePassword, doCreateAdmin, doDeleteAdmin,
+      me,
+      superWeight,
+      isSuper,
+      tabs,
+      visibleTabs,
+      activeTab,
+      messages,
+      totalMessages,
+      hasMore,
+      loadingList,
+      publishContent,
+      publishing,
+      pwForm,
+      pwError,
+      pwSuccess,
+      changingPw,
+      admins,
+      newAdmin,
+      createError,
+      createSuccess,
+      creatingAdmin,
+      midWeights,
+      doLogout,
+      doPublish,
+      doDeleteMessage,
+      doChangePassword,
+      doCreateAdmin,
+      doDeleteAdmin,
       loadMoreMessages
     }
   }
@@ -453,8 +491,13 @@ export default {
   animation: pulse 1.2s ease-in-out infinite;
 }
 @keyframes pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ====== 头部 ====== */
@@ -466,8 +509,14 @@ export default {
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
-.header-left { display: flex; align-items: center; gap: 1rem; }
-.header-icon { font-size: 2.2rem; }
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.header-icon {
+  font-size: 2.2rem;
+}
 .panel-header h1 {
   font-size: 1.9rem;
   margin: 0;
@@ -476,9 +525,18 @@ export default {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.header-sub { margin: 0.2rem 0 0; color: var(--app-accent-text); font-size: 0.9rem; }
-.header-sub b { color: #ff69b4; }
-.header-right { display: flex; gap: 0.6rem; }
+.header-sub {
+  margin: 0.2rem 0 0;
+  color: var(--app-accent-text);
+  font-size: 0.9rem;
+}
+.header-sub b {
+  color: #ff69b4;
+}
+.header-right {
+  display: flex;
+  gap: 0.6rem;
+}
 .ghost-btn {
   padding: 0.45rem 1.1rem;
   background: var(--app-btn-secondary-bg);
@@ -490,8 +548,15 @@ export default {
   text-decoration: none;
   transition: all 0.2s ease;
 }
-.ghost-btn:hover { border-color: #ff69b4; color: #ff69b4; transform: scale(1.05); }
-.ghost-btn.danger:hover { border-color: #ff6b6b; color: #ff6b6b; }
+.ghost-btn:hover {
+  border-color: #ff69b4;
+  color: #ff69b4;
+  transform: scale(1.05);
+}
+.ghost-btn.danger:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
 
 /* ====== 标签页 ====== */
 .tabs {
@@ -510,7 +575,10 @@ export default {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.tab-btn:hover { border-color: #ff69b4; color: #ff69b4; }
+.tab-btn:hover {
+  border-color: #ff69b4;
+  color: #ff69b4;
+}
 .tab-btn.active {
   background: linear-gradient(135deg, rgba(255, 105, 180, 0.25), rgba(138, 109, 233, 0.25));
   border-color: #ff69b4;
@@ -527,7 +595,9 @@ export default {
   padding: 1.4rem;
   margin-bottom: 1.2rem;
 }
-.card.narrow { max-width: 440px; }
+.card.narrow {
+  max-width: 440px;
+}
 .card h3 {
   margin: 0 0 1rem;
   font-size: 1.1rem;
@@ -547,7 +617,11 @@ export default {
 }
 
 /* 留言管理 */
-.publish-row { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.publish-row {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
 .publish-row input {
   flex: 1;
   min-width: 140px;
@@ -558,7 +632,10 @@ export default {
   color: var(--app-text);
   box-sizing: border-box;
 }
-.publish-row input:focus { outline: none; border-color: #ff69b4; }
+.publish-row input:focus {
+  outline: none;
+  border-color: #ff69b4;
+}
 .publish-row button {
   padding: 0.75rem 1.6rem;
   background: linear-gradient(135deg, #ff69b4, #8a6de9);
@@ -569,8 +646,13 @@ export default {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.publish-row button:hover:not(:disabled) { transform: scale(1.04); }
-.publish-row button:disabled { opacity: 0.5; cursor: not-allowed; }
+.publish-row button:hover:not(:disabled) {
+  transform: scale(1.04);
+}
+.publish-row button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .msg-row {
   display: flex;
@@ -580,8 +662,13 @@ export default {
   padding: 0.8rem 0.6rem;
   border-bottom: 1px solid var(--app-divider);
 }
-.msg-row:last-of-type { border-bottom: none; }
-.msg-main { flex: 1; min-width: 0; }
+.msg-row:last-of-type {
+  border-bottom: none;
+}
+.msg-main {
+  flex: 1;
+  min-width: 0;
+}
 .msg-meta {
   display: flex;
   align-items: center;
@@ -590,31 +677,48 @@ export default {
   margin-bottom: 0.3rem;
   flex-wrap: wrap;
 }
-.msg-author { color: #ff69b4; font-weight: bold; }
+.msg-author {
+  color: #ff69b4;
+  font-weight: bold;
+}
 .msg-author.admin-super {
-  background: linear-gradient(90deg, #FFD700, #DAA520, #FFD700);
+  background: linear-gradient(90deg, #ffd700, #daa520, #ffd700);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: bold;
 }
 .msg-author.admin-low {
-  background: linear-gradient(90deg, #FFD700, #DAA520, #FFD700);
+  background: linear-gradient(90deg, #ffd700, #daa520, #ffd700);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: normal;
 }
-.publish-hint { font-size: 0.8rem; color: var(--app-accent-text); margin: 0.5rem 0 0; }
+.publish-hint {
+  font-size: 0.8rem;
+  color: var(--app-accent-text);
+  margin: 0.5rem 0 0;
+}
 .publish-hint b {
-  background: linear-gradient(90deg, #FFD700, #DAA520, #FFD700);
+  background: linear-gradient(90deg, #ffd700, #daa520, #ffd700);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.msg-date, .msg-likes { color: var(--app-accent-text); }
-.msg-content { font-size: 0.95rem; line-height: 1.5; word-break: break-word; }
-.msg-content.subtle { color: var(--app-accent-text); font-size: 0.85rem; }
+.msg-date,
+.msg-likes {
+  color: var(--app-accent-text);
+}
+.msg-content {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+.msg-content.subtle {
+  color: var(--app-accent-text);
+  font-size: 0.85rem;
+}
 .del-btn {
   background: none;
   border: none;
@@ -624,8 +728,15 @@ export default {
   padding: 0.2rem 0.4rem;
   transition: all 0.2s ease;
 }
-.del-btn:hover { transform: scale(1.25); color: #ff0000; }
-.empty-tip { text-align: center; color: var(--app-accent-text); padding: 1.2rem; }
+.del-btn:hover {
+  transform: scale(1.25);
+  color: #ff0000;
+}
+.empty-tip {
+  text-align: center;
+  color: var(--app-accent-text);
+  padding: 1.2rem;
+}
 .load-more {
   display: block;
   margin: 0.8rem auto 0;
@@ -636,7 +747,10 @@ export default {
   border-radius: 24px;
   cursor: pointer;
 }
-.load-more:hover { border-color: #ff69b4; color: #ff69b4; }
+.load-more:hover {
+  border-color: #ff69b4;
+  color: #ff69b4;
+}
 
 /* 权重标签 */
 .weight-tag {
@@ -654,7 +768,8 @@ export default {
 }
 
 /* 修改密码 / 管理员表单 */
-.card input, .card select {
+.card input,
+.card select {
   width: 100%;
   padding: 0.8rem 0.9rem;
   background: var(--app-input-bg);
@@ -665,8 +780,15 @@ export default {
   margin-bottom: 0.9rem;
   box-sizing: border-box;
 }
-.card input:focus, .card select:focus { outline: none; border-color: #ff69b4; }
-.card select option { background: var(--app-input-bg); color: var(--app-text); }
+.card input:focus,
+.card select:focus {
+  outline: none;
+  border-color: #ff69b4;
+}
+.card select option {
+  background: var(--app-input-bg);
+  color: var(--app-text);
+}
 .primary-btn {
   width: 100%;
   padding: 0.8rem;
@@ -679,25 +801,53 @@ export default {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.primary-btn:hover:not(:disabled) { transform: scale(1.02); }
-.primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.primary-btn:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+.primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
-.admin-form .weight-picker { margin-bottom: 0.9rem; }
+.admin-form .weight-picker {
+  margin-bottom: 0.9rem;
+}
 .weight-picker label {
   display: block;
   font-size: 0.85rem;
   color: var(--app-accent-text);
   margin-bottom: 0.4rem;
 }
-.form-error { color: #ff6b6b; font-size: 0.88rem; margin: 0.6rem 0 0; }
-.form-success { color: #69ffb4; font-size: 0.88rem; margin: 0.6rem 0 0; }
+.form-error {
+  color: #ff6b6b;
+  font-size: 0.88rem;
+  margin: 0.6rem 0 0;
+}
+.form-success {
+  color: #69ffb4;
+  font-size: 0.88rem;
+  margin: 0.6rem 0 0;
+}
 
 @media (max-width: 600px) {
-  .admin-panel { padding: 1.2rem 1rem 2.5rem; }
-  .panel-header h1 { font-size: 1.5rem; }
-  .header-icon { font-size: 1.8rem; }
-  .publish-row button { flex: 1 0 100%; }
-  .tabs { gap: 0.4rem; }
-  .tab-btn { padding: 0.45rem 0.9rem; font-size: 0.85rem; }
+  .admin-panel {
+    padding: 1.2rem 1rem 2.5rem;
+  }
+  .panel-header h1 {
+    font-size: 1.5rem;
+  }
+  .header-icon {
+    font-size: 1.8rem;
+  }
+  .publish-row button {
+    flex: 1 0 100%;
+  }
+  .tabs {
+    gap: 0.4rem;
+  }
+  .tab-btn {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.85rem;
+  }
 }
 </style>

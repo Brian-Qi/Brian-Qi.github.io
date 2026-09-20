@@ -37,37 +37,83 @@
 /* ========== 字体大小工具 ========== */
 
 /* 流体字体大小 */
-.text-fluid-xs { font-size: clamp(0.75rem, 2vw, 0.875rem) !important; }
-.text-fluid-sm { font-size: clamp(0.875rem, 2.5vw, 1rem) !important; }
-.text-fluid-md { font-size: clamp(1rem, 3vw, 1.125rem) !important; }
-.text-fluid-lg { font-size: clamp(1.125rem, 3.5vw, 1.25rem) !important; }
-.text-fluid-xl { font-size: clamp(1.25rem, 4vw, 1.5rem) !important; }
-.text-fluid-2xl { font-size: clamp(1.5rem, 5vw, 2rem) !important; }
-.text-fluid-3xl { font-size: clamp(1.75rem, 6vw, 2.5rem) !important; }
-.text-fluid-4xl { font-size: clamp(2rem, 7vw, 3rem) !important; }
+.text-fluid-xs {
+  font-size: clamp(0.75rem, 2vw, 0.875rem) !important;
+}
+.text-fluid-sm {
+  font-size: clamp(0.875rem, 2.5vw, 1rem) !important;
+}
+.text-fluid-md {
+  font-size: clamp(1rem, 3vw, 1.125rem) !important;
+}
+.text-fluid-lg {
+  font-size: clamp(1.125rem, 3.5vw, 1.25rem) !important;
+}
+.text-fluid-xl {
+  font-size: clamp(1.25rem, 4vw, 1.5rem) !important;
+}
+.text-fluid-2xl {
+  font-size: clamp(1.5rem, 5vw, 2rem) !important;
+}
+.text-fluid-3xl {
+  font-size: clamp(1.75rem, 6vw, 2.5rem) !important;
+}
+.text-fluid-4xl {
+  font-size: clamp(2rem, 7vw, 3rem) !important;
+}
 
 /* ========== 间距工具 ========== */
 
 /* 流体间距 */
-.gap-fluid-xs { gap: clamp(0.25rem, 1vw, 0.5rem) !important; }
-.gap-fluid-sm { gap: clamp(0.5rem, 1.5vw, 1rem) !important; }
-.gap-fluid-md { gap: clamp(0.75rem, 2vw, 1.5rem) !important; }
-.gap-fluid-lg { gap: clamp(1rem, 2.5vw, 2rem) !important; }
-.gap-fluid-xl { gap: clamp(1.25rem, 3vw, 2.5rem) !important; }
+.gap-fluid-xs {
+  gap: clamp(0.25rem, 1vw, 0.5rem) !important;
+}
+.gap-fluid-sm {
+  gap: clamp(0.5rem, 1.5vw, 1rem) !important;
+}
+.gap-fluid-md {
+  gap: clamp(0.75rem, 2vw, 1.5rem) !important;
+}
+.gap-fluid-lg {
+  gap: clamp(1rem, 2.5vw, 2rem) !important;
+}
+.gap-fluid-xl {
+  gap: clamp(1.25rem, 3vw, 2.5rem) !important;
+}
 
 /* 流体内边距 */
-.p-fluid-xs { padding: clamp(0.25rem, 1vw, 0.5rem) !important; }
-.p-fluid-sm { padding: clamp(0.5rem, 1.5vw, 1rem) !important; }
-.p-fluid-md { padding: clamp(0.75rem, 2vw, 1.5rem) !important; }
-.p-fluid-lg { padding: clamp(1rem, 2.5vw, 2rem) !important; }
-.p-fluid-xl { padding: clamp(1.25rem, 3vw, 2.5rem) !important; }
+.p-fluid-xs {
+  padding: clamp(0.25rem, 1vw, 0.5rem) !important;
+}
+.p-fluid-sm {
+  padding: clamp(0.5rem, 1.5vw, 1rem) !important;
+}
+.p-fluid-md {
+  padding: clamp(0.75rem, 2vw, 1.5rem) !important;
+}
+.p-fluid-lg {
+  padding: clamp(1rem, 2.5vw, 2rem) !important;
+}
+.p-fluid-xl {
+  padding: clamp(1.25rem, 3vw, 2.5rem) !important;
+}
 
 /* 流体外边距 */
-.m-fluid-xs { margin: clamp(0.25rem, 1vw, 0.5rem) !important; }
-.m-fluid-sm { margin: clamp(0.5rem, 1.5vw, 1rem) !important; }
-.m-fluid-md { margin: clamp(0.75rem, 2vw, 1.5rem) !important; }
-.m-fluid-lg { margin: clamp(1rem, 2.5vw, 2rem) !important; }
-.m-fluid-xl { margin: clamp(1.25rem, 3vw, 2.5rem) !important; }
+.m-fluid-xs {
+  margin: clamp(0.25rem, 1vw, 0.5rem) !important;
+}
+.m-fluid-sm {
+  margin: clamp(0.5rem, 1.5vw, 1rem) !important;
+}
+.m-fluid-md {
+  margin: clamp(0.75rem, 2vw, 1.5rem) !important;
+}
+.m-fluid-lg {
+  margin: clamp(1rem, 2.5vw, 2rem) !important;
+}
+.m-fluid-xl {
+  margin: clamp(1.25rem, 3vw, 2.5rem) !important;
+}
 
 /* ========== 布局工具 ========== */
 
@@ -150,12 +196,24 @@
 
 /* ========== 圆角工具 ========== */
 
-.radius-fluid-xs { border-radius: clamp(2px, 0.5vw, 4px) !important; }
-.radius-fluid-sm { border-radius: clamp(4px, 1vw, 8px) !important; }
-.radius-fluid-md { border-radius: clamp(6px, 1.5vw, 12px) !important; }
-.radius-fluid-lg { border-radius: clamp(8px, 2vw, 16px) !important; }
-.radius-fluid-xl { border-radius: clamp(12px, 2.5vw, 20px) !important; }
-.radius-fluid-2xl { border-radius: clamp(16px, 3vw, 24px) !important; }
+.radius-fluid-xs {
+  border-radius: clamp(2px, 0.5vw, 4px) !important;
+}
+.radius-fluid-sm {
+  border-radius: clamp(4px, 1vw, 8px) !important;
+}
+.radius-fluid-md {
+  border-radius: clamp(6px, 1.5vw, 12px) !important;
+}
+.radius-fluid-lg {
+  border-radius: clamp(8px, 2vw, 16px) !important;
+}
+.radius-fluid-xl {
+  border-radius: clamp(12px, 2.5vw, 20px) !important;
+}
+.radius-fluid-2xl {
+  border-radius: clamp(16px, 3vw, 24px) !important;
+}
 
 /* ========== 阴影工具 ========== */
 
@@ -182,7 +240,7 @@
     animation-duration: 0.3s !important;
     transition-duration: 0.2s !important;
   }
-  
+
   .no-animation-mobile {
     animation: none !important;
     transition: none !important;

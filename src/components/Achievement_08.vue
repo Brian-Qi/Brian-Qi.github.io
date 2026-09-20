@@ -37,7 +37,10 @@
     <div class="button-container">
       <router-link to="/achievements" class="return-button"><span class="button-icon">🏠</span>返回成就</router-link>
     </div>
-    <div class="disclaimer"><p>* 光明与黑暗，各有各的魅力 *</p><p class="small-text">※ 来回切，不累吗？ ※</p></div>
+    <div class="disclaimer">
+      <p>* 光明与黑暗，各有各的魅力 *</p>
+      <p class="small-text">※ 来回切，不累吗？ ※</p>
+    </div>
   </div>
 </template>
 
@@ -79,7 +82,7 @@ export default {
   z-index: -1;
 }
 
-[data-theme="light"] .achievement-08::before {
+[data-theme='light'] .achievement-08::before {
   background: linear-gradient(135deg, #fff8e7 0%, #ffecd2 50%, #fcb69f 100%);
 }
 
@@ -100,15 +103,30 @@ export default {
   animation: starPulse 2s ease infinite;
 }
 
-.stars span:nth-child(1) { animation-delay: 0s; }
-.stars span:nth-child(2) { animation-delay: 0.2s; }
-.stars span:nth-child(3) { animation-delay: 0.4s; }
-.stars span:nth-child(4) { animation-delay: 0.6s; }
-.stars span:nth-child(5) { animation-delay: 0.8s; }
+.stars span:nth-child(1) {
+  animation-delay: 0s;
+}
+.stars span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.stars span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.stars span:nth-child(4) {
+  animation-delay: 0.6s;
+}
+.stars span:nth-child(5) {
+  animation-delay: 0.8s;
+}
 
 @keyframes starPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.3); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
 }
 
 .achievement-title {
@@ -131,8 +149,9 @@ export default {
   text-align: center;
   position: relative;
   z-index: 1;
-  box-shadow: 0 20px 60px -20px rgba(0,0,0,0.5),
-              0 0 40px rgba(245, 166, 35, 0.2);
+  box-shadow:
+    0 20px 60px -20px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(245, 166, 35, 0.2);
   overflow: hidden;
 }
 
@@ -147,8 +166,12 @@ export default {
 }
 
 @keyframes cardShine {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .achievement-icon-large {
@@ -159,8 +182,13 @@ export default {
 }
 
 @keyframes iconFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .achievement-name {
@@ -234,8 +262,13 @@ export default {
 }
 
 @keyframes rewardPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 .reward-text {

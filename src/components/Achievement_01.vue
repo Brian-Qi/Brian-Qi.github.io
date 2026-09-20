@@ -1,6 +1,5 @@
 <template>
   <div class="achievement-01">
-
     <div class="achievement-header">
       <div class="stars">
         <span v-for="n in 5" :key="n">⭐</span>
@@ -13,28 +12,27 @@
 
     <div class="achievement-card">
       <div class="card-shine"></div>
-      
+
       <div class="achievement-icon-large">
         <span class="egg-display">{{ eggEmoji }}</span>
       </div>
-      
+
       <div class="achievement-name">
         <span class="achievement-code">Achievement_01</span>
         <h2>闲的蛋疼</h2>
       </div>
-      
+
       <div class="achievement-divider">
         <span>✦</span>
         <span>✦</span>
         <span>✦</span>
       </div>
-      
+
       <div class="achievement-description">
         <p class="congrats">恭喜你获得成就：</p>
         <p class="highlight">闲的蛋疼</p>
       </div>
-      
-      
+
       <div class="achievement-reward" @click="eggClick">
         <div class="reward-badge">
           <span class="reward-icon">👋</span>
@@ -47,7 +45,7 @@
           <span class="reward-icon">👋</span>
         </div>
       </div>
-      
+
       <div class="achievement-footer">
         <span class="date">{{ currentDate }}</span>
         <span class="signature">—— 闲者认证 · 官方盖章</span>
@@ -59,7 +57,7 @@
         <span class="button-icon">🏠</span>
         回到主界面
       </router-link>
-      
+
       <button @click="showScreenshotHint" class="screenshot-button">
         <span class="button-icon">📸</span>
         截图留念
@@ -82,7 +80,7 @@ export default {
   setup() {
     const router = useRouter()
     const eggCount = ref(0)
-    
+
     const currentDate = computed(() => {
       const date = new Date()
       const year = date.getFullYear()
@@ -101,7 +99,7 @@ export default {
         router.push('/who_i_am/achieve_idle/achieve_super_idle')
       }
     }
-    
+
     const eggEmoji = computed(() => {
       if (eggCount.value >= 50) return '💥'
       if (eggCount.value >= 40) return '🔥🔥🍳🔥🔥'
@@ -140,7 +138,11 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -149,15 +151,21 @@ export default {
   position: absolute;
   width: 150%;
   height: 150%;
-  background: radial-gradient(circle at center, 
+  background: radial-gradient(
+    circle at center,
     rgba(180, 130, 255, 0.15) 0%,
     rgba(140, 90, 255, 0.1) 30%,
-    transparent 70%);
+    transparent 70%
+  );
   animation: rotate 30s linear infinite;
 }
 @keyframes rotate {
-  from { transform: rotate(0deg) translate(-10%, -10%); }
-  to { transform: rotate(360deg) translate(-10%, -10%); }
+  from {
+    transform: rotate(0deg) translate(-10%, -10%);
+  }
+  to {
+    transform: rotate(360deg) translate(-10%, -10%);
+  }
 }
 .achievement-header {
   display: flex;
@@ -182,8 +190,14 @@ export default {
   animation: twinkle 2s infinite alternate;
 }
 @keyframes twinkle {
-  from { opacity: 0.5; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1.1); }
+  from {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 .achievement-card {
   max-width: 600px;
@@ -195,13 +209,19 @@ export default {
   padding: 3rem 2rem;
   position: relative;
   z-index: 1;
-  box-shadow: 0 30px 50px -20px rgba(0,0,0,0.8),
-              0 0 30px rgba(180, 130, 255, 0.2);
+  box-shadow:
+    0 30px 50px -20px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(180, 130, 255, 0.2);
   animation: cardFloat 3s ease-in-out infinite;
 }
 @keyframes cardFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 .card-shine {
   position: absolute;
@@ -209,11 +229,13 @@ export default {
   left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   animation: shine 3s infinite;
 }
 @keyframes shine {
-  to { left: 150%; }
+  to {
+    left: 150%;
+  }
 }
 .achievement-icon-large {
   font-size: 6rem;
@@ -232,9 +254,16 @@ export default {
   transition: all 0.3s ease;
 }
 @keyframes bounce {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(10deg); }
-  75% { transform: rotate(-10deg); }
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
 }
 .achievement-name {
   text-align: center;
@@ -291,7 +320,7 @@ export default {
   border: 1px solid #b082ff33;
   cursor: pointer;
   transition: all 0.2s ease;
-  user-select: none
+  user-select: none;
 }
 .achievement-reward:hover {
   transform: scale(1.02);
@@ -309,9 +338,16 @@ export default {
   animation: wave 2s infinite;
 }
 @keyframes wave {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(20deg); }
-  75% { transform: rotate(-20deg); }
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(20deg);
+  }
+  75% {
+    transform: rotate(-20deg);
+  }
 }
 .reward-text {
   text-align: center;
@@ -355,7 +391,8 @@ export default {
   position: relative;
   z-index: 1;
 }
-.return-button, .screenshot-button {
+.return-button,
+.screenshot-button {
   padding: 0.8rem 2rem;
   border-radius: 40px;
   font-size: 1.1rem;
@@ -421,7 +458,8 @@ export default {
     flex-direction: column;
     width: 100%;
   }
-  .return-button, .screenshot-button {
+  .return-button,
+  .screenshot-button {
     justify-content: center;
   }
 }

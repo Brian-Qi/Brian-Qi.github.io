@@ -58,21 +58,38 @@ export default { name: 'MoyuPage' }
   padding: 2.4rem 1.4rem;
   background: linear-gradient(160deg, var(--app-page-gradient-start), var(--app-page-gradient-end));
   color: var(--app-text);
-  transition: background var(--app-transition), color var(--app-transition);
+  transition:
+    background var(--app-transition),
+    color var(--app-transition);
 }
-.moyu-inner { width: 100%; max-width: 520px; }
+.moyu-inner {
+  width: 100%;
+  max-width: 520px;
+}
 
-.moyu-head { text-align: center; margin-bottom: 1.8rem; }
+.moyu-head {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
 .moyu-head h1 {
   font-size: clamp(2rem, 6vw, 3rem);
   letter-spacing: 0.04em;
   background: linear-gradient(135deg, var(--app-accent), #4dc9f6);
-  -webkit-background-clip: text; background-clip: text;
+  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.moyu-head p { margin-top: 0.5rem; font-size: 0.9rem; color: var(--app-text-secondary); }
+.moyu-head p {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--app-text-secondary);
+}
 
-.moyu-list { display: flex; flex-direction: column; gap: 0.85rem; }
+.moyu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
 .moyu-card {
   display: flex;
   align-items: center;
@@ -84,24 +101,55 @@ export default { name: 'MoyuPage' }
   background: var(--app-bg-card);
   border: 1px solid var(--app-border);
   box-shadow: var(--app-shadow);
-  transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+  transition:
+    transform 0.24s ease,
+    border-color 0.24s ease,
+    box-shadow 0.24s ease;
 }
 .moyu-card:hover {
   transform: translateY(-2px);
   border-color: var(--app-accent);
   box-shadow: 0 10px 26px -12px var(--app-accent-glow);
 }
-.moyu-icon { font-size: 1.9rem; min-width: 42px; text-align: center; }
-.moyu-info { flex: 1; min-width: 0; }
-.moyu-info h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
-.moyu-info h3 em {
-  font-style: normal; font-size: 0.68rem; letter-spacing: 0.14em;
-  color: var(--app-accent); border: 1px solid var(--app-accent);
-  border-radius: 6px; padding: 0 5px; margin-left: 4px; vertical-align: middle;
+.moyu-icon {
+  font-size: 1.9rem;
+  min-width: 42px;
+  text-align: center;
 }
-.moyu-info p { font-size: 0.82rem; line-height: 1.5; color: var(--app-text-secondary); }
-.moyu-arrow { color: var(--app-text-muted); transition: transform 0.24s ease, color 0.24s ease; }
-.moyu-card:hover .moyu-arrow { color: var(--app-accent); transform: translateX(3px); }
+.moyu-info {
+  flex: 1;
+  min-width: 0;
+}
+.moyu-info h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+.moyu-info h3 em {
+  font-style: normal;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--app-accent);
+  border: 1px solid var(--app-accent);
+  border-radius: 6px;
+  padding: 0 5px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.moyu-info p {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--app-text-secondary);
+}
+.moyu-arrow {
+  color: var(--app-text-muted);
+  transition:
+    transform 0.24s ease,
+    color 0.24s ease;
+}
+.moyu-card:hover .moyu-arrow {
+  color: var(--app-accent);
+  transform: translateX(3px);
+}
 
 .moyu-more {
   display: flex;
@@ -128,10 +176,19 @@ export default { name: 'MoyuPage' }
   border-radius: 999px;
   transition: all 0.24s ease;
 }
-.moyu-back:hover { color: var(--app-accent); border-color: var(--app-accent); }
+.moyu-back:hover {
+  color: var(--app-accent);
+  border-color: var(--app-accent);
+}
 
 @media (max-width: 480px) {
-  .moyu-icon { font-size: 1.6rem; min-width: 34px; }
-  .moyu-card { padding: 0.9rem 1rem; gap: 0.8rem; }
+  .moyu-icon {
+    font-size: 1.6rem;
+    min-width: 34px;
+  }
+  .moyu-card {
+    padding: 0.9rem 1rem;
+    gap: 0.8rem;
+  }
 }
 </style>

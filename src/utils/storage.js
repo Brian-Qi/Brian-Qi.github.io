@@ -15,25 +15,25 @@ export const STORAGE_KEYS = {
     FATE_BLESSED: 'achieve_fate_blessed',
     THEME_FLIPPER: 'achieve_theme_flipper'
   },
-  
+
   // 游戏相关
   GAME: {
     ENDINGS: 'story_endings'
   },
-  
+
   // 运势相关
   FORTUNE: {
     COLLECTED: 'collected_fortunes',
     DAILY_HISTORY: 'dailyFortuneHistory'
   },
-  
+
   // 用户相关
   USER: {
     IDENTIFIER: 'user_identifier',
     GUESTBOOK_ACCESS: 'guestbook_access_granted',
     QUIZ_ATTEMPTS: 'quiz_attempts_count'
   },
-  
+
   // 版本控制
   VERSION: {
     DATA_VERSION: 'app_data_version'
@@ -99,8 +99,8 @@ export function hasItem(key) {
  * 保留用户标识和版本信息
  */
 export function clearAppData() {
-  Object.keys(STORAGE_KEYS).forEach(category => {
-    Object.values(STORAGE_KEYS[category]).forEach(key => {
+  Object.keys(STORAGE_KEYS).forEach((category) => {
+    Object.values(STORAGE_KEYS[category]).forEach((key) => {
       // 保留用户标识和版本信息
       if (key !== STORAGE_KEYS.USER.IDENTIFIER && key !== STORAGE_KEYS.VERSION.DATA_VERSION) {
         removeItem(key)
@@ -115,12 +115,11 @@ export function clearAppData() {
  */
 export function checkAndUpgradeDataVersion() {
   const storedVersion = getItem(STORAGE_KEYS.VERSION.DATA_VERSION, '0.0.0')
-  
+
   if (storedVersion !== CURRENT_DATA_VERSION) {
-    
     // 这里可以添加版本升级逻辑
     // 例如：v1.0.0 -> v1.1.0 的数据迁移
-    
+
     setItem(STORAGE_KEYS.VERSION.DATA_VERSION, CURRENT_DATA_VERSION)
   }
 }
@@ -146,7 +145,7 @@ export function unlockAchievement(achievementKey) {
   if (!Object.values(STORAGE_KEYS.ACHIEVEMENTS).includes(achievementKey)) {
     return false
   }
-  
+
   if (!hasItem(achievementKey)) {
     setItem(achievementKey, true)
     return true
@@ -158,7 +157,7 @@ export function unlockAchievement(achievementKey) {
  * 重置所有成就（开发/测试用）
  */
 export function resetAllAchievements() {
-  Object.values(STORAGE_KEYS.ACHIEVEMENTS).forEach(key => {
+  Object.values(STORAGE_KEYS.ACHIEVEMENTS).forEach((key) => {
     removeItem(key)
   })
 }

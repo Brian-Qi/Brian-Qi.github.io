@@ -4,17 +4,18 @@
     "module": "esnext",
     "baseUrl": "./",
     "moduleResolution": "node10",
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "jsx": "preserve",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ],
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "ignoreDeprecations": "6.0"
-  }
+  },
+  "include": ["src/**/*.js", "src/**/*.vue", "tests/**/*.js"],
+  "exclude": ["node_modules", "dist", "backup"]
 }

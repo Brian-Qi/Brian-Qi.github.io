@@ -1,9 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router' 
+import router from './router'
 import { initRouterPersistence, getSavedRoute, shouldRestoreRoute } from './utils/router-persistence'
-
-
 
 // 创建应用
 const app = createApp(App)
@@ -18,7 +16,7 @@ initRouterPersistence(router)
 router.isReady().then(() => {
   const savedRoute = getSavedRoute()
   const currentPath = router.currentRoute.value.path
-  
+
   if (savedRoute && savedRoute !== currentPath && shouldRestoreRoute(currentPath, router)) {
     // 检查路由是否存在
     const matched = router.resolve(savedRoute)
@@ -27,7 +25,7 @@ router.isReady().then(() => {
       router.replace(savedRoute)
     }
   }
-  
+
   // 挂载应用
   app.mount('#app')
-}) 
+})

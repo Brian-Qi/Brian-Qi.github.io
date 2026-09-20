@@ -1,5 +1,9 @@
 <template>
-  <div id="app" :data-theme="effectiveTheme" :class="{ 'intro-mode': !isIntroDone && (isHomeRoute || introOverlayVisible) }">
+  <div
+    id="app"
+    :data-theme="effectiveTheme"
+    :class="{ 'intro-mode': !isIntroDone && (isHomeRoute || introOverlayVisible) }"
+  >
     <!-- Toast 全局提示 -->
     <div class="app-toast" :class="{ show: toastVisible }">{{ toastMessage }}</div>
 
@@ -18,8 +22,8 @@
             <span class="tt-track">
               <span class="tt-sky tt-day"></span>
               <span class="tt-sky tt-night">
-                <i class="tt-star"></i><i class="tt-star"></i><i class="tt-star"></i>
-                <i class="tt-star"></i><i class="tt-star"></i>
+                <i class="tt-star"></i><i class="tt-star"></i><i class="tt-star"></i> <i class="tt-star"></i
+                ><i class="tt-star"></i>
               </span>
               <span class="tt-knob">
                 <span class="tt-sun"></span>
@@ -115,7 +119,9 @@ function initParticles(canvas) {
     mouseX = e.clientX
     mouseY = e.clientY
   }
-  function onResize() { resize() }
+  function onResize() {
+    resize()
+  }
 
   window.addEventListener('mousemove', onMouseMove)
   window.addEventListener('resize', onResize)
@@ -155,10 +161,8 @@ function initParticles(canvas) {
             const my1 = particles[i].y - mouseY
             const mx2 = particles[j].x - mouseX
             const my2 = particles[j].y - mouseY
-            const nearMouse = Math.min(
-              Math.sqrt(mx1 * mx1 + my1 * my1),
-              Math.sqrt(mx2 * mx2 + my2 * my2)
-            ) < MOUSE_RADIUS
+            const nearMouse =
+              Math.min(Math.sqrt(mx1 * mx1 + my1 * my1), Math.sqrt(mx2 * mx2 + my2 * my2)) < MOUSE_RADIUS
 
             if (!nearMouse) {
               ctx.beginPath()
@@ -203,8 +207,8 @@ function initParticles(canvas) {
 
       // drift — slow rise with irregular wandering
       if (!burstActive) {
-        p.vx += (Math.random() - 0.5) * 0.10
-        p.vy += (Math.random() - 0.5) * 0.10 - 0.004
+        p.vx += (Math.random() - 0.5) * 0.1
+        p.vy += (Math.random() - 0.5) * 0.1 - 0.004
       }
 
       // draw
@@ -244,7 +248,7 @@ export default {
 
     // ===== 路由过渡：成就/解锁页干脆弹入，其余内容页柔和淡入 =====
     const pageTransition = computed(() =>
-      (route.path.includes('achieve') && route.path !== '/achievements') ? 'snap' : 'page'
+      route.path.includes('achieve') && route.path !== '/achievements' ? 'snap' : 'page'
     )
 
     // ===== 深浅主题（各页面都可切换） =====
@@ -261,7 +265,7 @@ export default {
 
         // 主题切换计数 & 成就检测
         const KEY = 'theme_flips_count'
-        const count = (parseInt(localStorage.getItem(KEY) || '0')) + 1
+        const count = parseInt(localStorage.getItem(KEY) || '0') + 1
         localStorage.setItem(KEY, count.toString())
         if (count >= 20 && !hasItem('achieve_theme_flipper')) {
           setItem('achieve_theme_flipper', true)
@@ -362,12 +366,17 @@ export default {
       const isLight = t === 'light'
       document.body.style.backgroundColor = isLight ? '#f5f7fa' : '#0a0c0f'
       document.body.style.color = isLight ? '#2c3e50' : '#e2e8f0'
-      document.body.style.transition = 'background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+      document.body.style.transition =
+        'background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
     }
 
-    watch(effectiveTheme, (newTheme) => {
-      applyThemeToBody(newTheme)
-    }, { immediate: true })
+    watch(
+      effectiveTheme,
+      (newTheme) => {
+        applyThemeToBody(newTheme)
+      },
+      { immediate: true }
+    )
 
     // ===== 键盘快捷键 =====
     function handleKeydown(e) {
@@ -380,10 +389,14 @@ export default {
     // ===== 全局允许纵向滚动 =====
     // 页面多为“满屏”设计，屏幕偏矮（小笔记本 / 系统缩放 125%+）或浏览器缩小窗口时，
     // 内容会高于视口；此前一律 overflow:hidden 会把底部裁掉且用户无法滚动，故不再禁用。
-    watch(() => route.path, () => {
-      document.documentElement.style.overflow = ''
-      document.body.style.overflow = ''
-    }, { immediate: true })
+    watch(
+      () => route.path,
+      () => {
+        document.documentElement.style.overflow = ''
+        document.body.style.overflow = ''
+      },
+      { immediate: true }
+    )
 
     onMounted(() => {
       window.addEventListener('keydown', handleKeydown)
@@ -415,634 +428,4 @@ export default {
 }
 </script>
 
-<style>
-/* ===== 本地字体 ===== */
-/* LXGW WenKai 霞鹜文楷 — 从 npm 包加载 */
-@import '~lxgw-wenkai-webfont/lxgwwenkai-regular.css';
-
-/* Great Vibes — 本地 ttf */
-@font-face {
-  font-family: 'Great Vibes';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('~@/assets/fonts/GreatVibes-Regular.ttf') format('truetype');
-}
-
-/* 导入移动端优化样式 */
-@import './styles/mobile-optimization.css';
-@import './styles/mobile-utils.css';
-
-/* ========== 全局主题变量 ========== */
-#app[data-theme="light"] {
-  --app-bg: #f5f7fa;
-  --app-bg-card: #ffffff;
-  --app-bg-card-hover: #f8f9fc;
-  --app-bg-card-translucent: rgba(255, 255, 255, 0.85);
-  --app-bg-dark-card: #ffffff;
-  --app-bg-dark-section: rgba(245, 248, 252, 0.8);
-  --app-text: #2c3e50;
-  --app-text-secondary: #6b7d95;
-  --app-text-muted: #94a3b8;
-  --app-text-light: #5a6d85;
-  --app-text-muted-dark: #7b8da5;
-  --app-border: #c8d2e0;
-  --app-border-dark: #b0bcc8;
-  --app-accent: #7c5cfc;
-  --app-accent-light: #a78bfa;
-  --app-accent-glow: rgba(124, 92, 252, 0.15);
-  --app-tag-bg: #f0edff;
-  --app-tag-text: #7c5cfc;
-  --app-skill-bg: #eef2ff;
-  --app-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  --app-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
-  --app-shadow-card: 0 30px 50px -20px rgba(0, 0, 0, 0.1);
-  --app-radius: 16px;
-  --app-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --app-footer-border: #c8d2e0;
-  --app-status-tag-bg: #f0f4ff;
-  --app-status-tag-text: #6b8ab5;
-  --app-status-tag-border: #b4c2d6;
-  --app-fun-section-bg: rgba(240, 244, 250, 0.8);
-  --app-fun-section-border: #bfcada;
-  --app-fun-text: #5a6d85;
-  --app-progress-bg: #e8ecf2;
-  --app-progress-border: #bcc8d6;
-  --app-construction-bg: #f0f4fa;
-  --app-construction-border: #bfcada;
-  --app-dialog-bg: linear-gradient(145deg, #ffffff, #f0f4fa);
-  --app-dialog-border: #7c5cfc;
-  --app-dialog-text: #2c3e50;
-  --app-dialog-shadow: 0 0 60px rgba(124, 92, 252, 0.3);
-  --app-face-color: #7c5cfc;
-  --app-gradient-text: linear-gradient(135deg, #2c3e50, #7c5cfc);
-  /* 泛用变量 - 覆盖所有子页面 */
-  --app-page-gradient-start: #e8ecf2;
-  --app-page-gradient-end: #f0eef4;
-  --app-container-bg: rgba(255, 255, 255, 0.9);
-  --app-input-bg: #eef2f7;
-  --app-input-border: #c0c8d4;
-  --app-btn-secondary-bg: #eef2f7;
-  --app-btn-secondary-hover: #e0e6ef;
-  --app-btn-secondary-border: #c0c8d4;
-  --app-divider: #d0d7e2;
-  --app-accent-text: #5a6dff;
-  --app-accent-green-text: #2d9d6f;
-}
-
-#app[data-theme="dark"] {
-  --app-bg: #0f1117;
-  --app-bg-card: #1a1d28;
-  --app-bg-card-hover: #202436;
-  --app-bg-card-translucent: rgba(18, 22, 28, 0.75);
-  --app-bg-dark-card: #1f2a36;
-  --app-bg-dark-section: rgba(8, 12, 17, 0.6);
-  --app-text: #e2e8f0;
-  --app-text-secondary: #94a3b8;
-  --app-text-muted: #64748b;
-  --app-text-light: #ccdeff;
-  --app-text-muted-dark: #7f95b5;
-  --app-border: #2d3344;
-  --app-border-dark: #31465c;
-  --app-accent: #a78bfa;
-  --app-accent-light: #c4b5fd;
-  --app-accent-glow: rgba(167, 139, 250, 0.2);
-  --app-tag-bg: #1e1b4b;
-  --app-tag-text: #c4b5fd;
-  --app-skill-bg: #1e2332;
-  --app-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-  --app-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
-  --app-shadow-card: 0 30px 50px -20px rgba(0, 0, 0, 0.8);
-  --app-footer-border: #2d3344;
-  --app-status-tag-bg: #1f2a36;
-  --app-status-tag-text: #bdd3f0;
-  --app-status-tag-border: #31465c;
-  --app-fun-section-bg: rgba(8, 12, 17, 0.6);
-  --app-fun-section-border: #26323f;
-  --app-fun-text: #b7cced;
-  --app-progress-bg: #1b232e;
-  --app-progress-border: #2c3a48;
-  --app-construction-bg: #131e28;
-  --app-construction-border: #334252;
-  --app-dialog-bg: linear-gradient(145deg, #1f2a36, #0f1a22);
-  --app-dialog-border: #ffd700;
-  --app-dialog-text: #ffd700;
-  --app-dialog-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
-  --app-face-color: #18dddd;
-  --app-gradient-text: linear-gradient(135deg, #ffffff, #c0ccd9);
-  /* 泛用变量 - 覆盖所有子页面 */
-  --app-page-gradient-start: #1a1f2a;
-  --app-page-gradient-end: #2a1f2a;
-  --app-container-bg: rgba(20, 25, 35, 0.9);
-  --app-input-bg: #1b232e;
-  --app-input-border: #31465c;
-  --app-btn-secondary-bg: #1f2a36;
-  --app-btn-secondary-hover: #2a3848;
-  --app-btn-secondary-border: #31465c;
-  --app-divider: #31465c;
-  --app-accent-text: #8f9eff;
-  --app-accent-green-text: #42b983;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  
-  /* 全局文本换行保护 */
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
-
-body {
-  min-height: 100vh;
-  font-size: 16px;
-}
-
-#app {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: var(--app-text, #e1e7ef);
-  background-color: var(--app-bg, #0a0c0f);
-  min-height: 100vh;
-  transition: background var(--app-transition), color var(--app-transition);
-}
-
-/* 页面内容区 - 为固定导航栏留出空间 */
-.app-content {
-  padding-top: 60px;
-  transition: opacity 0.6s ease;
-}
-
-/* ========== 全局导航栏 ========== */
-.app-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 200;
-  background: var(--app-bg-card);
-  border-bottom: 1px solid var(--app-border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 0 1.5rem;
-  transition: background var(--app-transition), border var(--app-transition), opacity 0.6s ease;
-}
-
-/* 入场动画期间完全隐藏导航栏 */
-#app.intro-mode .app-navbar {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* 入场动画期间完全隐藏页面内容区（杜绝闪现） */
-#app.intro-mode .app-content {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ========== 入场遮罩 ========== */
-.intro-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #0a0c10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-/* 噪点纹理层 */
-.intro-noise {
-  position: absolute;
-  inset: 0;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
-
-/* Canvas 粒子层 */
-.intro-canvas {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.intro-avatar-wrapper {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  opacity: 0;
-  animation: intro-content-in 0.55s ease 0.08s forwards;
-}
-
-@keyframes intro-content-in {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.intro-avatar-box {
-  position: relative;
-  flex-shrink: 0;
-  display: inline-block;
-}
-
-.intro-avatar-ring {
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  background: conic-gradient(#3b82f6, #8b5cf6, #a78bfa, #3b82f6);
-  animation: spin 6s linear infinite;
-  opacity: 0.45;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.intro-avatar-inner {
-  position: relative;
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  animation: intro-pulse 2s ease-in-out infinite;
-  user-select: none;
-  box-shadow: 0 0 40px rgba(99, 102, 241, 0.25);
-}
-.intro-avatar-inner img { display: block; width: 100%; height: 100%; object-fit: cover; }
-
-@keyframes intro-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
-}
-
-.intro-hint {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.42);
-  letter-spacing: 0.15em;
-}
-
-/* 入场遮罩退出 — 点击后淡出放大 */
-.intro-out-leave-active {
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.intro-out-leave-to {
-  opacity: 0;
-  transform: scale(1.08);
-}
-
-.app-navbar-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-}
-
-.app-nav-logo {
-  font-size: 1.3rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--app-accent), #6366f1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.02em;
-}
-
-.app-nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-/* ========== 昼夜切换：日月升降 + 天空轨 + 径向揭幕 ========== */
-.app-theme-toggle {
-  position: relative;
-  width: 58px !important;
-  height: 30px !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  padding: 0 !important;
-  border: 1px solid var(--app-border);
-  border-radius: 999px;
-  background: var(--app-bg-card);
-  cursor: pointer;
-  overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-.app-theme-toggle:hover { border-color: var(--app-accent); box-shadow: 0 0 16px var(--app-accent-glow); }
-.app-theme-toggle:active { transform: scale(0.97); }
-
-.tt-track { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
-
-/* 两层天空：白天在上、夜晚在下方，切换时垂直错位（日月升降） */
-.tt-sky {
-  position: absolute; inset: 0;
-  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.tt-day { background: linear-gradient(180deg, #dff0ff 0%, #bfe0ff 58%, #ffe6bf 100%); }
-.tt-night {
-  background: linear-gradient(180deg, #0b1230 0%, #141a3a 60%, #1c1740 100%);
-  opacity: 0; transform: translateY(-30px);
-}
-.app-theme-toggle.is-night .tt-day { opacity: 0; transform: translateY(30px); }
-.app-theme-toggle.is-night .tt-night { opacity: 1; transform: translateY(0); }
-
-/* 星星 */
-.tt-star {
-  position: absolute; width: 2px; height: 2px; border-radius: 50%;
-  background: #fff; opacity: 0.9;
-  animation: tt-twinkle 2.4s ease-in-out infinite;
-}
-.tt-star:nth-child(1) { left: 14%; top: 30%; animation-delay: -0.2s; }
-.tt-star:nth-child(2) { left: 34%; top: 62%; animation-delay: -1.1s; }
-.tt-star:nth-child(3) { left: 52%; top: 26%; animation-delay: -1.7s; }
-.tt-star:nth-child(4) { left: 68%; top: 58%; animation-delay: -0.7s; }
-.tt-star:nth-child(5) { left: 82%; top: 36%; animation-delay: -1.4s; }
-@keyframes tt-twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
-
-/* 滑块：太阳沉下、月亮升起 */
-.tt-knob {
-  position: absolute; top: 3px; left: 3px;
-  width: 24px; height: 24px; border-radius: 50%; overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
-  transition: transform 0.55s cubic-bezier(0.34, 1.35, 0.6, 1);
-}
-.app-theme-toggle.is-night .tt-knob { transform: translateX(28px); }
-
-.tt-sun, .tt-moon {
-  position: absolute; inset: 0; border-radius: 50%;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
-}
-.tt-sun { background: radial-gradient(circle at 35% 32%, #fff7cf, #ffcb45 62%, #ff9f1c); }
-.tt-moon { background: radial-gradient(circle at 64% 34%, #ffffff, #cdd7ff 56%, #98a7e6); transform: translateY(28px); }
-.app-theme-toggle.is-night .tt-sun { transform: translateY(28px); }
-.app-theme-toggle.is-night .tt-moon { transform: translateY(0); }
-
-/* ========== 圆形揭幕（View Transitions） ========== */
-/* 切换期间关掉颜色过渡，避免新快照被抓到中间态 */
-.vt-theme #app,
-.vt-theme body,
-.vt-theme .app-navbar,
-.vt-theme .app-content { transition: none !important; }
-
-::view-transition-old(root),
-::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-
-/* 新主题用一扇从按钮处张开的圆窗揭开；旧主题作为底保持不动 */
-::view-transition-new(root) {
-  animation: theme-reveal 0.68s cubic-bezier(0.45, 0.05, 0.35, 1);
-}
-@keyframes theme-reveal {
-  from { clip-path: circle(0% at var(--tx, 100%) var(--ty, 0px)); }
-  to   { clip-path: circle(150% at var(--tx, 100%) var(--ty, 0px)); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .tt-sky, .tt-knob, .tt-sun, .tt-moon { transition: none; }
-  .tt-star { animation: none; }
-  ::view-transition-new(root) { animation: none; }
-}
-
-/* ========== 全局 Toast ========== */
-.app-toast {
-  position: fixed;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-20px);
-  background: linear-gradient(135deg, var(--app-accent), #6366f1);
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  box-shadow: 0 8px 30px var(--app-accent-glow);
-  z-index: 999;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
-}
-
-.app-toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* ========== 路由过渡动画 ========== */
-/* 内容页：柔和淡入上浮（带一点虚化），离场快速收干净 */
-.page-enter-active { animation: pageIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.page-leave-active { animation: pageOut 0.18s cubic-bezier(0.4, 0, 0.9, 0.4) both; }
-
-@keyframes pageIn {
-  from { opacity: 0; transform: translateY(12px); filter: blur(5px); }
-  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-@keyframes pageOut {
-  from { opacity: 1; transform: translateY(0); filter: blur(0); }
-  to   { opacity: 0; transform: translateY(-8px); filter: blur(4px); }
-}
-
-/* 成就/解锁页：干脆利落的弹入 */
-.snap-enter-active { animation: snapIn 0.32s cubic-bezier(0.34, 1.45, 0.6, 1) both; }
-.snap-leave-active { animation: snapOut 0.15s cubic-bezier(0.5, 0, 0.9, 0.55) both; }
-
-@keyframes snapIn {
-  from { opacity: 0; transform: scale(0.92); }
-  to   { opacity: 1; transform: scale(1); }
-}
-@keyframes snapOut {
-  from { opacity: 1; transform: scale(1); }
-  to   { opacity: 0; transform: scale(1.04); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .page-enter-active, .page-leave-active,
-  .snap-enter-active, .snap-leave-active { animation: none; }
-}
-
-/* ========== 全局响应式适配 ========== */
-
-/* 使用流体字体系统 */
-body {
-  font-size: clamp(14px, 2.5vw, 16px);
-}
-
-h1 {
-  font-size: clamp(1.4rem, 5vw, 3rem) !important;
-  line-height: 1.3 !important;
-}
-
-h2 {
-  font-size: clamp(1.1rem, 4vw, 2.5rem) !important;
-  line-height: 1.35 !important;
-}
-
-/* 通用容器响应式内边距 */
-.container, .quiz-container, .achievement-card, .fortune-card,
-.project-card, .skills-card, .easter-eggs {
-  padding-left: clamp(0.5rem, 3vw, 2rem) !important;
-  padding-right: clamp(0.5rem, 3vw, 2rem) !important;
-  padding-top: clamp(1rem, 4vw, 2rem) !important;
-  padding-bottom: clamp(1rem, 4vw, 2rem) !important;
-}
-
-/* 卡片响应式圆角 */
-.achievement-card, .fortune-card, .quiz-container,
-.project-card, .skills-card, .easter-eggs {
-  border-radius: clamp(8px, 2vw, 16px) !important;
-}
-
-@media (max-width: 768px) {
-
-  .intro-avatar-inner {
-    width: 100px;
-    height: 100px;
-    font-size: 2.2rem;
-  }
-}
-
-@media (max-width: 600px) {
-  /* 超小屏幕优化 */
-  body {
-    font-size: 13px;
-  }
-  
-  /* 成就图鉴专用 */
-  .stats-achievement-card {
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: 0.75rem !important;
-    padding: 0.75rem !important;
-  }
-  
-  .card-icon {
-    font-size: 2rem !important;
-    min-width: auto !important;
-  }
-  
-  .card-info h3 {
-    font-size: 1.1rem !important;
-  }
-  
-  .achievement-code, .achievement-desc {
-    font-size: 0.75rem !important;
-  }
-  
-  .unlocked-badge, .locked-badge {
-    font-size: 0.75rem !important;
-    padding: 0.2rem 0.6rem !important;
-  }
-  
-  /* 运势页面 */
-  .fortune-header h1 {
-    font-size: 1.3rem !important;
-  }
-  
-  .fortune-level {
-    font-size: 1.5rem !important;
-  }
-  
-  .fortune-text {
-    font-size: 0.95rem !important;
-    line-height: 1.5 !important;
-  }
-  
-  .fortune-card {
-    padding: 1rem 0.75rem !important;
-    border-radius: 20px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  body {
-    font-size: 12px;
-  }
-  
-  h1 {
-    font-size: 1.3rem !important;
-    line-height: 1.25 !important;
-  }
-  
-  h2 {
-    font-size: 1.1rem !important;
-    line-height: 1.3 !important;
-  }
-
-  .app-navbar-inner {
-    height: 52px;
-  }
-
-  .app-content {
-    padding-top: 52px;
-  }
-
-  .app-nav-logo {
-    font-size: 1.05rem;
-  }
-  
-  /* 按钮全宽 */
-  button, .return-button, .back-link, .guestbook-button,
-  .reset-button, .screenshot-button {
-    width: 100% !important;
-    justify-content: center !important;
-    padding: 0.75rem !important;
-    min-height: 44px !important; /* 触摸友好 */
-  }
-  
-  /* 按钮容器 */
-  .button-container, .button-group {
-    flex-direction: column !important;
-    width: 100% !important;
-    gap: 0.5rem !important;
-  }
-  
-  /* 留言墙 */
-  .message-input-row {
-    flex-direction: column !important;
-    gap: 0.5rem !important;
-  }
-  
-  .egg-item {
-    gap: 0.5rem !important;
-    flex-wrap: wrap !important;
-    padding: 0.5rem !important;
-  }
-  
-  .egg-item .secret-message {
-    margin-left: 0 !important;
-    font-size: 0.85rem !important;
-  }
-  
-  /* 技能条 */
-  .skill-item {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 0.5rem !important;
-  }
-  
-  .skill-bar {
-    width: 100% !important;
-    height: 6px !important;
-  }
-  
-  /* 输入框优化 */
-  input[type="text"],
-  input[type="password"] {
-    font-size: 16px !important; /* 防止iOS自动缩放 */
-    min-height: 44px !important;
-  }
-}
-</style>
+<style src="./styles/app.css"></style>

@@ -55,10 +55,12 @@ export function adminLogin(username, password) {
   return request('/admin/login', {
     method: 'POST',
     body: JSON.stringify({ username, password })
-  }).then(data => {
+  }).then((data) => {
     try {
       sessionStorage.setItem(ADMIN_TOKEN_KEY, data.token)
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      /* ignore */
+    }
     return data // { token, username, weight }
   })
 }
@@ -66,7 +68,9 @@ export function adminLogin(username, password) {
 export function adminLogout() {
   try {
     sessionStorage.removeItem(ADMIN_TOKEN_KEY)
-  } catch (e) { /* ignore */ }
+  } catch (e) {
+    /* ignore */
+  }
 }
 
 // 带鉴权头的内部请求

@@ -3,7 +3,7 @@
     <div class="selector-container">
       <h1>🎲 单人跑团 🎲</h1>
       <p class="subtitle">选择你的冒险</p>
-      
+
       <div class="story-list">
         <!-- 精简版：遗落之境 -->
         <div class="story-card" @click="selectStory('basic')">
@@ -15,13 +15,11 @@
               <span>🎭 5个结局</span>
               <span>⏱️ 5-8分钟</span>
             </div>
-            <div class="progress" v-if="basicProgress > 0">
-              📖 已解锁 {{ basicProgress }}/3 个结局
-            </div>
+            <div class="progress" v-if="basicProgress > 0">📖 已解锁 {{ basicProgress }}/3 个结局</div>
             <div v-if="basicUnlocked" class="badge">✅ 完整版已解锁</div>
           </div>
         </div>
-        
+
         <!-- 占位：更多剧本 -->
         <div class="story-card coming-soon">
           <div class="story-icon">🔒</div>
@@ -31,7 +29,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="button-container">
         <router-link to="/moyu" class="back-button">
           <span class="button-icon">←</span>
@@ -51,23 +49,23 @@ export default {
   setup() {
     const router = useRouter()
     const basicEndings = ref([])
-    
+
     const basicProgress = computed(() => basicEndings.value.length)
     const basicUnlocked = computed(() => basicEndings.value.length >= 3)
-    
+
     const selectStory = (story) => {
       if (story === 'basic') {
         router.push('/moyu/run_game/the_lost_realm')
       }
     }
-    
+
     onMounted(() => {
       const saved = localStorage.getItem('story_endings')
       if (saved) {
         basicEndings.value = JSON.parse(saved)
       }
     })
-    
+
     return {
       basicProgress,
       basicUnlocked,

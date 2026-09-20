@@ -18,7 +18,8 @@
             :target="link.url.startsWith('http') ? '_blank' : undefined"
             :rel="link.url.startsWith('http') ? 'noopener' : undefined"
             @click="onSocial(link, $event)"
-          >{{ link.name }}</a>
+            >{{ link.name }}</a
+          >
           <span v-if="i < socialLinks.length - 1" class="c-sep">·</span>
         </template>
       </nav>
@@ -53,8 +54,10 @@ import avatar from '@/assets/avatar.webp'
 
 const WEEK = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
 
-const ZH = '一个热爱编程、喜欢捣鼓各种新奇技术的开发者。白天修复 Bug，夜晚创造 Bug，在 Ctrl+C 和 Ctrl+V 之间寻找代码的真谛。'
-const EN = 'Hello there! Welcome to my digital garden — feel free to look around, there might be Easter eggs hiding somewhere.'
+const ZH =
+  '一个热爱编程、喜欢捣鼓各种新奇技术的开发者。白天修复 Bug，夜晚创造 Bug，在 Ctrl+C 和 Ctrl+V 之间寻找代码的真谛。'
+const EN =
+  'Hello there! Welcome to my digital garden — feel free to look around, there might be Easter eggs hiding somewhere.'
 
 export default {
   name: 'HomePage',
@@ -133,7 +136,7 @@ export default {
   justify-content: center;
 }
 .c-page::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -183,7 +186,13 @@ export default {
   color: var(--app-text-secondary);
   animation: c-rise 0.7s ease 0.12s both;
 }
-.c-dot { width: 6px; height: 6px; border-radius: 50%; background: #42b983; box-shadow: 0 0 8px #42b983; }
+.c-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #42b983;
+  box-shadow: 0 0 8px #42b983;
+}
 
 .c-rule {
   height: 1px;
@@ -199,7 +208,9 @@ export default {
   cursor: pointer;
   transition: color 0.3s ease;
 }
-.c-bio:hover { color: var(--app-text); }
+.c-bio:hover {
+  color: var(--app-text);
+}
 
 .c-links {
   display: flex;
@@ -217,7 +228,7 @@ export default {
   transition: color 0.25s ease;
 }
 .c-link::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: -2px;
@@ -228,9 +239,15 @@ export default {
   transform-origin: left;
   transition: transform 0.28s ease;
 }
-.c-link:hover { color: var(--app-accent); }
-.c-link:hover::after { transform: scaleX(1); }
-.c-sep { color: var(--app-text-muted); }
+.c-link:hover {
+  color: var(--app-accent);
+}
+.c-link:hover::after {
+  transform: scaleX(1);
+}
+.c-sep {
+  color: var(--app-text-muted);
+}
 
 .c-meta {
   display: flex;
@@ -240,7 +257,11 @@ export default {
   font-size: 0.76rem;
   color: var(--app-text-muted);
 }
-.c-time { font-family: 'Consolas', 'Menlo', monospace; letter-spacing: 0.04em; white-space: nowrap; }
+.c-time {
+  font-family: 'Consolas', 'Menlo', monospace;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
 .c-quote {
   font-family: 'LXGW WenKai', cursive;
   overflow: hidden;
@@ -249,7 +270,9 @@ export default {
   cursor: pointer;
   transition: color 0.25s ease;
 }
-.c-quote:hover { color: var(--app-text-secondary); }
+.c-quote:hover {
+  color: var(--app-text-secondary);
+}
 
 .c-foot {
   position: relative;
@@ -267,9 +290,14 @@ export default {
   letter-spacing: 0.08em;
   color: var(--app-text-muted);
   opacity: 0.55;
-  transition: opacity 0.25s ease, color 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    color 0.25s ease;
 }
-.c-back:hover { opacity: 1; color: var(--app-accent); }
+.c-back:hover {
+  opacity: 1;
+  color: var(--app-accent);
+}
 
 .c-mask {
   position: fixed;
@@ -281,17 +309,37 @@ export default {
   padding: 1.5rem;
   background: rgba(0, 0, 0, 0.5);
 }
-.c-fade-enter-active, .c-fade-leave-active { transition: opacity 0.25s ease; }
-.c-fade-enter-from, .c-fade-leave-to { opacity: 0; }
+.c-fade-enter-active,
+.c-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.c-fade-enter-from,
+.c-fade-leave-to {
+  opacity: 0;
+}
 
 @keyframes c-rise {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 640px) {
-  .c-page { height: auto; min-height: calc(100vh - 52px); }
-  .c-meta { flex-direction: column; gap: 0.5rem; }
-  .c-quote { white-space: normal; }
+  .c-page {
+    height: auto;
+    min-height: calc(100vh - 52px);
+  }
+  .c-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .c-quote {
+    white-space: normal;
+  }
 }
 </style>
