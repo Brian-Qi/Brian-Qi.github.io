@@ -5,7 +5,7 @@ import prettier from 'eslint-config-prettier'
 
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', 'public/**', 'backup/**', 'netlify/**', 'vue.config.js', 'eslint.config.js']
+    ignores: ['dist/**', 'node_modules/**', 'public/**', 'backup/**', 'vue.config.js', 'eslint.config.js']
   },
   js.configs.recommended,
   ...pluginVue.configs['flat/recommended'],

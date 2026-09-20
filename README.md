@@ -13,11 +13,12 @@
 - **前端框架**：Vue 3 + Composition API
 - **构建工具**：Vue CLI 5（webpack）
 - **路由**：Vue Router 4（全路由懒加载，History 模式）
-- **样式**：SCSS + CSS 自定义属性（`--app-*` 变量集中在 `App.vue`）
+- **样式**：SCSS + CSS 自定义属性（`--app-*` 变量集中在 `App.vue`，实际已抽到 `src/styles/app.css`）；
+  响应式 / 流体排版见 `src/styles/mobile-optimization.css` 与 `mobile-utils.css`（由 `src/styles/app.css` 引入）
 - **字体**：LXGW WenKai 霞鹜文楷（npm 包 `lxgw-wenkai-webfont`）、`DigifaceWide` / `GreatVibes`（本地字体）
 - **留言墙数据**：自建 Node 后端（`/api`，Express + MySQL，部署于服务器 `/opt/guestbook-api`），
   管理员登录由**后端**校验并下发 token（前端只存 `sessionStorage`）
-- **部署**：Nginx 自建服务器（静态资源 + `/api` 反向代理）；仓库另保留 gh-pages 脚本作为备用通道
+- **部署**：Nginx 自建服务器（静态资源 + `/api` 反向代理）。仓库只存源码——构建产物与本地备份均不入库
 
 ## 📁 项目结构
 
@@ -28,7 +29,6 @@ briandolph_test/
 │   ├── 404.html                   # GitHub Pages SPA 兜底（nginx 环境走路由兜底）
 │   ├── CNAME                      # 自定义域名 briandolph.xyz（gh-pages 用）
 │   └── Briandolph_ico.ico
-├── netlify/functions/add-message.js  # 留言墙的 Netlify 备用通道（当前主用 /api，此路仅存档）
 ├── src/
 │   ├── components/
 │   │   ├── ComingSoon.vue          # 入口过渡页 `/`
@@ -99,7 +99,6 @@ briandolph_test/
 - 前端数据层：`src/utils/messages.js`，全部走 `/api`（nginx 反代到 `127.0.0.1:3001`）。
 - 管理员：`/api/admin/login` 校验密码后由后端下发 token；前端仅将 token 存 `sessionStorage`。
 - **安全约定**：管理员口令与任何密钥只存在于**后端**；前端不引入、不硬编码任何口令（`.env.example` 已明确禁止把密钥写成 `VUE_APP_*`）。
-- `netlify/functions/add-message.js` 为早期 Netlify 通道，**当前未使用**，仅作存档。
 
 ## 🚀 本地运行 / 构建 / 部署
 
@@ -116,7 +115,8 @@ nginx 关键配置（`/etc/nginx/conf.d/briandolph.conf`）：
 - `location /api/ { proxy_pass http://127.0.0.1:3001; }` —— 留言墙后端
 - 静态资源 30 天缓存 + `index.html` 不缓存 + gzip
 
-**备用通道（GitHub Pages）**：`npm run deploy`（gh-pages 推到 `Brian-Qi/Brian-Qi.github.io`）。
+**关于 GitHub Pages**：仓库已不再维护 `gh-pages` 分支（历史构建产物已清除），线上只保留 nginx 一处。
+`package.json` 里的 `deploy` / `republish` 脚本仍保留——若将来需要重建 Pages 镜像，`npm run deploy` 即可。
 > 注意：`public/CNAME` 指向 `briandolph.xyz`，若启用 GitHub Pages 会与 nginx 争夺该域名，请勿同时启用。
 
 ## 🔗 相关项目
