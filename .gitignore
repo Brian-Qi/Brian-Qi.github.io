@@ -34,3 +34,4 @@ backup/
 # 部署用打包产物
 /dist_new.tgz
 *.tgz
+*.tar.gz
