@@ -11,6 +11,15 @@
   src: url('~@/assets/fonts/GreatVibes-Regular.ttf') format('truetype');
 }
 
+/* DigifaceWide — 本地 ttf（public/index.html 有 preload，此前缺 @font-face 导致每页 404） */
+@font-face {
+  font-family: 'DigifaceWide';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~@/assets/fonts/DigifaceWide-Regular.ttf') format('truetype');
+}
+
 /* 导入移动端优化样式 */
 @import './mobile-optimization.css';
 @import './mobile-utils.css';
