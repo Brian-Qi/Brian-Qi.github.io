@@ -10,7 +10,7 @@
     <div class="container">
       <div class="main-message">
         <h1>
-          <router-link to="/who_i_am" class="name-link">
+          <router-link to="/self/who_i_am" class="name-link">
             <span class="name-highlight">Briandolph Qi</span>
           </router-link>
           <span class="h1-plain">的私人网站</span>
@@ -73,7 +73,7 @@ export default {
 
     const checkAchievement = () => {
       if (tmp_line.value < 40 && progress.value < 40) {
-        router.push('/achieve_slacking')
+        router.push('/self/achieve_slacking')
       } else {
         const messages = [
           '🧙‍♂️\n怎么了怎么了 ⊙ω⊙',
@@ -88,7 +88,7 @@ export default {
     }
 
     const goToAchievements = () => {
-      router.push('/achievements')
+      router.push('/self/achievements')
     }
 
     // 从 ComingSoon 进入：先渲染遮罩覆盖当前页，再切路由
@@ -96,7 +96,7 @@ export default {
     const goToIndex = async () => {
       triggerIntroOverlay() // 遮罩立即开始进入动画
       await nextTick() // 等 Vue 完成遮罩 DOM 挂载
-      router.push('/index') // 切路由，ComingSoon 在遮罩下退出
+      router.push('/self') // 切路由，ComingSoon 在遮罩下退出
     }
 
     return {

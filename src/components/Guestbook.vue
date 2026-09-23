@@ -85,7 +85,7 @@
 
       <!-- 返回按钮 -->
       <div class="button-container">
-        <router-link to="/moyu" class="return-button">
+        <router-link to="/self/moyu" class="return-button">
           <span class="button-icon">🔙</span>
           返回摸鱼区
         </router-link>

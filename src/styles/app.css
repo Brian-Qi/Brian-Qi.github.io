@@ -332,7 +332,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   height: 60px;
+  min-width: 0;
 }
 
 .app-nav-logo {
@@ -343,12 +345,76 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 
+/* 链接区可收缩并横向滚动，主题开关始终固定可见 */
 .app-nav-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.75rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* 站内导航链接（公司站 / 个人站互跳） */
+.app-nav-links {
+  display: flex;
+  align-items: center;
+  /* 必须 flex-start：flex-end + 溢出会把左侧链接裁掉且无法滚动到 */
+  justify-content: flex-start;
+  gap: 0.15rem;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.app-nav-links::-webkit-scrollbar {
+  display: none;
+}
+.app-nav-link {
+  font-size: 0.86rem;
+  color: var(--app-text-secondary);
+  text-decoration: none;
+  padding: 0.35em 0.7em;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  transition: color var(--app-transition), background var(--app-transition);
+}
+.app-theme-toggle {
+  flex: 0 0 auto;
+}
+.app-nav-link:hover {
+  color: var(--app-accent);
+  background: var(--app-tag-bg);
+}
+.app-nav-link.router-link-exact-active {
+  color: var(--app-accent);
+  font-weight: 600;
+}
+.app-nav-link.soft {
+  opacity: 0.6;
+  font-size: 0.8rem;
+}
+@media (max-width: 720px) {
+  .app-nav-logo {
+    font-size: 1.05rem;
+  }
+  .app-navbar-inner {
+    gap: 0.5rem;
+  }
+  .app-nav-actions {
+    gap: 0.4rem;
+  }
+  .app-nav-link {
+    font-size: 0.8rem;
+    padding: 0.35em 0.5em;
+  }
 }
 
 /* ========== 昼夜切换：日月升降 + 天空轨 + 径向揭幕 ========== */

@@ -233,18 +233,18 @@ export default {
     const handleEggClick = () => {
       eggCount.value++
       if (eggCount.value === 50) {
-        router.push('/who_i_am/achieve_idle')
+        router.push('/self/who_i_am/achieve_idle')
       } else if (eggCount.value === 60) {
-        router.push('/who_i_am/achieve_02')
+        router.push('/self/who_i_am/achieve_idle/achieve_super_idle')
       }
     }
 
     const goToFortune = () => {
-      router.push('/who_i_am/fortune')
+      router.push('/self/who_i_am/fortune')
     }
 
     const goToMoyu = () => {
-      router.push('/moyu')
+      router.push('/self/moyu')
     }
 
     return {

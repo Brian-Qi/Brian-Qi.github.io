@@ -36,12 +36,6 @@
       <span>Copyright © {{ now.year }} Briandolph Qi</span>
       <RouterLink class="c-back" to="/">↩ 回到 ComingSoon</RouterLink>
     </footer>
-
-    <Transition name="c-fade">
-      <div v-if="showCompany" class="c-mask" @click.self="showCompany = false">
-        <CompanyInfo @close="showCompany = false" />
-      </div>
-    </Transition>
   </div>
 </template>
 
@@ -49,7 +43,6 @@
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import hitokotoData from '@/data/hitokoto.json'
-import CompanyInfo from './CompanyInfo.vue'
 import avatar from '@/assets/avatar.webp'
 
 const WEEK = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
@@ -61,7 +54,6 @@ const EN =
 
 export default {
   name: 'HomePage',
-  components: { CompanyInfo },
   setup() {
     const router = useRouter()
 
@@ -91,20 +83,14 @@ export default {
       hitokoto.text = hitokotoData[Math.floor(Math.random() * hitokotoData.length)].text
     }
 
-    const showCompany = ref(false)
     const socialLinks = [
       { name: 'GitHub', url: 'https://github.com/Brian-Qi' },
       { name: 'Email', url: 'mailto:qisihao666@163.com' },
-      { name: '工作室', url: '/company' },
-      { name: '留言墙', url: '/guestbook' },
-      { name: '关于我', url: '/who_i_am' }
+      { name: '工作室', url: '/index' },
+      { name: '留言墙', url: '/self/guestbook' },
+      { name: '关于我', url: '/self/who_i_am' }
     ]
     function onSocial(link, e) {
-      if (link.name === '工作室') {
-        e.preventDefault()
-        showCompany.value = true
-        return
-      }
       if (!link.url.startsWith('http') && !link.url.startsWith('mailto')) {
         e.preventDefault()
         router.push(link.url)
@@ -118,7 +104,7 @@ export default {
     })
     onUnmounted(() => clearInterval(timer))
 
-    return { avatar, now, bioLines, toggleBio, hitokoto, fetchHitokoto, showCompany, socialLinks, onSocial }
+    return { avatar, now, bioLines, toggleBio, hitokoto, fetchHitokoto, socialLinks, onSocial }
   }
 }
 </script>
@@ -297,25 +283,6 @@ export default {
 .c-back:hover {
   opacity: 1;
   color: var(--app-accent);
-}
-
-.c-mask {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.5);
-}
-.c-fade-enter-active,
-.c-fade-leave-active {
-  transition: opacity 0.25s ease;
-}
-.c-fade-enter-from,
-.c-fade-leave-to {
-  opacity: 0;
 }
 
 @keyframes c-rise {

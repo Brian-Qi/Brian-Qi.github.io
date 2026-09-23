@@ -1,0 +1,278 @@
+/* ============================================================
+   公司展示站 —— 共用样式（由 CompanyLayout 以全局方式引入）
+   颜色全部走站点既有变量，自动适配白天 / 夜晚主题
+   ============================================================ */
+
+.co-shell {
+  position: relative;
+  min-height: calc(100vh - 60px);
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 4vw, 2rem) 0;
+}
+.co-wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+/* ---------- Hero ---------- */
+.co-hero {
+  padding: clamp(2rem, 7vw, 5rem) 0 clamp(1.6rem, 4vw, 3rem);
+  text-align: center;
+}
+.co-kicker {
+  display: inline-block;
+  font-size: 0.76rem;
+  letter-spacing: 0.22em;
+  color: var(--app-text-muted);
+  border: 1px solid var(--app-border);
+  border-radius: 999px;
+  padding: 0.3em 1em;
+  margin-bottom: 1.1rem;
+}
+.co-hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.6rem, 4.4vw, 2.5rem);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: var(--app-text);
+}
+.co-hero .co-sub {
+  margin: 0 auto;
+  max-width: 40em;
+  color: var(--app-text-secondary);
+  line-height: 2;
+  font-size: 0.98rem;
+}
+.co-cta {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.6rem;
+}
+
+/* ---------- 按钮 ---------- */
+.co-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.7em 1.5em;
+  font-size: 0.92rem;
+  border-radius: 999px;
+  border: 1px solid var(--app-accent);
+  color: var(--app-accent);
+  background: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--app-transition);
+}
+.co-btn.primary {
+  background: var(--app-accent);
+  color: #fff;
+}
+.co-btn:hover {
+  background: var(--app-accent-light);
+  border-color: var(--app-accent-light);
+  color: #fff;
+}
+
+/* ---------- 区块 ---------- */
+.co-section {
+  padding: clamp(1.6rem, 4vw, 3rem) 0;
+}
+.co-section + .co-section {
+  border-top: 1px solid var(--app-border);
+}
+.co-h2 {
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+  color: var(--app-text);
+  letter-spacing: 0.04em;
+}
+.co-lead {
+  margin: 0 0 1.6rem;
+  color: var(--app-text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.95;
+}
+
+/* ---------- 卡片网格 ---------- */
+.co-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.co-card {
+  background: var(--app-bg-card);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  padding: 1.2rem 1.3rem;
+  transition: transform var(--app-transition), box-shadow var(--app-transition), border-color var(--app-transition);
+}
+.co-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--app-accent-light);
+  box-shadow: var(--app-shadow-lg);
+}
+.co-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.02rem;
+  color: var(--app-text);
+}
+.co-card p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.9;
+  color: var(--app-text-secondary);
+}
+.co-num {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--app-accent);
+  line-height: 1.2;
+}
+.co-label {
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  color: var(--app-text-muted);
+}
+
+/* ---------- 标签 ---------- */
+.co-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+}
+.co-tag {
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--app-tag-text);
+  background: var(--app-tag-bg);
+  border-radius: 999px;
+  padding: 0.22em 0.8em;
+}
+
+/* ---------- 列表 ---------- */
+.co-list {
+  margin: 0.6rem 0 0;
+  padding-left: 1.1em;
+  color: var(--app-text-secondary);
+  font-size: 0.88rem;
+  line-height: 2;
+}
+.co-list li::marker {
+  color: var(--app-accent);
+}
+
+/* ---------- 信息表（工商登记） ---------- */
+.co-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  background: var(--app-bg-card);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  overflow: hidden;
+}
+.co-table th,
+.co-table td {
+  text-align: left;
+  padding: 0.75em 1em;
+  border-bottom: 1px solid var(--app-border);
+  vertical-align: top;
+}
+.co-table tr:last-child th,
+.co-table tr:last-child td {
+  border-bottom: 0;
+}
+.co-table th {
+  width: 9em;
+  font-weight: 500;
+  color: var(--app-text-muted);
+  background: var(--app-status-tag-bg);
+  white-space: nowrap;
+}
+.co-table td {
+  color: var(--app-text);
+}
+.co-mono {
+  font-family: ui-monospace, Consolas, 'Courier New', monospace;
+  letter-spacing: 0.04em;
+}
+.co-status {
+  color: #16a34a;
+  font-weight: 600;
+}
+.co-todo {
+  color: var(--app-text-muted);
+  font-size: 0.86rem;
+}
+.co-todo::after {
+  content: '（待补充）';
+  font-size: 0.78rem;
+  opacity: 0.8;
+}
+
+/* ---------- 作品 ---------- */
+.co-work {
+  display: grid;
+  gap: 1.4rem;
+  grid-template-columns: 1.3fr 1fr;
+  align-items: start;
+  background: var(--app-bg-card);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  padding: 1.5rem;
+}
+.co-work h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.3rem;
+  color: var(--app-text);
+}
+.co-work .co-work-sub {
+  margin: 0 0 0.9rem;
+  color: var(--app-accent);
+  font-size: 0.86rem;
+  letter-spacing: 0.06em;
+}
+.co-work p {
+  margin: 0;
+  color: var(--app-text-secondary);
+  line-height: 2;
+  font-size: 0.9rem;
+}
+.co-work-meta {
+  font-size: 0.82rem;
+  color: var(--app-text-muted);
+  line-height: 2;
+}
+@media (max-width: 720px) {
+  .co-work {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 页脚 ---------- */
+.co-foot {
+  margin-top: clamp(2rem, 6vw, 4rem);
+  border-top: 1px solid var(--app-border);
+  padding: 1.6rem 0 2.4rem;
+  color: var(--app-text-muted);
+  font-size: 0.8rem;
+  line-height: 2;
+}
+.co-foot-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.co-foot a {
+  color: var(--app-text-secondary);
+  text-decoration: none;
+}
+.co-foot a:hover {
+  color: var(--app-accent);
+}

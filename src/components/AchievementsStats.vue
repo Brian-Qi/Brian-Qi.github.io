@@ -190,7 +190,7 @@ export default {
               if (curiousAch) {
                 curiousAch.unlocked = true
               }
-              router.push('/who_i_am/achievement_curious')
+              router.push('/self/who_i_am/achievement_curious')
             }
           }
         }

@@ -32,20 +32,28 @@ briandolph_test/
 ├── src/
 │   ├── components/
 │   │   ├── ComingSoon.vue          # 入口过渡页 `/`
-│   │   ├── Home.vue                # 首页 `/index`
-│   │   ├── WhoIAm.vue              # 关于我 `/who_i_am`
-│   │   ├── CompanyInfo.vue         # 公司信息弹窗
-│   │   ├── Guestbook.vue           # 留言墙 `/guestbook`
+│   │   ├── company/                # 公司展示站 `/index/*`
+│   │   │   ├── CompanyLayout.vue   # 站壳：页脚 + 引入 company.css
+│   │   │   ├── CompanyHome.vue     # 首页 `/index`
+│   │   │   ├── CompanyAbout.vue    # 关于我们 `/index/about`
+│   │   │   ├── CompanyServices.vue # 业务范围 `/index/services`
+│   │   │   ├── CompanyWorks.vue    # 作品案例 `/index/works`
+│   │   │   └── CompanyContact.vue  # 联系我们 `/index/contact`
+│   │   ├── Home.vue                # 个人首页 `/self`
+│   │   ├── WhoIAm.vue              # 关于我 `/self/who_i_am`
+│   │   ├── Guestbook.vue           # 留言墙 `/self/guestbook`
 │   │   ├── AdminPanel.vue          # 留言墙管理控制台（按住标题进入）
-│   │   ├── DailyFortune.vue        # 每日运势 `/who_i_am/fortune`
-│   │   ├── Moyu.vue                # 摸鱼区 `/moyu`（留言墙 / 单人跑团 / ARG 入口）
-│   │   ├── RunGameSelector.vue     # 单人跑团选择 `/moyu/run_game`
+│   │   ├── DailyFortune.vue        # 每日运势 `/self/who_i_am/fortune`
+│   │   ├── Moyu.vue                # 摸鱼区 `/self/moyu`（留言墙 / 单人跑团 / ARG 入口）
+│   │   ├── RunGameSelector.vue     # 单人跑团选择 `/self/moyu/run_game`
 │   │   ├── RunGame_TheLostRealm.vue# 遗落之境（文本冒险）
-│   │   ├── AchievementsStats.vue   # 成就图鉴 `/achievements`
+│   │   ├── AchievementsStats.vue   # 成就图鉴 `/self/achievements`
 │   │   ├── Achievement_01/02/03/05/06/07/08.vue  # 7 个普通成就解锁页
 │   │   ├── HiddenAchievement_01.vue              # 隐藏成就「天命所归」
 │   │   └── NotFound.vue            # 404 兜底页 `/:pathMatch(.*)*`
-│   ├── data/hitokoto.json          # 一言语录（本地）
+│   ├── data/
+│   │   ├── company.js              # 公司公开信息（公司站与页脚唯一来源）
+│   │   └── hitokoto.json           # 一言语录（本地）
 │   ├── router/index.js             # 全部路由（懒加载 + 旧路径重定向 + 404 兜底）
 │   ├── stores/                    # （无；状态用组件内 ref + utils/storage）
 │   ├── utils/
@@ -54,6 +62,13 @@ briandolph_test/
 │   │   ├── helpers.js              # 工具函数
 │   │   └── router-persistence.js   # 路由持久化 / 刷新恢复
 │   ├── styles/
+│   │   ├── app.css                 # 全局布局 / 导航 / 主题变量
+│   │   ├── company.css             # 公司站共用样式
+│   │   ├── achievements-stats.css  # 以下为超大组件外抽的样式
+│   │   ├── coming-soon.scss
+│   │   ├── guestbook.css
+│   │   ├── who-i-am.css
+│   │   ├── run-game-the-lost-realm.css
 │   │   ├── mobile-optimization.css
 │   │   └── mobile-utils.css
 │   ├── App.vue                     # 根组件（主题 / 导航 / 布局）
@@ -65,19 +80,36 @@ briandolph_test/
 
 ## 🎮 功能与路由
 
+站点分两块：**公司展示站**（`/index/*`，对外）与**个人站**（`/self/*`）。
+
+### 公司展示站（`/index/*`）
+
 | 路由 | 页面 | 说明 |
 |------|------|------|
-| `/` | 入口过渡页 | 施工进度 + 施工精灵彩蛋（进度低时点击得「摸鱼精灵」）；点姓名进关于页；「平行宇宙」入口进 `/index` |
-| `/index` | 首页 | 头像 / 中英双语简介 / 实时时钟 / 一言 / 社交链接 / 主题切换 |
-| `/who_i_am` | 关于我 | 四屏竖向滚动；彩蛋区：点击计数成就、今日运势、摸鱼区入口 |
-| `/who_i_am/fortune` | 每日运势 | 7 种运势，按「用户标识 + 日期」确定性生成 |
-| `/achievements` | 成就图鉴 | 8 个成就（7 普通 + 1 隐藏）、完成度统计、一键重置 |
-| `/moyu` | 摸鱼区 | 留言墙、单人跑团、**ARG《第五张财签》入口** |
-| `/moyu/run_game` → `/the_lost_realm` | 单人跑团 | The Lost Realm 文本冒险（当前唯一剧本，处于半成品/占位状态） |
-| `/guestbook` | 留言墙 | 匿名/署名、分页、点赞；数据存自建后端 MySQL；按住标题进入管理控制台 |
+| `/index` | 首页 | 工作室简介、能力亮点、作品速览、合作入口 |
+| `/index/about` | 关于我们 | 工作室介绍、经营者、工商登记信息表 |
+| `/index/services` | 业务范围 | 经营范围按能力方向归类 + 合作流程 |
+| `/index/works` | 作品案例 | 公开作品（**ARG《第五张财签》** → `/arg_01/`）与在研项目 |
+| `/index/contact` | 联系我们 | 邮箱 / GitHub / 地址与登记信息 |
+
+> 公司站各页带 `meta.company`，顶部导航栏据此切换为公司导航（品牌名也换成工作室名）；公司信息统一取自 `src/data/company.js`。
+
+### 个人站（`/self/*`）
+
+| 路由 | 页面 | 说明 |
+|------|------|------|
+| `/` | 入口过渡页 | 施工进度 + 施工精灵彩蛋（进度低时点击得「摸鱼精灵」）；点姓名进关于页；「平行宇宙」入口进个人首页 `/self` |
+| `/self` | 个人首页 | 头像 / 中英双语简介 / 实时时钟 / 一言 / 社交链接（含「工作室」入口）/ 主题切换 |
+| `/self/who_i_am` | 关于我 | 四屏竖向滚动；彩蛋区：点击计数成就、今日运势、摸鱼区入口 |
+| `/self/who_i_am/fortune` | 每日运势 | 7 种运势，按「用户标识 + 日期」确定性生成 |
+| `/self/achievements` | 成就图鉴 | 8 个成就（7 普通 + 1 隐藏）、完成度统计、一键重置 |
+| `/self/moyu` | 摸鱼区 | 留言墙、单人跑团、**ARG《第五张财签》入口** |
+| `/self/moyu/run_game` → `/the_lost_realm` | 单人跑团 | The Lost Realm 文本冒险（当前唯一剧本，处于半成品/占位状态） |
+| `/self/guestbook` | 留言墙 | 匿名/署名、分页、点赞；数据存自建后端 MySQL；按住标题进入管理控制台 |
 | 其他 | 404 兜底 | 未匹配路径渲染 `NotFound.vue`（此前会白屏） |
 
-> 旧「秘密空间」路径（`/who_i_am/secret_quiz*`）已全部 301 到 `/moyu/*`，见 `router/index.js`。
+> 旧个人路径（`/who_i_am*`、`/moyu*`、`/guestbook`、`/achievements`、`/achieve_slacking`）全部重定向到 `/self/*`，
+> 旧「秘密空间」`/who_i_am/secret_quiz*` 指向 `/self/moyu*`，见 `router/index.js`。
 
 ## 🏆 成就系统（共 8 个：7 普通 + 1 隐藏）
 
@@ -123,7 +155,8 @@ nginx 关键配置（`/etc/nginx/conf.d/briandolph.conf`）：
 
 ### 《第五张财签》民俗解谜 ARG —— 独立项目，不在本仓库
 
-摸鱼区（`/moyu`，`src/components/Moyu.vue`）有一个「ARG」入口卡片，指向 `/arg_01/`。
+个人站摸鱼区（`/self/moyu`，`src/components/Moyu.vue`）有一个「ARG」入口卡片，指向 `/arg_01/`；
+公司站的「作品案例」页（`/index/works`）同样展示该项目。
 
 **该 ARG 是完全独立的项目：源码、仓库、构建、部署均与本仓库无关。**
 

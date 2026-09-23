@@ -7,7 +7,7 @@
       </header>
 
       <div class="moyu-list">
-        <RouterLink to="/guestbook" class="moyu-card">
+        <RouterLink to="/self/guestbook" class="moyu-card">
           <span class="moyu-icon">📝</span>
           <span class="moyu-info">
             <h3>留言墙</h3>
@@ -16,7 +16,7 @@
           <span class="moyu-arrow">→</span>
         </RouterLink>
 
-        <RouterLink to="/moyu/run_game" class="moyu-card">
+        <RouterLink to="/self/moyu/run_game" class="moyu-card">
           <span class="moyu-icon">🎲</span>
           <span class="moyu-info">
             <h3>单人跑团</h3>

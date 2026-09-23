@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="button-container">
-      <router-link to="/achievements" class="return-button"><span class="button-icon">🏠</span>返回成就</router-link>
+      <router-link to="/self/achievements" class="return-button"><span class="button-icon">🏠</span>返回成就</router-link>
     </div>
     <div class="disclaimer">
       <p>* 光明与黑暗，各有各的魅力 *</p>

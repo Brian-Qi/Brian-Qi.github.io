@@ -7,7 +7,7 @@
       <div class="nf-actions">
         <RouterLink class="nf-btn primary" to="/index">回到首页</RouterLink>
         <RouterLink class="nf-btn" to="/">回到入口</RouterLink>
-        <RouterLink class="nf-btn" to="/who_i_am">关于我</RouterLink>
+        <RouterLink class="nf-btn" to="/self/who_i_am">关于我</RouterLink>
       </div>
     </div>
   </div>

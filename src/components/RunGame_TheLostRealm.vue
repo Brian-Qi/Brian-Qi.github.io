@@ -439,7 +439,7 @@ export default {
 
     const confirmBack = () => {
       showBackDialog.value = false
-      router.push('/moyu/run_game')
+      router.push('/self/moyu/run_game')
     }
 
     // 冒险日志按行拆分；「你的选择：」的行加特殊颜色。

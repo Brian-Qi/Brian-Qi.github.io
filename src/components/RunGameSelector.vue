@@ -31,7 +31,7 @@
       </div>
 
       <div class="button-container">
-        <router-link to="/moyu" class="back-button">
+        <router-link to="/self/moyu" class="back-button">
           <span class="button-icon">←</span>
           返回摸鱼区
         </router-link>
@@ -55,7 +55,7 @@ export default {
 
     const selectStory = (story) => {
       if (story === 'basic') {
-        router.push('/moyu/run_game/the_lost_realm')
+        router.push('/self/moyu/run_game/the_lost_realm')
       }
     }
 

@@ -10,8 +10,19 @@
     <!-- 全局导航栏 -->
     <nav class="app-navbar">
       <div class="app-navbar-inner">
-        <span class="app-nav-logo">Briandolph Qi</span>
+        <RouterLink class="app-nav-logo" :to="isCompany ? '/index' : '/self'">
+          {{ isCompany ? company.short : 'Briandolph Qi' }}
+        </RouterLink>
         <div class="app-nav-actions">
+          <div class="app-nav-links">
+            <template v-if="isCompany">
+              <RouterLink v-for="n in companyNav" :key="n.to" class="app-nav-link" :to="n.to">
+                {{ n.label }}
+              </RouterLink>
+              <RouterLink class="app-nav-link soft" to="/self">个人站</RouterLink>
+            </template>
+            <RouterLink v-else class="app-nav-link soft" to="/index">公司站</RouterLink>
+          </div>
           <button
             class="app-theme-toggle"
             :class="{ 'is-night': theme === 'dark' }"
@@ -65,6 +76,7 @@
 import { ref, computed, watch, onMounted, onUnmounted, provide, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getItem, setItem, hasItem } from './utils/storage'
+import company from '@/data/company'
 import avatar from '@/assets/avatar.webp'
 
 // 模块级标记 — 不依赖 Vue 响应式，一次会话只触发一次遮罩
@@ -244,11 +256,21 @@ export default {
     const router = useRouter()
 
     // ===== 首页路由判定（用于入场遮罩触发） =====
-    const isHomeRoute = computed(() => route.path === '/index')
+    const isHomeRoute = computed(() => route.path === '/self')
+
+    // ===== 公司展示站判定（导航栏切换到公司导航） =====
+    const isCompany = computed(() => route.meta && route.meta.company === true)
+    const companyNav = [
+      { to: '/index', label: '首页' },
+      { to: '/index/about', label: '关于' },
+      { to: '/index/services', label: '业务' },
+      { to: '/index/works', label: '作品' },
+      { to: '/index/contact', label: '联系' }
+    ]
 
     // ===== 路由过渡：成就/解锁页干脆弹入，其余内容页柔和淡入 =====
     const pageTransition = computed(() =>
-      route.path.includes('achieve') && route.path !== '/achievements' ? 'snap' : 'page'
+      route.path.includes('achieve') && route.path !== '/self/achievements' ? 'snap' : 'page'
     )
 
     // ===== 深浅主题（各页面都可切换） =====
@@ -271,7 +293,7 @@ export default {
           setItem('achieve_theme_flipper', true)
           showToast('🏆 成就解锁：光影穿梭！')
           setTimeout(() => {
-            router.push('/who_i_am/achievement_theme_flipper')
+            router.push('/self/who_i_am/achievement_theme_flipper')
           }, 1800)
         }
       }
@@ -314,7 +336,7 @@ export default {
     provide('isIntroDone', isIntroDone)
 
     // 遮罩控制
-    const introOverlayVisible = ref(route.path === '/index' && !_introDismissed)
+    const introOverlayVisible = ref(route.path === '/self' && !_introDismissed)
     function triggerIntroOverlay() {
       if (!_introDismissed) {
         introOverlayVisible.value = true
@@ -353,7 +375,7 @@ export default {
 
     // 路由守卫：会话内只弹一次
     const removeGuard = router.beforeEach((to) => {
-      if (to.path === '/index' && !_introDismissed) {
+      if (to.path === '/self' && !_introDismissed) {
         introOverlayVisible.value = true
       }
     })
@@ -412,6 +434,9 @@ export default {
 
     return {
       avatar,
+      company,
+      companyNav,
+      isCompany,
       pageTransition,
       particleCanvas,
       theme,

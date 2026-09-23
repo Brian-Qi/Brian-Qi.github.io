@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="button-container">
-      <router-link to="/achievements" class="return-button"><span class="button-icon">🏠</span>返回成就</router-link>
+      <router-link to="/self/achievements" class="return-button"><span class="button-icon">🏠</span>返回成就</router-link>
     </div>
     <div class="disclaimer">
       <p>* 好奇心是进步的源泉 *</p>

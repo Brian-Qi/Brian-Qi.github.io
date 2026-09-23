@@ -15,7 +15,7 @@
       </div>
 
       <div class="button-group">
-        <router-link to="/who_i_am" class="back-button">
+        <router-link to="/self/who_i_am" class="back-button">
           <span class="button-icon">←</span>
           返回关于页面
         </router-link>
@@ -62,7 +62,7 @@ export default {
       if (collectedList.length === 7 && !hasItem(STORAGE_KEYS.ACHIEVEMENTS.FATE_BLESSED)) {
         setItem(STORAGE_KEYS.ACHIEVEMENTS.FATE_BLESSED, true)
         setTimeout(() => {
-          router.push('/who_i_am/fortune/achieve_fate_blessed')
+          router.push('/self/who_i_am/fortune/achieve_fate_blessed')
         }, 800)
       }
     }
@@ -125,14 +125,14 @@ export default {
           if (!hasItem(STORAGE_KEYS.ACHIEVEMENTS.LUCKY_STRIKE)) {
             setItem(STORAGE_KEYS.ACHIEVEMENTS.LUCKY_STRIKE, true)
             setTimeout(() => {
-              router.push('/who_i_am/fortune/achieve_lucky_strike')
+              router.push('/self/who_i_am/fortune/achieve_lucky_strike')
             }, 800)
           }
         } else if (fortune.level === '大凶') {
           if (!hasItem(STORAGE_KEYS.ACHIEVEMENTS.TURN_TIDE)) {
             setItem(STORAGE_KEYS.ACHIEVEMENTS.TURN_TIDE, true)
             setTimeout(() => {
-              router.push('/who_i_am/fortune/achieve_turn_the_tide')
+              router.push('/self/who_i_am/fortune/achieve_turn_the_tide')
             }, 800)
           }
         }

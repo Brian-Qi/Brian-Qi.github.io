@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="button-container">
-      <router-link to="/who_i_am/fortune" class="return-button"
+      <router-link to="/self/who_i_am/fortune" class="return-button"
         ><span class="button-icon">❌</span>关闭界面</router-link
       >
     </div>

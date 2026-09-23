@@ -96,7 +96,7 @@ export default {
     const eggClick = () => {
       eggCount.value++
       if (eggCount.value === 60) {
-        router.push('/who_i_am/achieve_idle/achieve_super_idle')
+        router.push('/self/who_i_am/achieve_idle/achieve_super_idle')
       }
     }
 
