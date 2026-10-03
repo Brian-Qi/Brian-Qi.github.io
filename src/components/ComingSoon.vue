@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { ref, inject, nextTick } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -91,12 +91,8 @@ export default {
       router.push('/self/achievements')
     }
 
-    // 从 ComingSoon 进入：先渲染遮罩覆盖当前页，再切路由
-    const triggerIntroOverlay = inject('triggerIntroOverlay')
-    const goToIndex = async () => {
-      triggerIntroOverlay() // 遮罩立即开始进入动画
-      await nextTick() // 等 Vue 完成遮罩 DOM 挂载
-      router.push('/self/index') // 切路由，ComingSoon 在遮罩下退出
+    const goToIndex = () => {
+      router.push('/self/index')
     }
 
     return {

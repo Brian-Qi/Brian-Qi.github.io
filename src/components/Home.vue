@@ -1,5 +1,6 @@
 <template>
   <div class="c-page">
+    <canvas ref="bgCanvas" class="bg-particles" aria-hidden="true"></canvas>
     <div class="c-card">
       <div class="c-avatar"><img :src="avatar" alt="Briandolph Qi" /></div>
 
@@ -40,10 +41,11 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, inject, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import hitokotoData from '@/data/hitokoto.json'
 import avatar from '@/assets/avatar.webp'
+import { initParticles, PARTICLE_PALETTES } from '@/utils/particles'
 
 const WEEK = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
 
@@ -56,6 +58,20 @@ export default {
   name: 'HomePage',
   setup() {
     const router = useRouter()
+
+    // ===== 粒子背景（昼夜换色） =====
+    const bgCanvas = ref(null)
+    const appTheme = inject('appTheme', ref('dark'))
+    let particleSystem = null
+    function startParticles() {
+      if (!bgCanvas.value) return
+      particleSystem = initParticles(bgCanvas.value, PARTICLE_PALETTES[appTheme.value] || PARTICLE_PALETTES.dark)
+    }
+    function restartParticles() {
+      if (particleSystem) particleSystem.destroy()
+      startParticles()
+    }
+    watch(appTheme, restartParticles)
 
     const now = reactive({ year: '', month: '', day: '', weekday: '', hour: '', minute: '', second: '' })
     let timer = null
@@ -104,10 +120,14 @@ export default {
       tick()
       timer = setInterval(tick, 1000)
       fetchHitokoto()
+      startParticles()
     })
-    onUnmounted(() => clearInterval(timer))
+    onUnmounted(() => {
+      clearInterval(timer)
+      if (particleSystem) particleSystem.destroy()
+    })
 
-    return { avatar, now, bioLines, toggleBio, hitokoto, fetchHitokoto, socialLinks, onSocial }
+    return { avatar, bgCanvas, now, bioLines, toggleBio, hitokoto, fetchHitokoto, socialLinks, onSocial }
   }
 }
 </script>
@@ -133,8 +153,18 @@ export default {
   opacity: 0.5;
 }
 
+.bg-particles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .c-card {
   position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 560px;
   text-align: center;
