@@ -86,7 +86,6 @@ export default {
     const socialLinks = [
       { name: 'GitHub', url: 'https://github.com/Brian-Qi' },
       { name: 'Email', url: 'mailto:qisihao666@163.com' },
-      { name: '工作室', url: '/' },
       { name: '留言墙', url: '/self/guestbook' },
       { name: '关于我', url: '/self/who_i_am' }
     ]

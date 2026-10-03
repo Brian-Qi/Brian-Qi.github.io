@@ -21,7 +21,6 @@
               </RouterLink>
               <RouterLink class="app-nav-link soft" to="/self">个人站</RouterLink>
             </template>
-            <a v-else class="app-nav-link soft" href="/">公司站</a>
           </div>
           <button
             class="app-theme-toggle"
