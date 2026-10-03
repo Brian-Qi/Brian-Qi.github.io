@@ -146,7 +146,7 @@
 
     <!-- 底部固定导航 -->
     <footer class="who-am-footer">
-      <router-link to="/" class="back-link">
+      <router-link to="/self" class="back-link">
         <span class="button-icon">🏠</span>
         回到首页
       </router-link>

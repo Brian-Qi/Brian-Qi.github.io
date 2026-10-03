@@ -53,7 +53,7 @@
     <section class="co-section">
       <div class="co-cta" style="justify-content: flex-start">
         <a class="co-btn primary" :href="'mailto:' + co.email">发邮件</a>
-        <RouterLink class="co-btn" to="/index/works">先看作品</RouterLink>
+        <RouterLink class="co-btn" to="/self/index/works">先看作品</RouterLink>
       </div>
     </section>
   </div>

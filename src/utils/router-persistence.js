@@ -8,19 +8,19 @@
 const ROUTER_CONFIG = {
   // 需要排除的路由（不保存）
   EXCLUDED_ROUTES: [
-    '/', // 首页
+    '/self', // 首页
     '/coming-soon', // 建设中页面
-    '/achievements' // 成就图鉴（通常作为入口点）
+    '/self/achievements' // 成就图鉴（通常作为入口点）
   ],
 
   // 需要特殊处理的成就解锁页面
   ACHIEVEMENT_ROUTES: [
-    '/who_i_am/achieve_idle',
-    '/who_i_am/achieve_idle/achieve_super_idle',
-    '/achieve_slacking',
-    '/who_i_am/fortune/achieve_lucky_strike',
-    '/who_i_am/fortune/achieve_turn_the_tide',
-    '/who_i_am/fortune/achieve_fate_blessed'
+    '/self/who_i_am/achieve_idle',
+    '/self/who_i_am/achieve_idle/achieve_super_idle',
+    '/self/achieve_slacking',
+    '/self/who_i_am/fortune/achieve_lucky_strike',
+    '/self/who_i_am/fortune/achieve_turn_the_tide',
+    '/self/who_i_am/fortune/achieve_fate_blessed'
   ],
 
   // 存储键名

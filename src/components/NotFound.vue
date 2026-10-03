@@ -5,8 +5,8 @@
       <h1 class="nf-title">这页好像走丢了</h1>
       <p class="nf-desc">你要找的地址不存在，或者已经被挪走了。</p>
       <div class="nf-actions">
-        <RouterLink class="nf-btn primary" to="/index">回到首页</RouterLink>
-        <RouterLink class="nf-btn" to="/">回到入口</RouterLink>
+        <RouterLink class="nf-btn primary" to="/self/index">回到首页</RouterLink>
+        <RouterLink class="nf-btn" to="/self">回到入口</RouterLink>
         <RouterLink class="nf-btn" to="/self/who_i_am">关于我</RouterLink>
       </div>
     </div>

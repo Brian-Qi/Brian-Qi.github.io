@@ -10,7 +10,7 @@
     <!-- 全局导航栏 -->
     <nav class="app-navbar">
       <div class="app-navbar-inner">
-        <RouterLink class="app-nav-logo" :to="isCompany ? '/index' : '/self'">
+        <RouterLink class="app-nav-logo" :to="isCompany ? '/self/index' : '/self'">
           {{ isCompany ? company.short : 'Briandolph Qi' }}
         </RouterLink>
         <div class="app-nav-actions">
@@ -21,7 +21,7 @@
               </RouterLink>
               <RouterLink class="app-nav-link soft" to="/self">个人站</RouterLink>
             </template>
-            <RouterLink v-else class="app-nav-link soft" to="/index">公司站</RouterLink>
+            <a v-else class="app-nav-link soft" href="/">公司站</a>
           </div>
           <button
             class="app-theme-toggle"
@@ -261,11 +261,11 @@ export default {
     // ===== 公司展示站判定（导航栏切换到公司导航） =====
     const isCompany = computed(() => route.meta && route.meta.company === true)
     const companyNav = [
-      { to: '/index', label: '首页' },
-      { to: '/index/about', label: '关于' },
-      { to: '/index/services', label: '业务' },
-      { to: '/index/works', label: '作品' },
-      { to: '/index/contact', label: '联系' }
+      { to: '/self/index', label: '首页' },
+      { to: '/self/index/about', label: '关于' },
+      { to: '/self/index/services', label: '业务' },
+      { to: '/self/index/works', label: '作品' },
+      { to: '/self/index/contact', label: '联系' }
     ]
 
     // ===== 路由过渡：成就/解锁页干脆弹入，其余内容页柔和淡入 =====

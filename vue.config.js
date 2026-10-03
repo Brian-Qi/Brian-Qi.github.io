@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 
 module.exports = {
-  publicPath: '/',
+  publicPath: process.env.PUBLIC_PATH || '/',
   productionSourceMap: false,
   chainWebpack: (config) => {
     // 字体文件使用固定文件名（不带 hash），便于 preload

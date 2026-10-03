@@ -131,7 +131,7 @@
         </div>
 
         <div class="button-container">
-          <router-link to="/" class="return-button"> <span class="button-icon">🏠</span>回到首页 </router-link>
+          <router-link to="/self" class="return-button"> <span class="button-icon">🏠</span>回到首页 </router-link>
         </div>
       </div>
     </transition>

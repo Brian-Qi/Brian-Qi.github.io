@@ -12,7 +12,7 @@
           统一社会信用代码 <span class="co-mono">{{ co.creditCode }}</span>
         </div>
         <div>
-          <RouterLink to="/">入口</RouterLink> · <RouterLink to="/self">个人站</RouterLink> ·
+          <RouterLink to="/self">入口</RouterLink> · <RouterLink to="/self">个人站</RouterLink> ·
           <a :href="co.github" target="_blank" rel="noopener">GitHub</a> ·
           <a :href="'mailto:' + co.email">邮箱</a><br />
           Copyright © {{ year }} {{ co.short }} · 保留所有权利

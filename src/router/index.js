@@ -33,12 +33,12 @@ const NotFound = () => import('../components/NotFound.vue')
 
 const routes = [
   /* ===================== 入口过渡页 ===================== */
-  { path: '/', name: 'comingSoon', component: ComingSoon, meta: { title: 'Briandolph Qi · 施工中' } },
-  { path: '/index_01', redirect: '/index' },
+  { path: '/', redirect: '/self' },
+  { path: '/self/index_01', redirect: '/self/index' },
 
   /* ===================== 公司展示站 ===================== */
   {
-    path: '/index',
+    path: '/self/index',
     component: CompanyLayout,
     meta: { company: true },
     children: [

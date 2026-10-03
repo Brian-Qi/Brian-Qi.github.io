@@ -34,7 +34,7 @@
 
     <footer class="c-foot">
       <span>Copyright © {{ now.year }} Briandolph Qi</span>
-      <RouterLink class="c-back" to="/">↩ 回到 ComingSoon</RouterLink>
+      <RouterLink class="c-back" to="/self">↩ 回到 ComingSoon</RouterLink>
     </footer>
   </div>
 </template>
@@ -86,13 +86,16 @@ export default {
     const socialLinks = [
       { name: 'GitHub', url: 'https://github.com/Brian-Qi' },
       { name: 'Email', url: 'mailto:qisihao666@163.com' },
-      { name: '工作室', url: '/index' },
+      { name: '工作室', url: '/' },
       { name: '留言墙', url: '/self/guestbook' },
       { name: '关于我', url: '/self/who_i_am' }
     ]
     function onSocial(link, e) {
-      if (!link.url.startsWith('http') && !link.url.startsWith('mailto')) {
-        e.preventDefault()
+      if (link.url.startsWith('http') || link.url.startsWith('mailto')) return
+      e.preventDefault()
+      if (link.url === '/') {
+        window.location.href = '/'
+      } else {
         router.push(link.url)
       }
     }

@@ -53,7 +53,7 @@
     </div>
 
     <div class="button-container">
-      <router-link to="/" class="return-button">
+      <router-link to="/self" class="return-button">
         <span class="button-icon">🏠</span>
         回到主界面
       </router-link>

@@ -9,8 +9,8 @@
         一家位于杭州的独立工作室，做游戏，也做把想法变成可玩、可看之物的那些数字活儿。
       </p>
       <div class="co-cta">
-        <RouterLink class="co-btn primary" to="/index/works">看看作品</RouterLink>
-        <RouterLink class="co-btn" to="/index/services">业务范围</RouterLink>
+        <RouterLink class="co-btn primary" to="/self/index/works">看看作品</RouterLink>
+        <RouterLink class="co-btn" to="/self/index/services">业务范围</RouterLink>
         <a class="co-btn" :href="co.github" target="_blank" rel="noopener">GitHub</a>
       </div>
     </section>
@@ -32,7 +32,7 @@
     <section class="co-section">
       <h2 class="co-h2">作品</h2>
       <p class="co-lead">已上线 / 在研的项目。</p>
-      <RouterLink v-for="w in co.works" :key="w.id" class="co-card work-teaser" to="/index/works">
+      <RouterLink v-for="w in co.works" :key="w.id" class="co-card work-teaser" to="/self/index/works">
         <div class="work-teaser-top">
           <h3>{{ w.name }}</h3>
           <span class="co-tag">{{ w.year }}</span>
@@ -46,7 +46,7 @@
       <h2 class="co-h2">合作与联系</h2>
       <p class="co-lead">游戏开发、数字内容、民俗与非遗数字化，或者你有个想法想落地——都可以聊聊。</p>
       <div class="co-cta">
-        <RouterLink class="co-btn primary" to="/index/contact">查看联系方式</RouterLink>
+        <RouterLink class="co-btn primary" to="/self/index/contact">查看联系方式</RouterLink>
       </div>
     </section>
   </div>

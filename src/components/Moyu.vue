@@ -40,7 +40,7 @@
         <span>更多还在这条船上 · 敬请期待</span>
       </div>
 
-      <RouterLink to="/" class="moyu-back">← 返回首页</RouterLink>
+      <RouterLink to="/self" class="moyu-back">← 返回首页</RouterLink>
     </div>
   </div>
 </template>

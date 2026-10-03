@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="co-cta">
-        <RouterLink class="co-btn primary" to="/index/contact">聊聊你的项目</RouterLink>
+        <RouterLink class="co-btn primary" to="/self/index/contact">聊聊你的项目</RouterLink>
       </div>
     </section>
   </div>
