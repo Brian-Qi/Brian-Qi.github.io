@@ -34,24 +34,11 @@ const NotFound = () => import('../components/NotFound.vue')
 const routes = [
   /* ===================== 入口过渡页 ===================== */
   { path: '/', redirect: '/self' },
+  { path: '/self', name: 'comingSoon', component: ComingSoon, meta: { title: 'Briandolph Qi · 施工中' } },
   { path: '/self/index_01', redirect: '/self/index' },
 
-  /* ===================== 公司展示站 ===================== */
-  {
-    path: '/self/index',
-    component: CompanyLayout,
-    meta: { company: true },
-    children: [
-      { path: '', name: 'index', component: CompanyHome, meta: { company: true, title: '彼岸时墟游戏工作室' } },
-      { path: 'about', name: 'company-about', component: CompanyAbout, meta: { company: true, title: '关于我们 · 彼岸时墟' } },
-      { path: 'services', name: 'company-services', component: CompanyServices, meta: { company: true, title: '业务范围 · 彼岸时墟' } },
-      { path: 'works', name: 'company-works', component: CompanyWorks, meta: { company: true, title: '作品案例 · 彼岸时墟' } },
-      { path: 'contact', name: 'company-contact', component: CompanyContact, meta: { company: true, title: '联系我们 · 彼岸时墟' } }
-    ]
-  },
-
   /* ===================== 个人站（/self/*） ===================== */
-  { path: '/self', name: 'self-home', component: Home, meta: { title: 'Briandolph Qi' } },
+  { path: '/self/index', name: 'self-home', component: Home, meta: { title: 'Briandolph Qi' } },
   { path: '/self/who_i_am', name: 'WhoIAm', component: WhoIAm, meta: { title: '关于我 · Briandolph Qi' } },
   { path: '/self/who_i_am/achieve_idle', name: 'AchievementIdle', component: Achievement01, meta: { title: '成就解锁 · Briandolph Qi' } },
   {

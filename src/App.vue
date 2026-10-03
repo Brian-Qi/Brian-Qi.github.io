@@ -256,7 +256,7 @@ export default {
     const router = useRouter()
 
     // ===== 首页路由判定（用于入场遮罩触发） =====
-    const isHomeRoute = computed(() => route.path === '/self')
+    const isHomeRoute = computed(() => route.path === '/self/index')
 
     // ===== 公司展示站判定（导航栏切换到公司导航） =====
     const isCompany = computed(() => route.meta && route.meta.company === true)
@@ -336,7 +336,7 @@ export default {
     provide('isIntroDone', isIntroDone)
 
     // 遮罩控制
-    const introOverlayVisible = ref(route.path === '/self' && !_introDismissed)
+    const introOverlayVisible = ref(route.path === '/self/index' && !_introDismissed)
     function triggerIntroOverlay() {
       if (!_introDismissed) {
         introOverlayVisible.value = true
@@ -375,7 +375,7 @@ export default {
 
     // 路由守卫：会话内只弹一次
     const removeGuard = router.beforeEach((to) => {
-      if (to.path === '/self' && !_introDismissed) {
+      if (to.path === '/self/index' && !_introDismissed) {
         introOverlayVisible.value = true
       }
     })

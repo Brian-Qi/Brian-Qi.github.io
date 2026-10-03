@@ -96,7 +96,7 @@ export default {
     const goToIndex = async () => {
       triggerIntroOverlay() // 遮罩立即开始进入动画
       await nextTick() // 等 Vue 完成遮罩 DOM 挂载
-      router.push('/self') // 切路由，ComingSoon 在遮罩下退出
+      router.push('/self/index') // 切路由，ComingSoon 在遮罩下退出
     }
 
     return {
