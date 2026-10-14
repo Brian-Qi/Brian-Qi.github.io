@@ -52,6 +52,13 @@
       </div>
     </div>
 
+    <div class="button-container">
+      <router-link to="/self" class="return-button">
+        <span class="button-icon">🏠</span>
+        回到主界面
+      </router-link>
+    </div>
+
     <div class="disclaimer">
       <p>* 本成就没有任何实际价值，仅用于证明您确实很无聊 *</p>
       <p class="small-text">※ 这都能找到，服了你了 ※</p>
