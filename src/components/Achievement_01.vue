@@ -53,11 +53,6 @@
     </div>
 
     <div class="button-container">
-      <router-link to="/self" class="return-button">
-        <span class="button-icon">🏠</span>
-        回到主界面
-      </router-link>
-
       <button @click="showScreenshotHint" class="screenshot-button">
         <span class="button-icon">📸</span>
         截图留念

@@ -52,13 +52,6 @@
       </div>
     </div>
 
-    <div class="button-container">
-      <router-link to="/self" class="return-button">
-        <span class="button-icon">🏠</span>
-        回到主界面
-      </router-link>
-    </div>
-
     <div class="disclaimer">
       <p>* 本成就证明您的施工精灵已掌握摸鱼精髓 *</p>
       <p class="small-text">※ 做假账是不对的，但摸鱼可以 ※</p>

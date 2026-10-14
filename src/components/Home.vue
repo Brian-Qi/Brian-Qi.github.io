@@ -35,7 +35,6 @@
 
     <footer class="c-foot">
       <span>Copyright © {{ now.year }} Briandolph Qi</span>
-      <RouterLink class="c-back" to="/self">↩ 回到 ComingSoon</RouterLink>
     </footer>
   </div>
 </template>
